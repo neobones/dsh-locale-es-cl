@@ -55,7 +55,10 @@ paquete describe únicamente su compatibilidad con esa aplicación.
 
 ## Si eres titular de derechos
 
-Este fork **no tiene remoto público ni tracker propio**: no hay una URL de incidencias a la que
-dirigir reclamaciones, y no corresponde usar la del repositorio del que deriva esta obra. Si
-necesitas una corrección, una atribución distinta o la retirada de algún contenido, plantéalo a
-quien te haya entregado esta copia o por el canal en que la obtuviste.
+Este proyecto tiene su propio repositorio y tracker públicos:
+<https://github.com/neobones/dsh-locale-es-cl/issues>. Si necesitas una corrección, una
+atribución distinta o la retirada de algún contenido **de este pack**, ese es el canal
+correcto: no hace falta acudir al repositorio del que deriva la traducción base.
+
+El catálogo inglés y los diccionarios originales `en`/`zh` pertenecen a sus autores; si tu
+reclamación es sobre **ese** contenido, el canal es el repositorio de DeepSeek Harness.

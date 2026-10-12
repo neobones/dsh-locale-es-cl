@@ -226,8 +226,8 @@ Se ejecutan todas antes de instalar; ninguna se sustituye por inspección visual
 
 ```powershell
 # desde una terminal, no desde dentro de una sesión de DSH (ver §10)
-& "C:\Users\jmeli\AppData\Local\Programs\DeepSeek Harness\resources\runtime\cli\bin\dsh.cmd" `
-    plugin --profile desktop add C:\Users\jmeli\Documents\deepseek-harness\default-workspace\dsh-locale-es-cl
+& "<instalación>\resources\runtime\cli\bin\dsh.cmd" `
+    plugin --profile desktop add <ruta-del-pack>
 ```
 
 Después: recargar la GUI (Ctrl+R) y elegir *Ajustes → General → Idioma → Español (Chile)*.

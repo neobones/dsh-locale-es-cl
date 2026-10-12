@@ -21,8 +21,8 @@ localización de la app.
 ## Instalación y uso
 
 ```powershell
-& "C:\Users\jmeli\AppData\Local\Programs\DeepSeek Harness\resources\runtime\cli\bin\dsh.cmd" `
-    plugin --profile desktop add C:\Users\jmeli\Documents\deepseek-harness\default-workspace\dsh-locale-es-cl
+& "<instalación>\resources\runtime\cli\bin\dsh.cmd" `
+    plugin --profile desktop add <ruta-del-pack>
 ```
 
 Después: recargar la GUI (Ctrl+R) y elegir **Español (Chile)** en *Ajustes → General → Idioma*.

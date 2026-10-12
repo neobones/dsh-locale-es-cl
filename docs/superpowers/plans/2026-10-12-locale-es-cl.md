@@ -28,10 +28,10 @@
 - **Nada se edita a mano** en `lib/`, `cordis.patch.yml` ni en los campos estructurales de `package.json`: los emite `tools/build-locale-pack.cjs`.
 - **Node ≥ 18**, sin dependencias npm para las herramientas.
 - **Rutas de trabajo** (Windows, PowerShell):
-  - Repo del pack: `C:\Users\jmeli\Documents\deepseek-harness\default-workspace\dsh-locale-es-cl`
-  - `app.asar` de referencia: `C:\Users\jmeli\AppData\Local\Programs\DeepSeek Harness\resources\app.asar`
-  - CLI de la app: `C:\Users\jmeli\AppData\Local\Programs\DeepSeek Harness\resources\runtime\cli\bin\dsh.cmd`
-  - Perfil: `desktop` (`C:\Users\jmeli\.dsh\profiles\desktop`)
+  - Repo del pack: `<ruta-del-pack>`
+  - `app.asar` de referencia: `<instalación>\resources\app.asar`
+  - CLI de la app: `<instalación>\resources\runtime\cli\bin\dsh.cmd`
+  - Perfil: `desktop` (`$env:DSH_HOME\profiles\desktop`)
 
 Todos los comandos se ejecutan con el repo del pack como directorio de trabajo.
 
@@ -51,8 +51,8 @@ Todos los comandos se ejecutan con el repo del pack como directorio de trabajo.
 - [ ] **Step 1: Extraer la app de referencia y verificar hashes**
 
 ```powershell
-cd C:\Users\jmeli\Documents\deepseek-harness\default-workspace\dsh-locale-es-cl
-node tools/extract-app.cjs "C:\Users\jmeli\AppData\Local\Programs\DeepSeek Harness\resources\app.asar" _referencia-dsh
+cd <ruta-del-pack>
+node tools/extract-app.cjs "<instalación>\resources\app.asar" _referencia-dsh
 ```
 
 Esperado: `discrepancias de hash: 0` y salida 0. Si hay discrepancias, **parar**: el `app.asar` no es el esperado.
@@ -172,7 +172,7 @@ En `package.json` (los campos conservables sobreviven al build, pero deben queda
 - `"name": "dsh-locale-es-cl"` (ya lo fija el generador)
 - `"description": "Pack de idioma español de Chile (es-CL) para la interfaz web de DeepSeek Harness"`
 - `"keywords"`: `deepseek-harness`, `dsh`, `dsh-plugin`, `deepseek`, `locale`, `language-pack`, `i18n`, `spanish`, `espanol`, `es-CL`, `chile`
-- `"repository"`, `"homepage"`, `"bugs"`: **eliminados** (Task 13). El plan preveía dejarlos apuntando al remoto de sincronización, pero este fork no tiene remoto público ni tracker propio (README y NOTICE ya lo dicen), y publicar en la ficha del paquete la URL del repositorio del que deriva desviaría las reclamaciones a un tercero. La procedencia queda en `NOTICE.md`. `author` sigue reflejando la adaptación; el generador ya no conserva estos tres campos (ver `CONSERVABLES` en `tools/build-locale-pack.cjs`).
+- `"repository"`, `"homepage"`, `"bugs"`: **eliminados** (Task 13) y **restaurados al publicar**. El plan preveía dejarlos apuntando al remoto de sincronización; en la Task 13 se quitaron porque el fork no tenía remoto propio y publicar la URL del repositorio del que deriva desviaría las reclamaciones a un tercero. Con la publicación (GitHub `neobones/dsh-locale-es-cl` + npm) vuelven a existir apuntando al repositorio **propio**, y el generador los conserva de nuevo (ver `CONSERVABLES` en `tools/build-locale-pack.cjs`). La procedencia de la obra derivada queda en `NOTICE.md`; `author` refleja la adaptación.
 - `"scripts"`: `build` → `node tools/build-locale-pack.cjs i18n/catalog.json i18n/es-cl .`; `check` → el mismo con `--check`; `audit` → `node tools/audit-es.cjs i18n/catalog.json i18n/es-cl`; añadir `"terms": "node tools/apply-terminology.cjs i18n/terminology.json i18n/es-cl --check"` y `"delta": "node tools/delta-report.cjs i18n/catalog.json i18n/reference/es.json i18n/es-cl"`.
 
 **Importante:** `package.json` lo reescribe el generador en cada build conservando estos campos; los estructurales (`name`, `type`, `main`, `exports`, `files`, `dsh`) siempre los fija el generador.
@@ -985,7 +985,7 @@ git commit -m "docs(es-CL): hoja de revision del delta, README y bitacora del pa
 **Files:**
 - Modify: `package.json` (solo si el build conserva mal algún campo)
 - Regenerate: `lib/client.js`, `lib/index.js`, `cordis.patch.yml`, `package.json`
-- Modify: (fuera del repo) `C:\Users\jmeli\.dsh\profiles\desktop\package.json` y `pnpm-lock.yaml` mediante `dsh plugin`
+- Modify: (fuera del repo) `$env:DSH_HOME\profiles\desktop\package.json` y `pnpm-lock.yaml` mediante `dsh plugin`
 
 **Interfaces:**
 - Consumes: todo lo anterior.
@@ -1046,7 +1046,7 @@ git log --oneline -3
 **Antes de ejecutar, avisar al usuario:** el gestor recompone el perfil en caliente; si el comando se lanza desde dentro de una sesión de DSH, esa sesión se dispone y la aplicación abre una conversación nueva (el historial no se pierde). Lo ideal es ejecutarlo en una terminal aparte.
 
 ```powershell
-& "C:\Users\jmeli\AppData\Local\Programs\DeepSeek Harness\resources\runtime\cli\bin\dsh.cmd" plugin --profile desktop add C:\Users\jmeli\Documents\deepseek-harness\default-workspace\dsh-locale-es-cl
+& "<instalación>\resources\runtime\cli\bin\dsh.cmd" plugin --profile desktop add <ruta-del-pack>
 ```
 
 Esperado: la operación informa del paquete añadido y de la selección del bundle.
@@ -1054,8 +1054,8 @@ Esperado: la operación informa del paquete añadido y de la selección del bund
 - [ ] **Step 5: Verificar la instalación en el perfil**
 
 ```powershell
-node -e "const p=require('C:/Users/jmeli/.dsh/profiles/desktop/package.json');console.log('deps:',Object.keys(p.dependencies||{}).join(',')||'(ninguna)');console.log('bundles:',(p.dsh&&p.dsh.profile&&p.dsh.profile.bundles||[]).join(','))"
-Test-Path "C:\Users\jmeli\.dsh\profiles\desktop\node_modules\dsh-locale-es-cl\lib\client.js"
+node -e "const p=require('$env:DSH_HOME/profiles/desktop/package.json');console.log('deps:',Object.keys(p.dependencies||{}).join(',')||'(ninguna)');console.log('bundles:',(p.dsh&&p.dsh.profile&&p.dsh.profile.bundles||[]).join(','))"
+Test-Path "$env:DSH_HOME\profiles\desktop\node_modules\dsh-locale-es-cl\lib\client.js"
 ```
 
 Esperado: `dsh-locale-es-cl` en `deps` y en `bundles`, y `True` en el `Test-Path`. Si el perfil no crea `node_modules` (la app enlaza sus propios paquetes), comprobar en su lugar que el bundle aparece en la lista de bundles y que el paquete resuelve desde el perfil.
