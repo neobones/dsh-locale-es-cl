@@ -101,7 +101,7 @@ console.log('namespaces traducidos   : ' + merged.size + '/' + Object.keys(catal
 console.log('claves traducidas       : ' + [...merged.values()].reduce((s, m) => s + m.size, 0));
 console.log('problemas               : ' + total);
 
-if (problemas.jsonInvalido || problemas.ausentes) {
+if (problemas.jsonInvalido || problemas.ausentes || problemas.repetidas || problemas.ficheroDesalineado) {
   console.log('\nRESULTADO: FALLO');
   process.exit(1);
 }

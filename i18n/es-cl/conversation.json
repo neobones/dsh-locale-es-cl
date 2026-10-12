@@ -43,7 +43,7 @@
     "image.tooMany": "Un mensaje puede incluir hasta {count} imágenes",
     "image.fileTooLarge": "Cada imagen debe ser menor de {size}",
     "image.totalTooLarge": "Las imágenes superan {size} en total; elimina algunas e intenta de nuevo",
-    "image.tooManyPixels": "La resolución de la imagen es demasiado alta; achícala e intenta de nuevo",
+    "image.tooManyPixels": "La resolución de la imagen es demasiado alta; redúcela e intenta de nuevo",
     "image.dimensionTooLarge": "Los lados de la imagen deben ser como máximo de {size}px; hazla más chica e intenta de nuevo",
     "image.modelUnsupported": "El modelo actual no admite imágenes; cambia a un modelo que sí lo haga",
     "image.sendFailed": "No se pudieron enviar las imágenes ({reason}); vuelve a agregarlas e intenta de nuevo",

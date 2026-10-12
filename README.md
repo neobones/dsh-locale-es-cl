@@ -10,7 +10,12 @@ Pack de idioma **español de Chile (es-CL)** para la interfaz de **DeepSeek Harn
 - Entra como **plugin de cliente** del Loader de DSH: **no parchea `app.asar`** ni ningún
   fichero de la aplicación.
 - Cualquier clave que falte o que añada una versión nueva de DSH **cae automáticamente al
-  inglés**, así que el pack nunca rompe la interfaz.
+  inglés**, así que un catálogo incompleto degrada a la lengua de origen en lugar de
+  romperse. El matiz importa: lo que cae a inglés es la **clave** ausente, porque el
+  runtime resuelve con `?? key`; un namespace del que no se registrara **ningún**
+  diccionario no tendría de dónde caer y mostraría sus claves en crudo. Eso último no
+  ocurre en este pack —los 57 namespaces tienen diccionario—, pero es la frontera real
+  de la garantía.
 
 ## Estado
 
@@ -18,22 +23,37 @@ Pack de idioma **español de Chile (es-CL)** para la interfaz de **DeepSeek Harn
 |---|---|
 | Cobertura | 2.603/2.603 claves (100 %), 57/57 namespaces |
 | Adaptación chilena | 285/2.603 cadenas (10,9 %) distintas de la referencia castellana |
-| Términos en inglés | 15 conservados por política; el informe de delta cierra con `protegidos 0` |
+| Términos en inglés | 15 conservados por política, de los que **11 tienen claves que ejercerlos**; el informe de delta cierra con `protegidos 0` |
 | Idioma | `es-CL` — etiqueta «Español (Chile)», respaldo `en` |
 | Paquete | `dsh-locale-es-cl` 1.0.1 |
 | Licencia | MIT (ver [LICENSE](LICENSE) y [NOTICE.md](NOTICE.md)) |
 | Núcleo de DSH probado | app de escritorio con `app.asar` de 121 MB, 70 plugins de UI |
 
+La política de términos en inglés cubre **quince** palabras, pero el catálogo de la app solo
+contiene texto para **once** de ellas: `plugin` (95 claves), `api` (25), `tool call` (23),
+`token` (14), `json` (14), `prompt` (12), `log` (6), `shell` (5), `chat` (5), `diff` (4) y
+`markdown` (4). Las otras cuatro —**`commit`, `push`, `pull request` y `deploy`**— no aparecen
+ni una vez en el catálogo, así que se conservan como política declarada pero **no hay ninguna
+clave que las ejerza**: `protegidos 0` mide las once primeras, no quince.
+
 Estas comprobaciones se pueden repetir en cualquier momento y no necesitan la aplicación:
 
 ```powershell
 node tools/build-locale-pack.cjs i18n/catalog.json i18n/es-cl . --check    # cobertura y marcadores
-node tools/audit-es.cjs i18n/catalog.json i18n/es-cl                       # claves ausentes y repetidas
+node tools/audit-es.cjs i18n/catalog.json i18n/es-cl                       # claves ausentes, desalineadas y repetidas
 node tools/apply-terminology.cjs i18n/terminology.json i18n/es-cl --check  # términos y fraseología prohibidas
-node tools/check-coherence.cjs i18n/es-cl                                  # concordancia junto a los términos en inglés
+node tools/check-coherence.cjs i18n/es-cl                                  # concordancia y duplicados entre lotes
 node tools/check-portable.cjs i18n                                         # ni rutas ni secretos locales
+node tools/delta-report.cjs i18n/catalog.json i18n/reference/es.json i18n/es-cl --strict-protegidos  # protegidos 0 como puerta
 node tools/verify-pack.cjs lib/client.js                                   # ejecuta el bundle como lo hace DSH
 ```
+
+`delta-report.cjs` cierra `protegidos 0` y con `--strict-protegidos` **sale con código 1 si ese
+total no es cero**: sin la bandera el total solo se informa (lo que necesitan los lotes
+intermedios), con ella es una puerta. `check-coherence.cjs` tiene dos partes: la concordancia
+junto a los términos en inglés y un barrido de duplicados que informa cuando un mismo origen
+inglés produce más de una forma en español, o cuando dos orígenes distintos comparten una
+misma frase hecha.
 
 ## Instalación
 
@@ -172,14 +192,14 @@ dsh-locale-es-cl/
 │   ├── split-by-namespace.cjs   convierte los lotes en un fichero por namespace
 │   ├── show-ns.cjs              imprime los diccionarios ingleses de los namespaces indicados
 │   ├── apply-terminology.cjs    aplica (o comprueba con --check) la tabla de terminología
-│   ├── delta-report.cjs         compara con la referencia y emite la hoja de revisión
-│   ├── check-coherence.cjs      concordancia de artículo y género junto a los términos en inglés
+│   ├── delta-report.cjs         compara con la referencia, emite la hoja y con --strict-protegidos es puerta
+│   ├── check-coherence.cjs      concordancia de artículo y género, más el barrido de duplicados entre lotes
 │   ├── build-locale-pack.cjs    emite lib/ y cordis.patch.yml, e informa de la cobertura
 │   ├── audit-es.cjs             busca claves ausentes, ficheros mal alineados y repetidas
 │   ├── check-portable.cjs       evita publicar rutas de la máquina que extrajo el catálogo
 │   ├── check-plugin-meta.cjs    comprueba lo que DSH exige para listar el plugin
 │   └── verify-pack.cjs          ejecuta el bundle en un cargador simulado y lo comprueba
-├── .github/workflows/ci.yml     cobertura, auditoría, portabilidad, metadatos y bundle sincronizado
+├── .github/workflows/ci.yml     cobertura, auditoría, portabilidad, términos estrictos, coherencia, metadatos y bundle sincronizado
 └── CONTRIBUTING.md · NOTICE.md · CHANGELOG.md · LICENSE · README.md
 ```
 
@@ -216,7 +236,8 @@ node tools/build-locale-pack.cjs i18n/catalog.json i18n/es-cl . --check # lista 
 # 3. Volver a pasar las puertas de estilo y reconstruir el bundle
 node tools/apply-terminology.cjs i18n/terminology.json i18n/es-cl --check
 node tools/apply-terminology.cjs i18n/terminology.json i18n/es-cl        # aplica lo que quede pendiente
-node tools/check-coherence.cjs i18n/es-cl                                # concordancia junto a los términos en inglés
+node tools/check-coherence.cjs i18n/es-cl                                # concordancia y duplicados entre lotes
+node tools/delta-report.cjs i18n/catalog.json i18n/reference/es.json i18n/es-cl --strict-protegidos  # protegidos 0
 node tools/build-locale-pack.cjs i18n/catalog.json i18n/es-cl .          # regenera lib/ y cordis.patch.yml
 node tools/verify-pack.cjs lib/client.js
 
@@ -277,10 +298,22 @@ repositorio: la adaptación, las herramientas y la documentación.
 
 Chilean Spanish (`es-CL`) language pack for the **DeepSeek Harness** (DSH) web interface:
 **2,603 of 2,603 keys (100 %) across 57 namespaces**, shipped as a client plugin — the
-application's `app.asar` is never patched, and untranslated keys fall back to English
-automatically. **285 of the 2,603 strings (10.9 %) differ from the Castilian base
-translation**; every one of them is listed, with its English source and its reference, in
-`docs/revision-es-cl.md` (and the matching `.csv`).
+application's `app.asar` is never patched, and a missing **key** falls back to English through
+the runtime's `?? key`, so an incomplete catalog degrades to the source language instead of
+breaking. The boundary matters: a namespace with **no** `es-CL` dictionary at all would have
+nothing to fall back from and would render its keys — that does not happen in this pack, where
+all 57 namespaces ship a dictionary, but it is the real edge of the guarantee. **285 of the
+2,603 strings (10.9 %) differ from the Castilian base translation**; every one of them is
+listed, with its English source and its reference, in `docs/revision-es-cl.md` (and the
+matching `.csv`).
+
+The English-term policy names fifteen terms, but the catalog only has text for **eleven** of
+them: `plugin` (95 keys), `api` (25), `tool call` (23), `token` (14), `json` (14), `prompt`
+(12), `log` (6), `shell` (5), `chat` (5), `diff` (4) and `markdown` (4). The remaining four —
+**`commit`, `push`, `pull request` and `deploy`** — never occur in the catalog, so `protegidos 0`
+measures the first eleven, not fifteen. The same report closes that gate as a real check with
+`--strict-protegidos` (exit 1 when the total is above zero), and `tools/check-coherence.cjs`
+adds a systematic duplicate scan across namespaces.
 
 This fork has no public remote of its own; install it from a local checkout by adding
 `dsh-locale-es-cl` to `dependencies` and to `dsh.profile.bundles` in your DSH profile's

@@ -21,20 +21,55 @@ parche al corregir traducciones.
   términos que deben quedar en inglés (`llamada a herramienta`, `llamadas a herramienta`,
   `diferencias de código`).
 - **Ocho lotes editoriales** por namespace reescriben la interfaz a español de Chile: 285 de
-  las 2.603 cadenas (10,9 %) difieren ya de la referencia castellana, y los quince términos que
-  la política mantiene en inglés siguen ahí en todo el pack (`protegidos: 0`).
-- **Cierre de coherencia entre lotes**: la revisión de que un mismo término tuviera una sola forma
-  fue una **pasada manual** sobre los once puntos que quedaron abiertos entre lotes; el script
-  `tools/check-coherence.cjs` solo informa de la concordancia de artículo y género junto a los
-  términos que se dejan en inglés (no decide si un término se tradujo de dos maneras). Esa pasada
-  manual unificó, entre otros: las unidades de tiempo con espacio de los namespaces `workspace` y
-  `reference` (`{n} min`, `{n} h`, `{n} d`; los formatos compactos de `job`, `chat.duration` y
-  `subagent.duration` se dejan como están), `log de sesión`, «Restablecer al valor
-  predeterminado», «los tool calls», «Procesando el documento…», «Intenta de nuevo»,
-  «falla» con su artículo correcto, «Cada día»/«Cada semana», «Todas las semanas» —esta última en
-  `conversation`, donde el inglés de origen es otro (`Weekly on {days}…`, no el `Weekly on
-  {weekdays}…` de los namespaces del programador), así que no es una segunda forma del mismo
-  término— y el participio «agregada».
+  las 2.603 cadenas (10,9 %) difieren ya de la referencia castellana, y los términos que la
+  política mantiene en inglés siguen ahí en todo el pack (`protegidos: 0`). La política nombra
+  **quince** términos, pero de esos solo **once** tienen claves que los ejerzan en el catálogo
+  —`plugin` (95 claves), `api` (25), `tool call` (23), `token` (14), `json` (14), `prompt` (12),
+  `log` (6), `shell` (5), `chat` (5), `diff` (4) y `markdown` (4)—: **`commit`, `push`,
+  `pull request` y `deploy` no aparecen ni una vez** en el catálogo de la app, así que
+  `protegidos 0` mide las once primeras y no quince.
+- **Cierre de coherencia entre lotes**: el repaso de que un mismo término tuviera una sola forma
+  ya no es solo una pasada a mano. `tools/check-coherence.cjs` incorpora un **barrido de
+  duplicados sistemático** sobre `i18n/catalog.json` + `i18n/es-cl/` con dos pasadas: (a) un
+  mismo origen inglés literal en más de una clave con más de una forma en español, y (b) una
+  misma forma española alcanzada desde orígenes ingleses distintos. Sobre el pack **antes** de
+  las correcciones de esta versión informa de 39 grupos en la pasada (a) y 24 cadenas en la (b),
+  y **no decide nada**: presenta los grupos para que los lea la revisión, porque el género del
+  sujeto puede justificar la variación. Tras corregir los tres puntos que el barrido destapó, la
+  pasada (a) baja a 38 grupos (la pareja «API key is invalid» queda unificada y deja de ser
+  divergencia). Es la versión automática —no la sustitución— del repaso manual, que sigue cubriendo
+  el caso en que el inglés distingue dos textos por una elección léxica que ningún emparejamiento
+  automático puede demostrar (p. ej. «…click to retry» frente a «…try again»).
+  **Medido, no sostenido**: la pasada manual unificó —entre otros— las unidades de tiempo con
+  espacio de los namespaces `workspace` y `reference` (`{n} min`, `{n} h`, `{n} d`; los formatos
+  compactos de `job`, `chat.duration` y `subagent.duration` se dejan como están), `log de
+  sesión`, «Restablecer al valor predeterminado», «los tool calls», «Procesando el documento…»,
+  «Intenta de nuevo», «falla» con su artículo correcto, «Cada día»/«Cada semana», «Todas las
+  semanas» —esta última en `conversation`, donde el inglés de origen es otro (`Weekly on
+  {days}…`, no el `Weekly on {weekdays}…` de los namespaces del programador), así que no es una
+  segunda forma del mismo término— y el participio «agregada». El barrido sistemático encontró
+  además tres divergencias que la pasada a mano no había cerrado —«achícala» frente a
+  «redúcela», «para intentarlo de nuevo» frente a la forma mayoritaria «intenta de nuevo» y el
+  artículo de «API key is invalid»— y las tres quedan unificadas en esta versión; las
+  divergencias que **no** se tocan son las que el género del sujeto exige (`Fallido` para un
+  turno, `Fallida` para una tarea) y así se documentan.
+- **`tools/delta-report.cjs --strict-protegidos`**: la puerta del cero final deja de depender de
+  leer la consola. Sin la bandera el total de `protegidos` se informa pero no afecta al código de
+  salida (lo que necesitan los lotes intermedios); con ella, un total mayor que cero sale con
+  código 1. Va cableada en `package.json` (`npm run delta:strict`) y en la integración continua.
+- **Argumentos validados en `tools/apply-terminology.cjs`**: es el único script de la cadena que
+  escribe en las fuentes, y aceptaba cualquier cosa que no fuera el literal `--check` cayendo en
+  modo de escritura. Ahora un flag desconocido —una errata como `--chek`— aborta con la línea de
+  uso y código 2 antes de tocar un solo fichero.
+- **`tools/audit-es.cjs` sale con código 1 por cualquier problema**, no solo por JSON inválido o
+  claves ausentes: el `if` final ignoraba `repetidas` y `ficheroDesalineado`, así que la cabecera
+  prometía una puerta más ancha de la que el script aplicaba. Ahora coinciden, que es lo que
+  exige su promoción a puerta de integración continua.
+- **Precisión del matcher de términos protegidos**: `tools/delta-report.cjs` documenta en su
+  cabecera que ignora los tokens con `/` o `\`, de modo que un término que solo vive dentro de
+  una ruta queda fuera del recuento. Hoy son dos claves (`settings.models.deepSeekBaseUrl` para
+  `api`, `shortcuts.desktop-document` para `json`), las dos benignas; `protegidos 0` no debe
+  leerse como cobertura total.
 - `locale/es.json` y el nuevo `locale/es-CL.json` llevan los metadatos de la tarjeta en
   español de Chile; `locale/en.json` los lleva en inglés.
 - Los comandos de la documentación, la integración continua y las plantillas de incidencias

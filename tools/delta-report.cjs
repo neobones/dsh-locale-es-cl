@@ -1,7 +1,8 @@
 /**
  * Compara la traduccion es-CL con la referencia castellana y emite la hoja de revision.
  *
- * Uso: node delta-report.cjs <catalog.json> <reference.json> <dir es-cl> [--md out.md] [--csv out.csv]
+ * Uso: node delta-report.cjs <catalog.json> <reference.json> <dir es-cl>
+ *        [--md out.md] [--csv out.csv] [--strict-protegidos]
  *
  * <reference.json> es { "<ns>": { "<clave>": "<texto>" } } fusionado.
  * Sale con codigo 1 si falta alguna clave del catalogo, si algun marcador no cuadra
@@ -12,16 +13,41 @@
  * de salida a proposito: en los lotes intermedios los namespaces aun no adaptados
  * lo mantienen por encima de cero. Cada lote exige cero en sus propios namespaces
  * y la Task 13 exige cero en el total.
- * Los tokens que contienen `/` o `\` se descartan en ambos lados antes de decidir
- * si el termino esta presente (ver `sinRutas` mas abajo).
+ *
+ * `--strict-protegidos` es la puerta de ese cero final: con la bandera, el total
+ * de `protegidos` MAYOR QUE CERO tambien hace salir con codigo 1. Es el unico modo
+ * de que «protegidos 0» deje de ser una cifra que hay que leer en la consola y
+ * pase a ser una condicion que la integracion continua comprueba sola. El defecto
+ * (sin bandera) sigue siendo permisivo, que es lo que necesitan los lotes
+ * intermedios. La bandera no cambia el informe: solo el codigo de salida.
+ *
+ * Alcance del matcher de terminos protegidos: ignora los tokens que contienen `/`
+ * o `\` (ver `sinRutas` mas abajo), de modo que un termino que solo vive dentro de
+ * una ruta —una URL, una ruta de fichero— ni satisface la comprobacion ni la
+ * dispara. Es deliberado, para que una ruta no enmascare una traduccion que en el
+ * resto del valor si perdio el termino, y tiene un coste acotado: hoy son DOS
+ * claves de todo el catalogo cuyo unico termino protegido esta en una ruta
+ * (`settings.models.deepSeekBaseUrl`, con `api` dentro de
+ * «https://api.deepseek.com/anthropic», y `shortcuts.desktop-document`, con `json`
+ * dentro de «userData/keybindings.json»). Las dos son benignas. Lo que NO hay que
+ * deducir de `protegidos 0` es una cobertura total: las claves cuyo termino
+ * protegido vive dentro de una ruta quedan fuera del recuento por construccion.
  */
 'use strict';
 const fs = require('fs');
 const path = require('path');
 
-const [catalogPath, refPath, dir] = process.argv.slice(2);
 const mdPath = process.argv.includes('--md') ? process.argv[process.argv.indexOf('--md') + 1] : null;
 const csvPath = process.argv.includes('--csv') ? process.argv[process.argv.indexOf('--csv') + 1] : null;
+// Los tres argumentos de ruta son posicionales. Se quitan del medio las banderas
+// y SUS VALORES antes de tomarlos, para que las banderas puedan ir en cualquier
+// orden sin convertirse en el nombre de un fichero.
+const conValor = new Set([mdPath, csvPath].filter(Boolean));
+const posicionales = process.argv.slice(2).filter((a) => !a.startsWith('--') && !conValor.has(a));
+const [catalogPath, refPath, dir] = posicionales;
+// Sin bandera el total de protegidos no influye en el codigo de salida (lotes
+// intermedios). Con `--strict-protegidos` si: es la puerta del cero final.
+const strictProtegidos = process.argv.includes('--strict-protegidos');
 
 const catalog = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
 const reference = JSON.parse(fs.readFileSync(refPath, 'utf8'));
@@ -134,6 +160,10 @@ if (totals.minusculas > minusculas.length) console.log('... y ' + (totals.minusc
 console.log('\n=== TERMINOS PROTEGIDOS === (el origen ingles tiene el termino, la traduccion lo perdio)');
 for (const row of protegidos) console.log(row.ns + '\t' + row.key + '\t[' + row.terms + ']\t' + JSON.stringify(row.en) + ' -> ' + JSON.stringify(row.es));
 if (totals.protegidos > protegidos.length) console.log('... y ' + (totals.protegidos - protegidos.length) + ' mas (muestra de ' + protegidos.length + ')');
+if (strictProtegidos) {
+  console.log('\n--strict-protegidos: el total de protegidos (' + totals.protegidos + ') '
+    + (totals.protegidos > 0 ? 'NO es cero: la puerta falla.' : 'es cero: la puerta pasa.'));
+}
 
 if (mdPath) {
   const byNs = new Map();
@@ -177,4 +207,4 @@ if (csvPath) {
 }
 function esc(text) { return String(text).replace(/\|/g, '\\|').replace(/\n/g, ' '); }
 
-process.exit(totals.missing || totals.broken || totals.minusculas ? 1 : 0);
+process.exit(totals.missing || totals.broken || totals.minusculas || (strictProtegidos && totals.protegidos) ? 1 : 0);

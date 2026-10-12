@@ -127,7 +127,7 @@ if (conflicts.length) {
   for (const c of conflicts) console.log(JSON.stringify(c));
 }
 if (report.badPlaceholders.length) {
-  console.log('\n--- M ARCADORES O CLAVES AJENAS ---');
+  console.log('\n--- MARCADORES O CLAVES AJENAS ---');
   for (const b of report.badPlaceholders) console.log(JSON.stringify(b));
 }
 console.log('\n--- POR NAMESPACE (en / es / falta) ---');

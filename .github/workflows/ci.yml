@@ -26,6 +26,12 @@ jobs:
       - name: Nada de la máquina local en los datos publicados
         run: node tools/check-portable.cjs i18n
 
+      - name: Términos en inglés conservados (puerta estricta)
+        run: node tools/delta-report.cjs i18n/catalog.json i18n/reference/es.json i18n/es-cl --strict-protegidos
+
+      - name: Coherencia entre lotes (duplicados por origen inglés)
+        run: node tools/check-coherence.cjs i18n/es-cl
+
       - name: Metadatos de la tarjeta del plugin
         run: node tools/check-plugin-meta.cjs .
 

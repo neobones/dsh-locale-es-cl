@@ -40,7 +40,7 @@ Marcadores `{...}` verificados contra el inglés. Faltantes: 0. Marcadores rotos
 | `attachment.directoryDesktopOnly` | Folders can only be added in the desktop app; add individual files in the browser | Las carpetas solo se pueden añadir en la aplicación de escritorio; añade archivos individuales en el navegador | **Las carpetas solo se pueden agregar en la aplicación de escritorio; agrega archivos individuales en el navegador** |
 | `attachment.pathUnsupported` | The path contains characters a reference cannot carry; rename it and try again | La ruta contiene caracteres que una referencia no puede transportar; renómbrala e inténtalo de nuevo | **La ruta tiene caracteres que una referencia no puede transportar; cámbiale el nombre e intenta de nuevo** |
 | `image.totalTooLarge` | Images exceed {size} in total; remove some and try again | Las imágenes superan {size} en total; elimina algunas e inténtalo de nuevo | **Las imágenes superan {size} en total; elimina algunas e intenta de nuevo** |
-| `image.tooManyPixels` | Image resolution is too high; compress it and try again | La resolución de la imagen es demasiado alta; comprímela e inténtalo de nuevo | **La resolución de la imagen es demasiado alta; achícala e intenta de nuevo** |
+| `image.tooManyPixels` | Image resolution is too high; compress it and try again | La resolución de la imagen es demasiado alta; comprímela e inténtalo de nuevo | **La resolución de la imagen es demasiado alta; redúcela e intenta de nuevo** |
 | `image.dimensionTooLarge` | Image sides must be at most {size}px; downscale it and try again | Los lados de la imagen deben ser como máximo de {size}px; redúcela e inténtalo de nuevo | **Los lados de la imagen deben ser como máximo de {size}px; hazla más chica e intenta de nuevo** |
 | `image.sendFailed` | Sending images failed ({reason}); re-add them and try again | No se pudieron enviar las imágenes ({reason}); vuelve a añadirlas e inténtalo de nuevo | **No se pudieron enviar las imágenes ({reason}); vuelve a agregarlas e intenta de nuevo** |
 | `file.notStaged` | The file has not finished uploading; re-add it and try again | El archivo no ha terminado de subirse; vuelve a añadirlo e inténtalo de nuevo | **El archivo todavía no termina de subirse; vuelve a agregarlo e intenta de nuevo** |
@@ -65,7 +65,7 @@ Marcadores `{...}` verificados contra el inglés. Faltantes: 0. Marcadores rotos
 |---|---|---|---|
 | `a11y.preparing` | Preparing a Cordis tool call | Preparando una llamada a herramienta de Cordis | **Preparando un tool call de Cordis** |
 
-## deliverables (6 de 60)
+## deliverables (5 de 60)
 
 | clave | inglés | referencia `es` | `es-CL` |
 |---|---|---|---|
@@ -73,7 +73,6 @@ Marcadores `{...}` verificados contra el inglés. Faltantes: 0. Marcadores rotos
 | `presented.directoryError` | Could not open containing folder. Try again. | No se pudo abrir la carpeta contenedora. Inténtalo de nuevo. | **No se pudo abrir la carpeta contenedora. Intenta de nuevo.** |
 | `presented.revealed` | Requested display in file manager | Visualización en el gestor de archivos solicitada | **Visualización solicitada en el explorador de archivos** |
 | `presented.revealing` | Showing in file manager… | Mostrando en el gestor de archivos… | **Mostrando en el explorador de archivos…** |
-| `presented.error` | Could not open. Click to retry. | No se pudo abrir. Haz clic para reintentar. | **No se pudo abrir. Haz clic para intentarlo de nuevo.** |
 | `review.selectFile` | Choose the file to review | Elegir el archivo que revisar | **Elige el archivo que quieres revisar** |
 
 ## documentHtml (1 de 4)
@@ -357,7 +356,7 @@ Marcadores `{...}` verificados contra el inglés. Faltantes: 0. Marcadores rotos
 | clave | inglés | referencia `es` | `es-CL` |
 |---|---|---|---|
 | `record` | Press a shortcut | Pulsa un atajo | **Presiona un atajo** |
-| `too-many-keys` | Hold at most two non-modifier keys. Release the keys to try again. | Mantén como máximo dos teclas que no sean modificadoras. Suelta las teclas para volver a intentarlo. | **Mantén como máximo dos teclas que no sean modificadoras. Suelta las teclas para intentarlo de nuevo.** |
+| `too-many-keys` | Hold at most two non-modifier keys. Release the keys to try again. | Mantén como máximo dos teclas que no sean modificadoras. Suelta las teclas para volver a intentarlo. | **Mantén como máximo dos teclas que no sean modificadoras. Suelta las teclas e intenta de nuevo.** |
 | `reset-failed` | Could not restore defaults. Your shortcuts are unchanged. Please retry. | No se pudieron restaurar los valores predeterminados. Los atajos no han cambiado. Vuelve a intentarlo. | **No se pudieron restaurar los valores predeterminados. Los atajos no han cambiado. Intenta de nuevo.** |
 | `review` | I have reviewed the latest configuration | He revisado la configuración más reciente | **Revisé la configuración más reciente** |
 | `write-failed` | Could not save. Your previous shortcuts and current draft are preserved. Please retry. | No se pudo guardar. Se conservan los atajos anteriores y el borrador actual. Vuelve a intentarlo. | **No se pudo guardar. Se conservan los atajos anteriores y el borrador actual. Intenta de nuevo.** |
@@ -421,7 +420,7 @@ Marcadores `{...}` verificados contra el inglés. Faltantes: 0. Marcadores rotos
 | `inputFull` | The input buffer is full. Reconnect and try again. | El búfer de entrada está lleno. Vuelve a conectar e inténtalo de nuevo. | **El búfer de entrada está lleno. Vuelve a conectar e intenta de nuevo.** |
 | `terminalLimit` | The terminal limit has been reached. Close unused terminals and try again. Exited terminals also count toward the limit. | Se ha alcanzado el límite de terminales. Cierra los terminales que no uses e inténtalo de nuevo. Los terminales finalizados también cuentan para el límite. | **Se ha alcanzado el límite de terminales. Cierra los terminales que no uses e intenta de nuevo. Los terminales finalizados también cuentan para el límite.** |
 
-## trajectory (19 de 192)
+## trajectory (20 de 192)
 
 | clave | inglés | referencia `es` | `es-CL` |
 |---|---|---|---|
@@ -435,6 +434,7 @@ Marcadores `{...}` verificados contra el inglés. Faltantes: 0. Marcadores rotos
 | `summary.toolCalls.one` | {count} tool call | {count} llamada a herramienta | **{count} tool call** |
 | `summary.toolCalls.other` | {count} tool calls | {count} llamadas a herramientas | **{count} tool calls** |
 | `details.toolCalls` | Tool calls | Llamadas a herramientas | **Tool calls** |
+| `details.failure.auth` | API key is invalid | La clave de la API no es válida | **La clave de API no es válida** |
 | `details.toolCall` | Tool Call | Llamada a herramienta | **Tool Call** |
 | `layout.toolCallOnly` | Tool call only | Solo llamada a herramienta | **Solo tool call** |
 | `layout.initialSystemPrompt` | Initial System Prompt | Indicaciones del sistema iniciales | **Prompt del sistema inicial** |

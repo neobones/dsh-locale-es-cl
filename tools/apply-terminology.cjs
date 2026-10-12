@@ -7,14 +7,31 @@
  * informa de cada sustitucion. Con --check no escribe: informa de las
  * sustituciones pendientes y de los terminos prohibidos que sigan apareciendo, y
  * sale con codigo 1 si queda alguno.
+ *
+ * Los argumentos se validan ANTES de abrir nada: un flag desconocido —una errata
+ * como `--chek`— aborta con la linea de uso y codigo 2 en vez de caer en el modo
+ * de escritura y reescribir los 57 diccionarios in situ. Este script es el unico
+ * de la cadena que escribe en las fuentes, asi que la validacion es lo que separa
+ * una errata de un lote entero de sustituciones no deseadas.
  */
 'use strict';
 const fs = require('fs');
 const path = require('path');
 
-const termPath = process.argv[2];
-const dir = process.argv[3];
-const checkOnly = process.argv.includes('--check');
+const argv = process.argv.slice(2);
+const FLAGS = new Set(['--check']);
+const desconocidos = argv.filter((a) => a.startsWith('-') && !FLAGS.has(a));
+const posicionales = argv.filter((a) => !a.startsWith('-'));
+if (desconocidos.length || posicionales.length < 2) {
+  if (desconocidos.length) console.error('Flag desconocido: ' + desconocidos.join(', '));
+  else console.error('Faltan argumentos: se esperan <terminology.json> y <dir de diccionarios>.');
+  console.error('Uso: node apply-terminology.cjs <terminology.json> <dir de diccionarios> [--check]');
+  process.exit(2);
+}
+
+const termPath = posicionales[0];
+const dir = posicionales[1];
+const checkOnly = argv.includes('--check');
 
 const table = JSON.parse(fs.readFileSync(termPath, 'utf8'));
 const LETTER = 'A-Za-z\\u00C0-\\u024F\\u00D1\\u00F1';

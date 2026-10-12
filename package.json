@@ -53,6 +53,7 @@
     "audit": "node tools/audit-es.cjs i18n/catalog.json i18n/es-cl",
     "terms": "node tools/apply-terminology.cjs i18n/terminology.json i18n/es-cl --check",
     "delta": "node tools/delta-report.cjs i18n/catalog.json i18n/reference/es.json i18n/es-cl",
+    "delta:strict": "node tools/delta-report.cjs i18n/catalog.json i18n/reference/es.json i18n/es-cl --strict-protegidos",
     "verify": "node tools/verify-pack.cjs lib/client.js",
     "test": "npm run check && npm run verify"
   },

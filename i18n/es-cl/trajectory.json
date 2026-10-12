@@ -155,7 +155,7 @@
     "details.toolCalls": "Tool calls",
     "details.subtoolCalls": "Llamadas a subherramientas",
     "details.error": "Error",
-    "details.failure.auth": "La clave de la API no es válida",
+    "details.failure.auth": "La clave de API no es válida",
     "details.retry": "Reintentar",
     "details.scheduled": "Programado",
     "details.retryDelay": "Retardo de reintento",
