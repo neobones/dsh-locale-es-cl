@@ -5,7 +5,7 @@
     "path.appsError": "No se pudieron cargar las aplicaciones",
     "shortcut.busy": "Abriendo el espacio de trabajo",
     "shortcut.unavailable": "El espacio de trabajo actual o la aplicación local no está disponible",
-    "open.tooltip": "Abrir en local",
+    "open.tooltip": "Abrir localmente",
     "path.open": "Abrir",
     "path.more": "Más formas de abrir",
     "path.reveal": "Mostrar la ubicación del archivo",

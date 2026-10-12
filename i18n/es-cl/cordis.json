@@ -1,7 +1,7 @@
 {
   "cordis": {
     "row.defineTitle": "Registrar plugin de Cordis",
-    "a11y.preparing": "Preparando una llamada a herramienta de Cordis",
+    "a11y.preparing": "Preparando un tool call de Cordis",
     "row.runTitle": "Ejecutar plugin de Cordis",
     "row.updateTitle": "Actualizar plugin de Cordis",
     "row.stopTitle": "Detener plugin de Cordis",
