@@ -77,7 +77,7 @@
     "completing": "Completando el inicio de sesión…",
     "expired": "El inicio de sesión caducó. Intenta de nuevo.",
     "failed": "No se pudo completar la operación. Intenta de nuevo.",
-    "settingsSignedOutTitle": "No iniciaste sesión en DeepSeek Harness",
+    "settingsSignedOutTitle": "No has iniciado sesión en DeepSeek Harness",
     "settingsSignedOutDescription": "Inicia sesión en DeepSeek Harness para obtener tu clave de API dedicada",
     "signInDescription": "Usa tu cuenta de DeepSeek para empezar.",
     "profileUnavailable": "Los detalles de la cuenta aún no están disponibles.",

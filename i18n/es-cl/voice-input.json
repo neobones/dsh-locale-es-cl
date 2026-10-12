@@ -96,7 +96,7 @@
     "cloud": "El audio se enviará al servicio en la nube seleccionado.",
     "empty": "No se reconoció voz",
     "cancelled": "Entrada de voz cancelada.",
-    "conflict": "Tu borrador cambió. La transcripción se conserva y se puede insertar en la posición actual del cursor.",
+    "conflict": "Tu borrador ha cambiado. La transcripción se conserva y se puede insertar en la posición actual del cursor.",
     "failed": "El reconocimiento de voz falló: {message}",
     "unavailable": "Este navegador no puede grabar audio. Usa un navegador compatible con micrófono.",
     "permission": "El acceso al micrófono está deshabilitado. Permítelo en los ajustes del navegador y del sistema.",
