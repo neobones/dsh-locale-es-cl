@@ -11,9 +11,9 @@
     "unavailable": "Las vistas previas de Office no están disponibles. Habilita el servicio de vista previa de documentos en el equipo que ejecuta DeepSeek Harness.",
     "invalid": "Este archivo de Office no se puede previsualizar. Puede estar dañado, protegido con contraseña o tener una extensión incorrecta.",
     "tooLarge": "El archivo de Office o el PDF convertido supera el límite de tamaño de la vista previa. Reduce el tamaño del archivo o ajusta la configuración de la vista previa.",
-    "failed": "La conversión de Office no generó un PDF utilizable. Comprueba el archivo e inténtalo de nuevo.",
-    "timeout": "Se agotó el tiempo de la conversión de Office. Inténtalo de nuevo.",
-    "busy": "La vista previa de Office está ocupada. Inténtalo de nuevo en breve.",
+    "failed": "La conversión de Office no generó un PDF utilizable. revisa el archivo e intenta de nuevo.",
+    "timeout": "Se agotó el tiempo de la conversión de Office. intenta de nuevo.",
+    "busy": "La vista previa de Office está ocupada. intenta de nuevo en un momento.",
     "changed": "El archivo cambió mientras se leía. Vuelve a abrir la vista previa."
   }
 }

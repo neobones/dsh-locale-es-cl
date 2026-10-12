@@ -24,9 +24,9 @@
     "retry": "Reintentar",
     "cleanupFailed": "No se pudo cerrar el terminal «{title}»: {message}",
     "missingTerminal": "Este terminal ya no existe. Abre un terminal nuevo.",
-    "inputFull": "El búfer de entrada está lleno. Vuelve a conectar e inténtalo de nuevo.",
+    "inputFull": "El búfer de entrada está lleno. Vuelve a conectar e intenta de nuevo.",
     "attachmentEnded": "La conexión del terminal ha finalizado. Vuelve a conectar para continuar.",
     "invalidOutput": "No se pudo recibir la pantalla del terminal. Vuelve a conectar para recuperarla.",
-    "terminalLimit": "Se ha alcanzado el límite de terminales. Cierra los terminales que no uses e inténtalo de nuevo. Los terminales finalizados también cuentan para el límite."
+    "terminalLimit": "Se ha alcanzado el límite de terminales. Cierra los terminales que no uses e intenta de nuevo. Los terminales finalizados también cuentan para el límite."
   }
 }

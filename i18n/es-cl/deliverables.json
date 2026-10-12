@@ -1,12 +1,12 @@
 {
   "deliverables": {
     "presented.nativeUnavailable": "Este archivo no tiene una ruta de Host disponible. Previsualízalo en la barra lateral.",
-    "presented.revealError": "No se pudo mostrar en el gestor de archivos. Inténtalo de nuevo.",
-    "presented.directoryError": "No se pudo abrir la carpeta contenedora. Inténtalo de nuevo.",
+    "presented.revealError": "No se pudo mostrar en el explorador de archivos. intenta de nuevo.",
+    "presented.directoryError": "No se pudo abrir la carpeta contenedora. intenta de nuevo.",
     "presented.directoryOpening": "Abriendo la carpeta contenedora…",
     "presented.directoryOpened": "Apertura de la carpeta contenedora solicitada",
-    "presented.revealed": "Visualización en el gestor de archivos solicitada",
-    "presented.revealing": "Mostrando en el gestor de archivos…",
+    "presented.revealed": "Visualización en el explorador de archivos solicitada",
+    "presented.revealing": "Mostrando en el explorador de archivos…",
     "presented.unavailable": "Este Host no tiene un escritorio disponible para abrir archivos o carpetas en aplicaciones externas. Los archivos aún se pueden previsualizar en la barra lateral.",
     "presented.retry": "Reintentar",
     "presented.hostError": "No se pudo leer la información del escritorio del Host",

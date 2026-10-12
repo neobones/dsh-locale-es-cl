@@ -15,7 +15,7 @@
     "effort.providerDefault": "Predeterminado",
     "status.loading": "Actualizando la lista de modelos…",
     "error.action": "Falló la operación con el modelo: {message}",
-    "error.sessionInUse": "Esta sesión ya está en uso, posiblemente por otra instancia de DSH en ejecución (como dsh web o la aplicación de escritorio). Cierra las demás instancias de DSH en ejecución e inténtalo de nuevo.",
+    "error.sessionInUse": "Esta sesión ya está en uso, posiblemente por otra instancia de DSH en ejecución (como dsh web o la aplicación de escritorio). Cierra las demás instancias de DSH en ejecución e intenta de nuevo.",
     "action.reload": "Recargar",
     "warning.groupLoad": "No se pudo cargar {name}: {message}",
     "search.placeholder": "Buscar modelos…",

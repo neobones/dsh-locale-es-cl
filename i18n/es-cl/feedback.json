@@ -7,7 +7,7 @@
     "dialog.title": "Enviar comentarios",
     "dialog.categories": "Categoría de los comentarios",
     "dialog.detail": "Detalles de los comentarios",
-    "dialog.hint": "Añade detalles para ayudarnos a mejorar. El envío incluirá el registro de la conversación actual.",
+    "dialog.hint": "agrega detalles para ayudarnos a mejorar. El envío incluirá el registro de la conversación actual.",
     "category.task-result": "Resultado de la tarea",
     "category.instruction-following": "Comprensión y seguimiento de instrucciones",
     "category.product-interaction": "Funciones del producto e interacción",
