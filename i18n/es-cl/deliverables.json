@@ -5,7 +5,7 @@
     "presented.directoryError": "No se pudo abrir la carpeta contenedora. Intenta de nuevo.",
     "presented.directoryOpening": "Abriendo la carpeta contenedora…",
     "presented.directoryOpened": "Apertura de la carpeta contenedora solicitada",
-    "presented.revealed": "Visualización en el explorador de archivos solicitada",
+    "presented.revealed": "Visualización solicitada en el explorador de archivos",
     "presented.revealing": "Mostrando en el explorador de archivos…",
     "presented.unavailable": "Este Host no tiene un escritorio disponible para abrir archivos o carpetas en aplicaciones externas. Los archivos aún se pueden previsualizar en la barra lateral.",
     "presented.retry": "Reintentar",

@@ -24,7 +24,7 @@
     "reset-saved": "Atajos predeterminados restaurados",
     "close-confirmation": "Cerrar confirmación",
     "reset-failed": "No se pudieron restaurar los valores predeterminados. Los atajos no han cambiado. Intenta de nuevo.",
-    "review": "He revisado la configuración más reciente",
+    "review": "Revisé la configuración más reciente",
     "stale": "La configuración de atajos o los comandos disponibles han cambiado. Revisa las asignaciones más recientes antes de guardar.",
     "write-failed": "No se pudo guardar. Se conservan los atajos anteriores y el borrador actual. Intenta de nuevo.",
     "not-ready": "Los atajos aún no están listos. Intenta de nuevo.",

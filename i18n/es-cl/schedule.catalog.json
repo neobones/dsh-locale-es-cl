@@ -14,7 +14,7 @@
     "list.nextRun": "Próxima ejecución",
     "frequency.once": "Una vez",
     "frequency.every": "Cada {value} {unit}",
-    "time.locale": "en",
+    "time.locale": "es-CL",
     "time.utcPrefix": "UTC",
     "frequency.daily": "Diariamente a las {time} ({timeZone})",
     "frequency.dailyLocal": "Diariamente a las {time}",

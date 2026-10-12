@@ -56,7 +56,7 @@
     "delivery.label": "Registro de entrega guardado",
     "frequency.once": "Una vez",
     "frequency.every": "Cada {value} {unit}",
-    "time.locale": "en",
+    "time.locale": "es-CL",
     "time.utcPrefix": "UTC",
     "frequency.daily": "Cada día a las {time} ({timeZone})",
     "frequency.dailyLocal": "Cada día a las {time}",
