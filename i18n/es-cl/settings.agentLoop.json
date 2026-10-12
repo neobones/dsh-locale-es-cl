@@ -1,10 +1,10 @@
 {
   "settings.agentLoop": {
     "title": "Bucle del agente",
-    "description": "Controla cómo el agente distribuye las llamadas a herramientas.",
-    "maxParallel": "Llamadas a herramientas en paralelo",
+    "description": "Controla cómo el agente distribuye los tool calls.",
+    "maxParallel": "Tool calls en paralelo",
     "maxParallelHint": "Límite superior de llamadas seguras en paralelo que se ejecutan a la vez dentro de un mismo paso.",
-    "overridden": "Anulado",
+    "overridden": "Sobrescrito",
     "reset": "Restablecer los valores predeterminados",
     "readOnly": "Esta implementación almacena los ajustes en modo de solo lectura.",
     "unavailable": "Este plugin no está cargado, por lo que no se puede configurar ahora mismo.",

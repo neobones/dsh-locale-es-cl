@@ -8,7 +8,7 @@
     "zoomValue": "{percent}%",
     "title": "Imagen",
     "preview": "Vista previa de la imagen: {name}",
-    "loading": "Representando el documento...",
+    "loading": "Procesando el documento...",
     "failed": "No se pudo mostrar esta imagen.",
     "unsupported": "La vista previa de la imagen requiere el contenido completo del archivo."
   }
