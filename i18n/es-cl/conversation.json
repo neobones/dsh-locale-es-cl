@@ -124,7 +124,7 @@
     "detail.schedule.deleted": "Eliminado",
     "detail.schedule.count": "{count} recordatorios",
     "detail.schedule.daily": "Todos los días a las {time} ({zone})",
-    "detail.schedule.weekly": "Semanalmente los {days} a las {time} ({zone})",
+    "detail.schedule.weekly": "Todas las semanas los {days} a las {time} ({zone})",
     "detail.schedule.cron": "Cron {expression} ({zone})",
     "detail.weekday.1": "lun",
     "detail.weekday.2": "mar",

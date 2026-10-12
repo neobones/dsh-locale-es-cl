@@ -24,14 +24,13 @@ Pack de idioma **español de Chile (es-CL)** para la interfaz de **DeepSeek Harn
 | Licencia | MIT (ver [LICENSE](LICENSE) y [NOTICE.md](NOTICE.md)) |
 | Núcleo de DSH probado | app de escritorio con `app.asar` de 121 MB, 70 plugins de UI |
 
-Estas comprobaciones se pueden repetir en cualquier momento y, salvo la última, no necesitan la
-aplicación:
+Estas comprobaciones se pueden repetir en cualquier momento y no necesitan la aplicación:
 
 ```powershell
 node tools/build-locale-pack.cjs i18n/catalog.json i18n/es-cl . --check    # cobertura y marcadores
 node tools/audit-es.cjs i18n/catalog.json i18n/es-cl                       # claves ausentes y repetidas
 node tools/apply-terminology.cjs i18n/terminology.json i18n/es-cl --check  # términos y fraseología prohibidas
-node tools/check-coherence.cjs i18n/es-cl                                  # un término, una sola traducción
+node tools/check-coherence.cjs i18n/es-cl                                  # concordancia junto a los términos en inglés
 node tools/check-portable.cjs i18n                                         # ni rutas ni secretos locales
 node tools/verify-pack.cjs lib/client.js                                   # ejecuta el bundle como lo hace DSH
 ```
@@ -174,7 +173,7 @@ dsh-locale-es-cl/
 │   ├── show-ns.cjs              imprime los diccionarios ingleses de los namespaces indicados
 │   ├── apply-terminology.cjs    aplica (o comprueba con --check) la tabla de terminología
 │   ├── delta-report.cjs         compara con la referencia y emite la hoja de revisión
-│   ├── check-coherence.cjs      informa de cómo se tradujo cada término, para detectar dobles formas
+│   ├── check-coherence.cjs      concordancia de artículo y género junto a los términos en inglés
 │   ├── build-locale-pack.cjs    emite lib/ y cordis.patch.yml, e informa de la cobertura
 │   ├── audit-es.cjs             busca claves ausentes, ficheros mal alineados y repetidas
 │   ├── check-portable.cjs       evita publicar rutas de la máquina que extrajo el catálogo
@@ -217,7 +216,7 @@ node tools/build-locale-pack.cjs i18n/catalog.json i18n/es-cl . --check # lista 
 # 3. Volver a pasar las puertas de estilo y reconstruir el bundle
 node tools/apply-terminology.cjs i18n/terminology.json i18n/es-cl --check
 node tools/apply-terminology.cjs i18n/terminology.json i18n/es-cl        # aplica lo que quede pendiente
-node tools/check-coherence.cjs i18n/es-cl                               # un término, una sola traducción
+node tools/check-coherence.cjs i18n/es-cl                                # concordancia junto a los términos en inglés
 node tools/build-locale-pack.cjs i18n/catalog.json i18n/es-cl .          # regenera lib/ y cordis.patch.yml
 node tools/verify-pack.cjs lib/client.js
 

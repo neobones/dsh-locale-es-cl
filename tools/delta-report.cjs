@@ -166,7 +166,11 @@ if (csvPath) {
   const csv = (s) => '"' + String(s).replace(/\r?\n/g, '\\n').replace(/"/g, '""') + '"';
   const lines = ['namespace,clave,ingles,es_referencia,es_cl'];
   for (const row of changed) lines.push([row.ns, row.key, row.en, row.ref, row.es].map(csv).join(','));
-  fs.writeFileSync(csvPath, lines.join('\n') + '\n');
+  // BOM UTF-8 al principio: Excel para Windows abre un CSV sin BOM como ANSI
+  // (Windows-1252) por defecto y destroza las tildes y la enie del fichero que
+  // muestrea un revisor hispanohablante. El BOM no cambia los datos: cualquier
+  // lector RFC 4180 lo trata como marca de firma, no como contenido.
+  fs.writeFileSync(csvPath, '\uFEFF' + lines.join('\n') + '\n');
   console.log('hoja csv: ' + csvPath);
 }
 function esc(text) { return String(text).replace(/\|/g, '\\|').replace(/\n/g, ' '); }

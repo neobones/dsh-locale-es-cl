@@ -23,10 +23,16 @@ parche al corregir traducciones.
 - **Ocho lotes editoriales** por namespace reescriben la interfaz a español de Chile: 284 de
   las 2.603 cadenas (10,9 %) difieren ya de la referencia castellana, y los quince términos que
   la política mantiene en inglés siguen ahí en todo el pack (`protegidos: 0`).
-- **Cierre de coherencia entre lotes** (`tools/check-coherence.cjs`): una sola forma por
-  término y por concepto — unidades de tiempo con espacio, `log de sesión`, «Restablecer al
-  valor predeterminado», «los tool calls», «Procesando el documento…», «Intenta de nuevo»,
-  «falla» con su artículo correcto, «Cada día»/«Cada semana» y el participio «agregada»—.
+- **Cierre de coherencia entre lotes**: la revisión de que un mismo término tuviera una sola forma
+  fue una **pasada manual** sobre los once puntos que quedaron abiertos entre lotes; el script
+  `tools/check-coherence.cjs` solo informa de la concordancia de artículo y género junto a los
+  términos que se dejan en inglés (no decide si un término se tradujo de dos maneras). Esa pasada
+  manual unificó, entre otros: las unidades de tiempo con espacio de los namespaces `workspace` y
+  `reference` (`{n} min`, `{n} h`, `{n} d`; los formatos compactos de `job`, `chat.duration` y
+  `subagent.duration` se dejan como están), `log de sesión`, «Restablecer al valor
+  predeterminado», «los tool calls», «Procesando el documento…», «Intenta de nuevo»,
+  «falla» con su artículo correcto, «Cada día»/«Cada semana», «Todas las semanas» y el participio
+  «agregada».
 - `locale/es.json` y el nuevo `locale/es-CL.json` llevan los metadatos de la tarjeta en
   español de Chile; `locale/en.json` los lleva en inglés.
 - Los comandos de la documentación, la integración continua y las plantillas de incidencias
