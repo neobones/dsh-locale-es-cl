@@ -973,7 +973,7 @@ git commit -m "docs(es-CL): hoja de revision del delta, README y bitacora del pa
 - Consumes: todo lo anterior.
 - Produces: pack instalado y verificado en la GUI; perfil `desktop` con la dependencia y el bundle declarados.
 
-- [ ] **Step 1: Las seis puertas, en orden**
+- [ ] **Step 1: Las seis puertas, en orden, y cierre de la política de términos en inglés**
 
 ```powershell
 node tools/build-locale-pack.cjs i18n/catalog.json i18n/es-cl . --check
@@ -983,6 +983,23 @@ node tools/check-plugin-meta.cjs .
 node tools/verify-pack.cjs lib/client.js
 node tools/delta-report.cjs i18n/catalog.json i18n/reference/es.json i18n/es-cl
 ```
+
+Con todos los namespaces ya adaptados, convertir la lista «se quedan en inglés» en una puerta permanente: añadir a `i18n/terminology.json` las traducciones prohibidas de esos términos, en su array `banned` (la comprobación de prohibidos no es tautológica para entradas que no son reglas de sustitución):
+
+```json
+"banned": [
+  "inténtalo", "compruébalo", "comprueba", "comprobar", "comprobación",
+  "introduce", "introducir", "ordenador", "ficheros", "pulsar", "ratón",
+  "móvil", "reajustar", "vosotros", "vuestro", "coger", "vale",
+  "llamada a herramienta", "llamadas a herramienta", "diferencias de código"
+]
+```
+
+```powershell
+node tools/apply-terminology.cjs i18n/terminology.json i18n/es-cl --check
+```
+
+Esperado: `prohibidos restantes : 0` y `RESULTADO: OK`. Si aparece alguno, el namespace citado aún traduce un término que debe quedar en inglés: corregirlo antes de seguir (la re-revisión de la Task 4 dejó localizados los que quedaban: `chat.json:29,99,140,141`, `cordis.json:4`, `permission.access.json:15,17`, `question.json:25`, `settings.agentLoop.json:4,5`, `settings.agentPreset.json:11,14,18`, `settings.json:31`, `trajectory.json:93,98,123,124,143,144,155,167,177`).
 
 Esperado: la 1 termina `RESULTADO: OK`; la 2 no informa de claves ausentes ni repetidas; la 3 no encuentra rutas locales ni secretos; la 4 no encuentra problemas de metadatos; la 5 carga el bundle y expone idioma y diccionarios; la 6 informa `faltan: 0` y `marcadores rotos: 0`.
 
