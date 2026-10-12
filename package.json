@@ -31,10 +31,6 @@
   },
   "license": "MIT",
   "author": "Adaptación al español de Chile (ver NOTICE.md)",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Oskarosan/dsh-locale-es.git"
-  },
   "keywords": [
     "deepseek-harness",
     "dsh",

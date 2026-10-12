@@ -177,14 +177,20 @@ const pkg = {
 /*
  * El package.json del paquete es a la vez contrato con el cargador y ficha
  * publica del proyecto. Los campos estructurales los fija SIEMPRE este
- * generador; el resto (licencia, repositorio, autor, palabras clave, scripts,
- * icono) se conserva del fichero que ya exista, para que reconstruir no borre
- * la ficha del repositorio.
+ * generador; el resto (licencia, autor, palabras clave, scripts, icono) se
+ * conserva del fichero que ya exista, para que reconstruir no borre la ficha
+ * del repositorio.
+ *
+ * `repository`, `homepage` y `bugs` NO se conservan: este fork no tiene remoto
+ * publico ni tracker propio, y apuntarlos al repositorio del que deriva
+ * desviaria las reclamaciones a un tercero. La procedencia se documenta en
+ * NOTICE.md, no en la ficha del paquete. Si alguna vez se publica, anadirlos
+ * aqui a mano y volver a incluirlos en esta lista.
  */
 const ESTRUCTURALES = new Set(['name', 'type', 'main', 'exports', 'files', 'dsh']);
 const CONSERVABLES = [
   'version', 'private', 'description', 'license', 'author', 'contributors',
-  'repository', 'homepage', 'bugs', 'keywords', 'engines', 'scripts',
+  'keywords', 'engines', 'scripts',
   'publishConfig', 'dependencies', 'devDependencies', 'icon', 'peerDependencies',
 ];
 const pkgPath = path.join(outDir, 'package.json');

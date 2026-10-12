@@ -1,6 +1,10 @@
 /**
- * Informa de como se ha traducido cada termino de la lista en todo el pack, para
- * detectar un mismo termino ingles escrito de dos formas distintas.
+ * Lista, para cada termino de la lista que debe quedarse en ingles, como se ha
+ * escrito en el pack: junto a cada aparicion muestra el articulo o la marca de
+ * genero que la precede, para revisar la concordancia.
+ *
+ * No detecta por si solo un mismo termino ingles escrito de dos formas
+ * distintas; solo presenta los contextos para que la revision los lea.
  *
  * Uso: node check-coherence.cjs <dir de diccionarios>
  */
@@ -29,5 +33,5 @@ for (const file of fs.readdirSync(dir).filter((f) => f.endsWith('.json')).sort()
 
 for (const [term, words] of found) {
   const list = [...words.entries()].sort((a, b) => b[1] - a[1]).map(([w, n]) => w + '(' + n + ')');
-  console.log(term.padEnd(12) + (list.length ? list.join(' ') : '(sin traduccion adyacente)'));
+  console.log(term.padEnd(12) + (list.length ? list.join(' ') : '(sin palabra adyacente)'));
 }

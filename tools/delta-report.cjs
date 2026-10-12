@@ -161,8 +161,10 @@ if (csvPath) {
   // Los valores multilinea (los textos de guia de `settings.agentPreset`) se
   // aplanan a la secuencia visible `\n`: una cadena cambiada, una fila fisica.
   // Sin esto el CSV seguia siendo valido (un salto dentro de comillas lo es),
-  // pero una lectura por lineas contaba 452 filas donde hay 254 registros y la
-  // revision por muestreo se volvia enganosa.
+  // pero una lectura por lineas contaba filas de mas y la revision por muestreo
+  // se volvia enganosa. (Cuando se escribio esta nota el delta tenia 254
+  // registros; hoy son 285. La cifra no importa: lo que rompe es el desfase
+  // entre filas fisicas y registros, no su tamano.)
   const csv = (s) => '"' + String(s).replace(/\r?\n/g, '\\n').replace(/"/g, '""') + '"';
   const lines = ['namespace,clave,ingles,es_referencia,es_cl'];
   for (const row of changed) lines.push([row.ns, row.key, row.en, row.ref, row.es].map(csv).join(','));

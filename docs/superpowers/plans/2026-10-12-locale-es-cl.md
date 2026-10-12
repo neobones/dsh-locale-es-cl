@@ -172,7 +172,7 @@ En `package.json` (los campos conservables sobreviven al build, pero deben queda
 - `"name": "dsh-locale-es-cl"` (ya lo fija el generador)
 - `"description": "Pack de idioma español de Chile (es-CL) para la interfaz web de DeepSeek Harness"`
 - `"keywords"`: `deepseek-harness`, `dsh`, `dsh-plugin`, `deepseek`, `locale`, `language-pack`, `i18n`, `spanish`, `espanol`, `es-CL`, `chile`
-- `"repository"`, `"homepage"`, `"bugs"`: dejar el repositorio **local** (`"type": "git"` con la URL de `upstream` solo como remoto de sincronización) — sin URLs de publicación inventadas; `author` pasa a reflejar la adaptación.
+- `"repository"`, `"homepage"`, `"bugs"`: **eliminados** (Task 13). El plan preveía dejarlos apuntando al remoto de sincronización, pero este fork no tiene remoto público ni tracker propio (README y NOTICE ya lo dicen), y publicar en la ficha del paquete la URL del repositorio del que deriva desviaría las reclamaciones a un tercero. La procedencia queda en `NOTICE.md`. `author` sigue reflejando la adaptación; el generador ya no conserva estos tres campos (ver `CONSERVABLES` en `tools/build-locale-pack.cjs`).
 - `"scripts"`: `build` → `node tools/build-locale-pack.cjs i18n/catalog.json i18n/es-cl .`; `check` → el mismo con `--check`; `audit` → `node tools/audit-es.cjs i18n/catalog.json i18n/es-cl`; añadir `"terms": "node tools/apply-terminology.cjs i18n/terminology.json i18n/es-cl --check"` y `"delta": "node tools/delta-report.cjs i18n/catalog.json i18n/reference/es.json i18n/es-cl"`.
 
 **Importante:** `package.json` lo reescribe el generador en cada build conservando estos campos; los estructurales (`name`, `type`, `main`, `exports`, `files`, `dsh`) siempre los fija el generador.
