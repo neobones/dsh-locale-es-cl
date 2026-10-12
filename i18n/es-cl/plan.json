@@ -14,7 +14,7 @@
     "preview.notFound": "No se encontró este plan",
     "preview.unavailable": "La vista previa del plan no está disponible",
     "preview.expired": "Esta vista previa temporal del plan ha caducado. Vuelve a abrirla desde la tarjeta de revisión pendiente.",
-    "chip.on.aria": "Modo plan activado, pulsa para desactivarlo",
+    "chip.on.aria": "Modo plan activado, presiona para desactivarlo",
     "chip.on.title": "Modo plan activado — haz clic para desactivarlo (/plan off)",
     "chip.exitFailed": "No se pudo salir del modo plan"
   }

@@ -12,7 +12,7 @@
     "rendering": "Representando la página…",
     "failed": "No se puede mostrar el PDF: {message}",
     "password": "Este PDF requiere una contraseña; las vistas previas protegidas con contraseña no son compatibles.",
-    "workerFailed": "El proceso de representación del PDF no pudo continuar. Vuelve a intentarlo.",
+    "workerFailed": "El proceso de representación del PDF no pudo continuar. Intenta de nuevo.",
     "unsupported": "La vista previa del PDF requiere el contenido completo del archivo.",
     "retry": "Reintentar"
   }

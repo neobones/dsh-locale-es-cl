@@ -6,7 +6,7 @@
     "timeoutMsHint": "Cuánto tiempo puede ejecutarse un comando antes de que se termine.",
     "maxOutputBytes": "Límite de salida por flujo (bytes)",
     "maxOutputBytesHint": "La salida que supere este límite se vuelca a un archivo temporal en lugar de perderse.",
-    "overridden": "Anulado",
+    "overridden": "Sobrescrito",
     "reset": "Restablecer los valores predeterminados",
     "readOnly": "Esta implementación almacena los ajustes en modo de solo lectura.",
     "unavailable": "Este plugin no está cargado, por lo que no se puede configurar ahora mismo.",
