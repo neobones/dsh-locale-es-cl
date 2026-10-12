@@ -12,6 +12,8 @@
  * de salida a proposito: en los lotes intermedios los namespaces aun no adaptados
  * lo mantienen por encima de cero. Cada lote exige cero en sus propios namespaces
  * y la Task 13 exige cero en el total.
+ * Los tokens que contienen `/` o `\` se descartan en ambos lados antes de decidir
+ * si el termino esta presente (ver `sinRutas` mas abajo).
  */
 'use strict';
 const fs = require('fs');
@@ -58,9 +60,18 @@ const TERM_RE = new Map(TERMINOS_PROTEGIDOS.map((term) => [
 // `log` cuenta como sustantivo. El verbo «log in/out» (settings.account.json:4)
 // se excluye de la comprobacion de `log`; los compuestos («session log») no.
 const LOG_VERBO = /\blog(ged|ging|s)?\s+(in|out)\b/;
+// Endurecimiento del matcher: la comprobacion es por valor completo, asi que un
+// token que solo conserva el termino de rebote —una ruta (`logs/`), una URL, un
+// identificador— satisfacia la comprobacion y enmascaraba una traduccion que en
+// el resto del valor si habia perdido el termino. Se descartan los tokens que
+// contienen `/` o `\` EN AMBOS LADOS antes de decidir: una ruta ni satisface la
+// comprobacion ni la dispara. Los tokens se reunen con un espacio, de modo que
+// los limites de palabra se conservan (no se concatenan vecinos).
+const SIN_RUTA = /[/\\]/;
+const sinRutas = (text) => String(text).split(/\s+/).filter((t) => t !== '' && !SIN_RUTA.test(t)).join(' ');
 function terminosPerdidos(source, mine) {
-  const en = String(source).toLowerCase();
-  const cl = String(mine).toLowerCase();
+  const en = sinRutas(String(source).toLowerCase());
+  const cl = sinRutas(String(mine).toLowerCase());
   const lost = [];
   for (const term of TERMINOS_PROTEGIDOS) {
     if (term === 'log' && LOG_VERBO.test(en)) continue;

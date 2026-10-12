@@ -1,6 +1,6 @@
 {
   "settings.subagent": {
-    "overridden": "Modificado",
+    "overridden": "Sobrescrito",
     "reset": "Restablecer al valor predeterminado",
     "readOnly": "Esta implementación almacena los ajustes en solo lectura.",
     "unavailable": "Este plugin no está cargado, por lo que no se puede configurar ahora mismo.",
