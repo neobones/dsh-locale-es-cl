@@ -1,6 +1,6 @@
-# dsh-locale-es
+# dsh-locale-es-cl
 
-Pack de idioma **castellano (es)** para la interfaz de **DeepSeek Harness** (DSH).
+Pack de idioma **español de Chile (es-CL)** para la interfaz de **DeepSeek Harness** (DSH).
 
 - **2.603 de 2.603 claves traducidas (100 %)**, repartidas en **57 namespaces**.
 - Entra como **plugin de cliente** del Loader de DSH: **no parchea `app.asar`** ni ningún
@@ -13,18 +13,18 @@ Pack de idioma **castellano (es)** para la interfaz de **DeepSeek Harness** (DSH
 | | |
 |---|---|
 | Cobertura | 2.603/2.603 claves (100 %), 57/57 namespaces |
-| Idioma | `es` — etiqueta «Español», respaldo `en` |
-| Paquete | `dsh-locale-es` 1.0.0 |
+| Idioma | `es-CL` — etiqueta «Español (Chile)», respaldo `en` |
+| Paquete | `dsh-locale-es-cl` 1.0.1 |
 | Licencia | MIT (ver [LICENSE](LICENSE) y [NOTICE.md](NOTICE.md)) |
 | Núcleo de DSH probado | app de escritorio con `app.asar` de 121 MB, 70 plugins de UI |
 
-Las tres comprobaciones se pueden repetir en cualquier momento y no necesitan la aplicación:
+Las cuatro comprobaciones se pueden repetir en cualquier momento y no necesitan la aplicación:
 
 ```powershell
-node tools/build-locale-pack.cjs i18n/catalog.json i18n/es . --check   # cobertura y marcadores
-node tools/audit-es.cjs i18n/catalog.json i18n/es                      # claves ausentes y repetidas
-node tools/check-portable.cjs i18n                                     # ni rutas ni secretos locales
-node tools/verify-pack.cjs lib/client.js                               # ejecuta el bundle como lo hace DSH
+node tools/build-locale-pack.cjs i18n/catalog.json i18n/es-cl . --check   # cobertura y marcadores
+node tools/audit-es.cjs i18n/catalog.json i18n/es-cl                      # claves ausentes y repetidas
+node tools/check-portable.cjs i18n                                        # ni rutas ni secretos locales
+node tools/verify-pack.cjs lib/client.js                                  # ejecuta el bundle como lo hace DSH
 ```
 
 ## Instalación
@@ -37,20 +37,17 @@ En la interfaz: barra lateral → **Plugins** → **Add plugin**, y pega la espe
 la terminal, con el mismo resultado:
 
 ```powershell
-# por nombre, si el paquete está publicado en npm
-dsh plugin --profile desktop add dsh-locale-es
+# desde una copia local (este fork no tiene remoto público propio)
+dsh plugin --profile desktop add C:\ruta\a\dsh-locale-es-cl
 
-# directamente desde GitHub, sin publicar nada
-dsh plugin --profile desktop add github:Oskarosan/dsh-locale-es
-
-# o desde una copia local
-dsh plugin --profile desktop add C:\ruta\a\dsh-locale-es
+# si algún día se publica en npm
+dsh plugin --profile desktop add dsh-locale-es-cl
 ```
 
 El gestor acepta nombre de paquete npm (con versión opcional), `github:autor/repo` o una URL de
 repositorio git, un `.tgz` y una ruta local. Antes de instalar comprueba que el paquete declare
 `dsh.bundle`; al terminar lo añade a `dsh.profile.bundles` del perfil. Después, recarga la
-interfaz y elige el idioma en **Ajustes → General → Idioma → Español**.
+interfaz y elige el idioma en **Ajustes → General → Idioma → Español (Chile)**.
 
 ### Vía manual: editar el perfil
 
@@ -60,14 +57,14 @@ como dependencia **y** como bundle:
 ```json
 {
   "dependencies": {
-    "dsh-locale-es": "link:C:/ruta/a/dsh-locale-es"
+    "dsh-locale-es-cl": "link:C:/ruta/a/dsh-locale-es-cl"
   },
   "dsh": {
     "profile": {
       "bundles": [
         "@deepseek-ai/dsh-base",
         "@deepseek-ai/dsh-web-app",
-        "dsh-locale-es"
+        "dsh-locale-es-cl"
       ]
     }
   }
@@ -99,10 +96,11 @@ que no aparece:
 
 - La ruta `link:` y `github:` están soportadas por pnpm; la primera es la que está probada aquí.
 - El fichero [cordis.patch.yml](cordis.patch.yml) del paquete es lo que inserta la fila
-  `locale-es` en el árbol de plugins; lo aplica DSH al cargar el bundle, no hay que copiarlo
+  `locale-es-cl` en el árbol de plugins; lo aplica DSH al cargar el bundle, no hay que copiarlo
   a mano.
-- Si tras instalar el pack no ves «Español» en Ajustes, desactiva y vuelve a activar la fila
-  `locale-es` en el gestor de plugins para forzar una revisión nueva del bundle de cliente.
+- Si tras instalar el pack no ves «Español (Chile)» en Ajustes, desactiva y vuelve a activar la
+  fila `locale-es-cl` en el gestor de plugins para forzar una revisión nueva del bundle de
+  cliente.
 - **Aviso comprobado:** si modificas el perfil **desde dentro de una sesión de DSH**, la
   recarga en caliente dispone esa sesión y la aplicación abre una conversación nueva. Hazlo
   desde fuera o asume que esa conversación se corta (el historial no se pierde).
@@ -123,12 +121,12 @@ disponible, registra el idioma y un diccionario por namespace declarando cada re
 efecto propio del plugin, de modo que se retira limpiamente al descargarlo:
 
 ```js
-const LANGUAGE = { id: 'es', label: 'Español', fallback: 'en' };
+const LANGUAGE = { id: 'es-CL', label: 'Español (Chile)', fallback: 'en' };
 
 function apply(ctx) {
-  ctx.effect(() => ctx.locale.addLanguage(LANGUAGE), 'locale-es: idioma');
+  ctx.effect(() => ctx.locale.addLanguage(LANGUAGE), 'locale-es-cl: idioma');
   for (const [ns, dict] of Object.entries(DICTIONARIES)) {
-    ctx.effect(() => ctx.locale.register(ns, 'es', dict), 'locale-es: ' + ns);
+    ctx.effect(() => ctx.locale.register(ns, 'es-CL', dict), 'locale-es-cl: ' + ns);
   }
 }
 ```
@@ -140,7 +138,7 @@ y para que el escaneo de plugins de cliente encuentre su declaración `dsh.clien
 ## Estructura del repositorio
 
 ```
-dsh-locale-es/
+dsh-locale-es-cl/
 ├── package.json            ficha del paquete y contrato con el Loader (dsh.bundle / dsh.client)
 ├── cordis.patch.yml        fila que inserta el plugin en el árbol (generado)
 ├── lib/
@@ -148,10 +146,12 @@ dsh-locale-es/
 │   └── index.js            mitad host (generado)
 ├── i18n/
 │   ├── catalog.json        catálogo inglés extraído de la app (claves + textos de origen)
-│   └── es/<namespace>.json un fichero por namespace con la traducción castellana
+│   ├── reference/es.json   traducción castellana de referencia, de solo lectura (obra derivada)
+│   └── es-cl/<namespace>.json  un fichero por namespace con la traducción chilena
 ├── locale/
 │   ├── en.json             metadatos de la tarjeta del plugin (meta.title / meta.description)
-│   └── es.json             los mismos metadatos en castellano
+│   ├── es-CL.json          los mismos metadatos en español de Chile
+│   └── es.json             copia de es-CL.json, por si el resolutor indexa por subetiqueta
 ├── icon.svg                icono de la tarjeta (relativo, ≤256 KiB, SVG/PNG/JPEG/WebP)
 ├── tools/                  cadena de herramientas, sin dependencias externas
 │   ├── extract-app.cjs          extrae el código de app.asar verificando SHA-256
@@ -171,16 +171,16 @@ dsh-locale-es/
 
 ### Traducir o corregir
 
-1. Edita `i18n/es/<namespace>.json` (un namespace por fichero).
+1. Edita `i18n/es-cl/<namespace>.json` (un namespace por fichero).
 2. **Conserva los marcadores** `{count}`, `{label}`, `{toolName}`… exactamente como están en
    `i18n/catalog.json`: el compilador rechaza cualquier traducción que pierda o invente uno.
 3. Reconstruye y comprueba:
 
 ```powershell
-node tools/build-locale-pack.cjs i18n/catalog.json i18n/es . --check   # cobertura y marcadores
-node tools/audit-es.cjs i18n/catalog.json i18n/es                      # claves ausentes y repetidas
-node tools/build-locale-pack.cjs i18n/catalog.json i18n/es .           # regenera lib/
-node tools/verify-pack.cjs lib/client.js                               # el bundle carga como en DSH
+node tools/build-locale-pack.cjs i18n/catalog.json i18n/es-cl . --check   # cobertura y marcadores
+node tools/audit-es.cjs i18n/catalog.json i18n/es-cl                      # claves ausentes y repetidas
+node tools/build-locale-pack.cjs i18n/catalog.json i18n/es-cl .           # regenera lib/
+node tools/verify-pack.cjs lib/client.js                                  # el bundle carga como en DSH
 ```
 
 `--check` sale con código 1 si falta alguna clave o hay marcadores mal, así que sirve como
@@ -192,7 +192,7 @@ puerta en integración continua, igual que `audit-es.cjs`.
 node tools/extract-app.cjs "C:\ruta\a\resources\app.asar" _referencia-dsh
 node tools/extract-locale.cjs _referencia-dsh/dsh/node_modules/@deepseek-ai i18n/catalog.json
 node tools/check-portable.cjs i18n                                     # el catálogo no lleva rutas locales
-node tools/build-locale-pack.cjs i18n/catalog.json i18n/es . --check   # lista lo nuevo por traducir
+node tools/build-locale-pack.cjs i18n/catalog.json i18n/es-cl . --check # lista lo nuevo por traducir
 ```
 
 Las claves nuevas aparecen como «sin traducir» y en la interfaz se ven en inglés hasta que
@@ -202,15 +202,15 @@ alguien las traduzca.
 
 Haz un *fork* y cambia tres constantes en `tools/build-locale-pack.cjs`
 (`PKG_NAME`, `LANG_ID`, `LANG_LABEL`), el identificador de la fila en el generador de
-`cordis.patch.yml` (`- id: locale-es`) y los campos `name` del `package.json`. El catálogo
+`cordis.patch.yml` (`- id: locale-es-cl`) y los campos `name` del `package.json`. El catálogo
 inglés y toda la cadena de herramientas se reutilizan tal cual.
 
 ### Traducir en paralelo con agentes o por lotes
 
 ```powershell
 node tools/split-batches.cjs i18n/catalog.json _i18n/batches     # lotes equilibrados
-# … cada lote se traduce a _i18n/es/batch-NN.json …
-node tools/split-by-namespace.cjs _i18n/es i18n/es               # vuelve al formato del repositorio
+# … cada lote se traduce a _i18n/es-cl/batch-NN.json …
+node tools/split-by-namespace.cjs _i18n/es-cl i18n/es-cl         # vuelve al formato del repositorio
 ```
 
 ## Contribuir
@@ -223,7 +223,9 @@ poder fusionar por un marcador perdido.
 
 DeepSeek Harness es una aplicación de DeepSeek; este repositorio **no contiene código de la
 aplicación**. El catálogo inglés (`i18n/catalog.json`) se extrae de una instalación local
-únicamente para poder verificar la cobertura, la paridad de claves y los marcadores. Los
+únicamente para poder verificar la cobertura, la paridad de claves y los marcadores. La
+traducción chilena es obra original de este repositorio; `i18n/reference/es.json` es una obra
+derivada de [Oskarosan/dsh-locale-es](https://github.com/Oskarosan/dsh-locale-es). Los
 detalles y las marcas están en [NOTICE.md](NOTICE.md). La licencia MIT cubre el contenido
 original de este repositorio: las traducciones y las herramientas.
 
@@ -231,12 +233,15 @@ original de este repositorio: las traducciones y las herramientas.
 
 ## English
 
-Spanish (`es`) language pack for the **DeepSeek Harness** (DSH) web interface: **2,603 of
-2,603 keys (100 %) across 57 namespaces**, shipped as a client plugin — the application's
-`app.asar` is never patched, and untranslated keys fall back to English automatically.
+Chilean Spanish (`es-CL`) language pack for the **DeepSeek Harness** (DSH) web interface:
+**2,603 of 2,603 keys (100 %) across 57 namespaces**, shipped as a client plugin — the
+application's `app.asar` is never patched, and untranslated keys fall back to English
+automatically.
 
-Install it by adding `dsh-locale-es` to `dependencies` and to `dsh.profile.bundles` in your
-DSH profile's `package.json`, then run `pnpm install` in the profile folder and pick
-**Español** in *Settings → General → Language*. See [Cómo funciona](#cómo-funciona) for the
-plugin protocol, and [CONTRIBUTING.md](CONTRIBUTING.md) to send translation fixes
-(keep placeholders such as `{count}` intact). Licensed under MIT.
+This fork has no public remote of its own; install it from a local checkout by adding
+`dsh-locale-es-cl` to `dependencies` and to `dsh.profile.bundles` in your DSH profile's
+`package.json`, then run `pnpm install` in the profile folder and pick **Español (Chile)** in
+*Settings → General → Language*. See [Cómo funciona](#cómo-funciona) for the plugin protocol,
+and [CONTRIBUTING.md](CONTRIBUTING.md) to send translation fixes (keep placeholders such as
+`{count}` intact). Licensed under MIT; the derived work is attributed in
+[NOTICE.md](NOTICE.md).

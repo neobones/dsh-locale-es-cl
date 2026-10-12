@@ -1,7 +1,7 @@
 {
-  "name": "dsh-locale-es",
+  "name": "dsh-locale-es-cl",
   "version": "1.0.1",
-  "description": "Pack de idioma castellano (es) para la interfaz de DeepSeek Harness",
+  "description": "Pack de idioma español de Chile (es-CL) para la interfaz web de DeepSeek Harness",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
@@ -30,14 +30,10 @@
     }
   },
   "license": "MIT",
-  "author": "Oskarosan",
+  "author": "Adaptación al español de Chile (ver NOTICE.md)",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Oskarosan/dsh-locale-es.git"
-  },
-  "homepage": "https://github.com/Oskarosan/dsh-locale-es#readme",
-  "bugs": {
-    "url": "https://github.com/Oskarosan/dsh-locale-es/issues"
   },
   "keywords": [
     "deepseek-harness",
@@ -48,16 +44,19 @@
     "language-pack",
     "i18n",
     "spanish",
-    "castellano",
-    "es"
+    "espanol",
+    "es-CL",
+    "chile"
   ],
   "engines": {
     "node": ">=18"
   },
   "scripts": {
-    "build": "node tools/build-locale-pack.cjs i18n/catalog.json i18n/es .",
-    "check": "node tools/build-locale-pack.cjs i18n/catalog.json i18n/es . --check",
-    "audit": "node tools/audit-es.cjs i18n/catalog.json i18n/es",
+    "build": "node tools/build-locale-pack.cjs i18n/catalog.json i18n/es-cl .",
+    "check": "node tools/build-locale-pack.cjs i18n/catalog.json i18n/es-cl . --check",
+    "audit": "node tools/audit-es.cjs i18n/catalog.json i18n/es-cl",
+    "terms": "node tools/apply-terminology.cjs i18n/terminology.json i18n/es-cl --check",
+    "delta": "node tools/delta-report.cjs i18n/catalog.json i18n/reference/es.json i18n/es-cl",
     "verify": "node tools/verify-pack.cjs lib/client.js",
     "test": "npm run check && npm run verify"
   },

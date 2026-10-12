@@ -5,6 +5,33 @@ acoge a [Versionado semántico](https://semver.org/lang/es/): la versión mayor 
 cambia el contrato con el Loader de DSH, la menor al añadir idioma o cobertura, y la de
 parche al corregir traducciones.
 
+## [Sin publicar]
+
+### Cambiado
+
+- **Identidad propia del pack**: pasa de heredar la castellana (`dsh-locale-es`, `es`) a la
+  suya (`dsh-locale-es-cl`, idioma `es-CL`, etiqueta «Español (Chile)», respaldo `en`). El
+  bundle se carga ahora bajo la fila `locale-es-cl` del Loader.
+- Las traducciones se mueven de `i18n/es/` a `i18n/es-cl/` (57 ficheros). El contenido de las
+  cadenas **no cambia en este paso**: la adaptación al español de Chile llega después.
+- `locale/es.json` y el nuevo `locale/es-CL.json` llevan los metadatos de la tarjeta en
+  español de Chile; `locale/en.json` los lleva en inglés.
+- Los comandos de la documentación, la integración continua y las plantillas de incidencias
+  apuntan a `i18n/es-cl`.
+- `tools/verify-pack.cjs` comprueba la identidad nueva (`dsh-locale-es-cl` / `es-CL`) en lugar
+  de la castellana.
+- El título accesible de `icon.svg` (`aria-label` y `<title>`) deja de decir «castellano (es)»
+  y pasa a «Español (Chile) (es-CL)». El dibujo sigue siendo la bandera de España como
+  marcador de posición hasta que se decida la imagen definitiva.
+
+### Añadido
+
+- **Atribución de la obra derivada** en `NOTICE.md`: la adaptación chilena es original de este
+  repositorio y `i18n/reference/es.json` queda acreditado como derivado de
+  [Oskarosan/dsh-locale-es](https://github.com/Oskarosan/dsh-locale-es) (MIT).
+- Scripts `terms` y `delta` en `package.json` (avanzan las herramientas de terminología y de
+  informe de delta, que llegan en una tarea posterior).
+
 ## [1.0.1] — 2026-10-10
 
 ### Añadido

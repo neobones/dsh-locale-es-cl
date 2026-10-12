@@ -1,5 +1,5 @@
 name: Errata de traducción
-description: Un texto en castellano que hay que corregir o mejorar
+description: Un texto en español de Chile que hay que corregir o mejorar
 title: "[errata] "
 body:
   - type: markdown
@@ -7,12 +7,12 @@ body:
       value: |
         Gracias por avisar. Con estos datos se puede localizar la clave en un minuto.
         Si ya sabes cuál es el texto correcto, mejor abre directamente un *pull request*
-        editando el fichero correspondiente de `i18n/es/`.
+        editando el fichero correspondiente de `i18n/es-cl/`.
   - type: input
     id: fichero
     attributes:
       label: Fichero del namespace
-      description: El fichero de `i18n/es/` donde vive el texto.
+      description: El fichero de `i18n/es-cl/` donde vive el texto.
       placeholder: chat.json
     validations:
       required: true

@@ -1,8 +1,18 @@
 # Aviso de origen y marcas
 
+## Obra derivada
+
+- **Adaptación al español de Chile** (`i18n/es-cl/*.json`) y la pasada de terminología
+  (`i18n/terminology.json`): trabajo original de este repositorio, MIT.
+- **Traducción castellana de referencia** (`i18n/reference/es.json`): derivada de
+  [Oskarosan/dsh-locale-es](https://github.com/Oskarosan/dsh-locale-es) (MIT), usada como
+  referencia de partida y conservada para poder auditar el delta.
+- El **catálogo inglés** (`i18n/catalog.json`) sigue siendo de sus autores originales y se
+  incluye solo para verificar cobertura, paridad y marcadores.
+
 ## Qué contiene este repositorio
 
-- **Traducciones al castellano** (`i18n/es/*.json`): trabajo original, bajo licencia MIT.
+- **Traducciones al español de Chile** (`i18n/es-cl/*.json`): trabajo original, bajo licencia MIT.
 - **Herramientas** (`tools/*.cjs`): código original, sin dependencias externas, bajo licencia
   MIT.
 - **Bundle generado** (`lib/client.js`, `lib/index.js`, `cordis.patch.yml`): salida
@@ -32,7 +42,7 @@ paquete describe únicamente su compatibilidad con esa aplicación.
 
 ## Si eres titular de derechos
 
-Si consideras que algún contenido de este repositorio no debería publicarse, abre una
-incidencia en
-<https://github.com/Oskarosan/dsh-locale-es/issues> y se retirará o sustituirá sin
-demora.
+Este fork no tiene remoto público propio. Mientras siga así, las correcciones, retiradas o
+reclamaciones se atienden a través del repositorio del que deriva esta obra:
+<https://github.com/Oskarosan/dsh-locale-es/issues>. Si más adelante se publica un remoto
+propio, esta sección se actualizará con su URL de incidencias.
