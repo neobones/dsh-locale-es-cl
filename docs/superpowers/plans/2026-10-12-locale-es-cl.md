@@ -613,6 +613,10 @@ git commit -m "feat(es-CL): adaptar trajectory y pluginManager al espanol de Chi
 
 **Precisión del matcher** (para no dar falsos positivos): emparejar con límites de palabra y plural opcional, es decir `(?<![A-Za-z])<término>s?(?![A-Za-z])` sobre el texto en minúsculas. Con eso «Tool calls» cuenta como acierto, y «Subtool calls» (`trajectory.details.subtoolCalls` = «Llamadas a subherramientas») **no** se marca, porque `subtoll` no es `tool call` precedido de límite. No marcar por subcadena simple.
 
+**Ruling sobre `log`:** el término cuenta cuando es el sustantivo. Si el origen inglés empareja `\blog(ged|ging|s)?\s+(in|out)\b` (verbo «log in/out», `settings.account.json:4`), la clave se excluye de la comprobación de `log`. Todo lo demás —incluidos los compuestos «session log» (`command.json:16`, `feedback.json:10`, `session-log-download.json:4`, `settings.sessionLog.json:3`, `workspace.json:51`)— debe conservar `log`, así que su lote lo renderiza como «log de sesión» y no como «registro de sesión».
+
+**Regla 1 al barrer:** el matcher del perfecto compuesto debe cubrir `he|has|ha|hemos|habéis|han|había|habían` + participio, incluidos los irregulares cortos («ha ido mal» → «salió mal», que un matcher de participios regulares no ve).
+
 Añadir a `tools/delta-report.cjs` una **columna por namespace** `protegidos` (cuántas claves de ese namespace perdieron un término protegido) más el total en `=== TOTALES ===`, con muestra acotada, al estilo del contador `minusculas_indebidas` que ya existe. El **código de salida no cambia** (lo siguen decidiendo `faltan` y `marcadores rotos`): un contador global fallaría en los lotes intermedios, porque los namespaces aún no adaptados —`cordis`, `question`, `settings.agentLoop`, `settings.agentPreset`, `settings`, `permission.access`— lo mantendrían por encima de cero. Cada lote exige **cero en sus propios namespaces**, y la Task 13 exige **cero en el total** como puerta final.
 
 Verificarlo en los dos sentidos: no vacuo (los namespaces pendientes que traducen `diff`/`tool call` deben aparecer con `protegidos > 0`) y limpio para los namespaces ya adaptados (`conversation`, `trajectory`, `pluginManager`).
