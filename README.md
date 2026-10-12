@@ -25,7 +25,7 @@ Pack de idioma **español de Chile (es-CL)** para la interfaz de **DeepSeek Harn
 | Adaptación chilena | 285/2.603 cadenas (10,9 %) distintas de la referencia castellana |
 | Términos en inglés | 15 conservados por política, de los que **11 tienen claves que ejercerlos**; el informe de delta cierra con `protegidos 0` |
 | Idioma | `es-CL` — etiqueta «Español (Chile)», respaldo `en` |
-| Paquete | `dsh-locale-es-cl` 1.0.1 |
+| Paquete | `dsh-locale-es-cl` 1.0.0 |
 | Licencia | MIT (ver [LICENSE](LICENSE) y [NOTICE.md](NOTICE.md)) |
 | Núcleo de DSH probado | app de escritorio con `app.asar` de 121 MB, 70 plugins de UI |
 

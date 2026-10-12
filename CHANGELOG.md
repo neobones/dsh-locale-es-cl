@@ -95,6 +95,16 @@ Primera versión pública (GitHub + npm). Verificada contra DeepSeek Harness `0.
 - Scripts `terms` y `delta` en `package.json`, que ejecutan las herramientas de terminología y
   el informe de delta.
 
+---
+
+## Historial heredado
+
+Las entradas que siguen son las del pack del que deriva esta adaptación
+([Oskarosan/dsh-locale-es](https://github.com/Oskarosan/dsh-locale-es)) y se conservan como
+procedencia de la obra derivada. **No son versiones de `dsh-locale-es-cl`**: la primera de este
+paquete es la **1.0.0 del 2026-10-12** de arriba. Un pack de idioma nuevo no continúa la
+numeración del pack del que toma la traducción base.
+
 ## [1.0.1] — 2026-10-10
 
 ### Añadido
