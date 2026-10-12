@@ -6,6 +6,7 @@
     { "from": "comprueba", "to": "revisa" },
     { "from": "comprobar", "to": "revisar" },
     { "from": "comprobación", "to": "revisión" },
+    { "from": "e introduce", "to": "y escribe" },
     { "from": "introduce", "to": "escribe" },
     { "from": "introducir", "to": "escribir" },
     { "from": "ordenador", "to": "computador" },
@@ -22,7 +23,6 @@
     { "from": "se ha creado", "to": "se creó" },
     { "from": "se ha producido", "to": "ocurrió" },
     { "from": "reajustar", "to": "volver a ajustar" },
-    { "from": "fallo", "to": "falla" },
     { "from": "pulsar", "to": "presionar" },
     { "from": "ratón", "to": "mouse" },
     { "from": "móvil", "to": "celular" }

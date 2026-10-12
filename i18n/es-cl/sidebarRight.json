@@ -28,10 +28,10 @@
     "dock.dockFloat": "Devolver a la barra lateral",
     "dock.closeFloat": "Cerrar",
     "dock.drop.center": "Mover aquí",
-    "dock.drop.left": "agregar división a la izquierda",
-    "dock.drop.right": "agregar división a la derecha",
-    "dock.drop.top": "agregar división arriba",
-    "dock.drop.bottom": "agregar división abajo",
+    "dock.drop.left": "Agregar división a la izquierda",
+    "dock.drop.right": "Agregar división a la derecha",
+    "dock.drop.top": "Agregar división arriba",
+    "dock.drop.bottom": "Agregar división abajo",
     "tab.guide.title": "Inicio",
     "tab.unavailable": "Todavía no hay nada aquí que pueda mostrar este tipo de contenido."
   }

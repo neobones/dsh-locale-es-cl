@@ -28,7 +28,7 @@
     "stale": "La configuración de atajos o los comandos disponibles han cambiado. Revisa las asignaciones más recientes antes de guardar.",
     "write-failed": "No se pudo guardar. Se conservan los atajos anteriores y el borrador actual. Vuelve a intentarlo.",
     "not-ready": "Los atajos aún no están listos. Vuelve a intentarlo.",
-    "read": "No se pudo leer {location}. revisa los permisos de acceso y luego {reload}.",
+    "read": "No se pudo leer {location}. Revisa los permisos de acceso y luego {reload}.",
     "invalid": "La configuración de atajos en {location} está dañada. Haz una copia de seguridad y repara esta configuración, y luego {reload}.",
     "future": "La configuración de atajos en {location} se creó con una versión más reciente. Actualiza Harness y vuelve a intentarlo.",
     "web-document": "la entrada localStorage dsh.keybindings.v1 de este sitio",

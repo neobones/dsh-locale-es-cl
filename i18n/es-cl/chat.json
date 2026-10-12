@@ -154,7 +154,7 @@
     "message.retry.scheduled": "Esperando para reintentar la solicitud al modelo",
     "message.retry.status": "{label} ({retry}/{maximum}) · {seconds}s",
     "message.retry.delay": "Retardo del reintento: ",
-    "message.retry.failure": "Motivo del falla: ",
+    "message.retry.failure": "Motivo del fallo: ",
     "message.failure.auth": "La clave de API no es válida",
     "message.accountStopped": "Tarea detenida",
     "message.failure.accountSignedOut": "Detenido porque has cerrado sesión en DeepSeek.",

@@ -11,6 +11,6 @@
     "save": "Guardar",
     "saving": "Guardando…",
     "saveFailed": "La implementación no aceptó estos valores; se han dejado para que los corrijas.",
-    "invalidNumber": "escribe un número o déjalo en blanco para usar el valor predeterminado."
+    "invalidNumber": "Escribe un número o déjalo en blanco para usar el valor predeterminado."
   }
 }

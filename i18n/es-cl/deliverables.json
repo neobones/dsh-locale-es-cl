@@ -1,8 +1,8 @@
 {
   "deliverables": {
     "presented.nativeUnavailable": "Este archivo no tiene una ruta de Host disponible. Previsualízalo en la barra lateral.",
-    "presented.revealError": "No se pudo mostrar en el explorador de archivos. intenta de nuevo.",
-    "presented.directoryError": "No se pudo abrir la carpeta contenedora. intenta de nuevo.",
+    "presented.revealError": "No se pudo mostrar en el explorador de archivos. Intenta de nuevo.",
+    "presented.directoryError": "No se pudo abrir la carpeta contenedora. Intenta de nuevo.",
     "presented.directoryOpening": "Abriendo la carpeta contenedora…",
     "presented.directoryOpened": "Apertura de la carpeta contenedora solicitada",
     "presented.revealed": "Visualización en el explorador de archivos solicitada",

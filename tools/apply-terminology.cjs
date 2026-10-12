@@ -19,7 +19,10 @@ const checkOnly = process.argv.includes('--check');
 const table = JSON.parse(fs.readFileSync(termPath, 'utf8'));
 const LETTER = 'A-Za-z\\u00C0-\\u024F\\u00D1\\u00F1';
 const boundaries = (pattern) => new RegExp('(?<![' + LETTER + '])(' + pattern + ')(?![' + LETTER + '])', 'gi');
-const upper = (text) => (/^[A-Z\u00C0-\u00DE]/.test(text.charAt(0)) ? text.charAt(0).toUpperCase() + text.slice(1) : text);
+// La mayuscula inicial se copia del texto EMPAREJADO, no de `to` (que va en
+// minuscula por contrato): si el original empieza en mayuscula, la sustitucion
+// tambien, y si no, se deja como esta.
+const upper = (match, replacement) => (/^[A-Z\u00C0-\u00DE]/.test(match.charAt(0)) ? replacement.charAt(0).toUpperCase() + replacement.slice(1) : replacement);
 
 const applied = [];
 const pending = [];
@@ -36,7 +39,7 @@ for (const file of files) {
       let next = value;
       for (const rule of table.replacements) {
         const before = next;
-        next = next.replace(boundaries(rule.from), () => upper(rule.to));
+        next = next.replace(boundaries(rule.from), (match) => upper(match, rule.to));
         if (next !== before) {
           const row = { file, ns, key, from: before, to: next };
           (checkOnly ? pending : applied).push(row);

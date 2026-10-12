@@ -4,7 +4,8 @@
  * Uso: node delta-report.cjs <catalog.json> <reference.json> <dir es-cl> [--md out.md] [--csv out.csv]
  *
  * <reference.json> es { "<ns>": { "<clave>": "<texto>" } } fusionado.
- * Sale con codigo 1 si falta alguna clave del catalogo o si algun marcador no cuadra.
+ * Sale con codigo 1 si falta alguna clave del catalogo, si algun marcador no cuadra
+ * o si alguna traduccion pierde la mayuscula inicial de la referencia.
  */
 'use strict';
 const fs = require('fs');
@@ -24,9 +25,17 @@ for (const file of fs.readdirSync(dir).filter((f) => f.endsWith('.json')).sort()
 const marks = (text) => new Set([...String(text).matchAll(/\{([A-Za-z0-9_.]+)\}/g)].map((m) => m[1]));
 const same = (a, b) => a.size === b.size && [...a].every((x) => b.has(x));
 
+// Contador de regresion de mayusculas: la referencia empieza en mayuscula y la
+// traduccion en minuscula. Protege la clase de defecto que introdujo la pasada
+// mecanica (sustituir sin copiar la mayuscula inicial del texto emparejado).
+const MAYUSCULA = /^[A-Z\u00C0-\u00DE]/;
+const MINUSCULA = /^[a-z\u00E0-\u00F6\u00F8-\u00FE]/;
+const MUESTRA = 10;
+
 const rows = [];
 const changed = [];
-let totals = { keys: 0, changed: 0, untouched: 0, missing: 0, broken: 0 };
+const minusculas = [];
+let totals = { keys: 0, changed: 0, untouched: 0, missing: 0, broken: 0, minusculas: 0 };
 
 for (const [ns, body] of Object.entries(catalog.namespaces)) {
   const en = body.locales.en || {};
@@ -43,6 +52,10 @@ for (const [ns, body] of Object.entries(catalog.namespaces)) {
     if (mine !== ref[key]) {
       c++;
       changed.push({ ns, key, en: source, ref: ref[key] === undefined ? '' : ref[key], es: mine });
+      if (MAYUSCULA.test(String(ref[key])) && MINUSCULA.test(mine)) {
+        totals.minusculas++;
+        if (minusculas.length < MUESTRA) minusculas.push({ ns, key, ref: ref[key], es: mine });
+      }
     }
   }
   const keys = Object.keys(en).length;
@@ -57,7 +70,11 @@ for (const r of rows.sort((a, b) => b.changed - a.changed)) {
   console.log(pad(r.ns, 26) + pad(r.keys, 8) + pad(r.changed, 11) + pad(r.untouched, 11) + pad(r.missing, 8) + r.broken);
 }
 console.log('\n=== TOTALES ===');
-console.log('claves: ' + totals.keys + ' | cambiadas: ' + totals.changed + ' | sin tocar: ' + totals.untouched + ' | faltan: ' + totals.missing + ' | marcadores rotos: ' + totals.broken);
+console.log('claves: ' + totals.keys + ' | cambiadas: ' + totals.changed + ' | sin tocar: ' + totals.untouched + ' | faltan: ' + totals.missing + ' | marcadores rotos: ' + totals.broken + ' | minusculas_indebidas: ' + totals.minusculas);
+
+console.log('\n=== MINUSCULAS INDEBIDAS === (referencia en mayuscula, traduccion en minuscula)');
+for (const row of minusculas) console.log(row.ns + '\t' + row.key + '\t' + JSON.stringify(row.ref) + ' -> ' + JSON.stringify(row.es));
+if (totals.minusculas > minusculas.length) console.log('... y ' + (totals.minusculas - minusculas.length) + ' mas (muestra de ' + minusculas.length + ')');
 
 if (mdPath) {
   const byNs = new Map();
@@ -90,4 +107,4 @@ if (csvPath) {
 }
 function esc(text) { return String(text).replace(/\|/g, '\\|').replace(/\n/g, ' '); }
 
-process.exit(totals.missing || totals.broken ? 1 : 0);
+process.exit(totals.missing || totals.broken || totals.minusculas ? 1 : 0);
