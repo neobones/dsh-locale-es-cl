@@ -6,6 +6,12 @@
  * <reference.json> es { "<ns>": { "<clave>": "<texto>" } } fusionado.
  * Sale con codigo 1 si falta alguna clave del catalogo, si algun marcador no cuadra
  * o si alguna traduccion pierde la mayuscula inicial de la referencia.
+ *
+ * La columna `protegidos` (y su total) cuenta las claves cuyo origen ingles tiene
+ * un termino protegido y cuya traduccion ya no lo conserva. NO entra en el codigo
+ * de salida a proposito: en los lotes intermedios los namespaces aun no adaptados
+ * lo mantienen por encima de cero. Cada lote exige cero en sus propios namespaces
+ * y la Task 13 exige cero en el total.
  */
 'use strict';
 const fs = require('fs');
@@ -32,16 +38,43 @@ const MAYUSCULA = /^[A-Z\u00C0-\u00DE]/;
 const MINUSCULA = /^[a-z\u00E0-\u00F6\u00F8-\u00FE]/;
 const MUESTRA = 10;
 
+// Terminos protegidos: si el origen INGLES contiene uno de estos terminos, el
+// valor es-CL debe seguir conteniendo ese mismo termino (politica de terminos
+// en ingles del plan). La comprobacion es por clave, que es lo que una busqueda
+// por frases compuestas no ve: `trajectory.tab.diff` = «Diferencias» y las seis
+// claves de `trajectory` que traducen `prompt` como «Indicaciones del sistema».
+// Emparejamiento con limites de palabra y plural opcional, nunca subcadena:
+// «Tool calls» cuenta, «Subtool calls» no (le precede una letra).
+const TERMINOS_PROTEGIDOS = ['diff', 'tool call', 'commit', 'push', 'prompt', 'plugin', 'token', 'log', 'shell', 'chat', 'deploy'];
+const TERM_RE = new Map(TERMINOS_PROTEGIDOS.map((term) => [
+  term,
+  new RegExp('(?<![A-Za-z])' + term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + 's?(?![A-Za-z])'),
+]));
+// `log` cuenta como sustantivo. El verbo «log in/out» (settings.account.json:4)
+// se excluye de la comprobacion de `log`; los compuestos («session log») no.
+const LOG_VERBO = /\blog(ged|ging|s)?\s+(in|out)\b/;
+function terminosPerdidos(source, mine) {
+  const en = String(source).toLowerCase();
+  const cl = String(mine).toLowerCase();
+  const lost = [];
+  for (const term of TERMINOS_PROTEGIDOS) {
+    if (term === 'log' && LOG_VERBO.test(en)) continue;
+    if (TERM_RE.get(term).test(en) && !TERM_RE.get(term).test(cl)) lost.push(term);
+  }
+  return lost;
+}
+
 const rows = [];
 const changed = [];
 const minusculas = [];
-let totals = { keys: 0, changed: 0, untouched: 0, missing: 0, broken: 0, minusculas: 0 };
+const protegidos = [];
+let totals = { keys: 0, changed: 0, untouched: 0, missing: 0, broken: 0, minusculas: 0, protegidos: 0 };
 
 for (const [ns, body] of Object.entries(catalog.namespaces)) {
   const en = body.locales.en || {};
   const es = current[ns] || {};
   const ref = reference[ns] || {};
-  let c = 0, missing = 0, broken = 0;
+  let c = 0, missing = 0, broken = 0, prot = 0;
   for (const [key, source] of Object.entries(en)) {
     // Un origen vacio o de solo espacios (separadores, prefijos) no se traduce:
     // se replica tal cual, asi que no puede contar como traduccion faltante.
@@ -49,6 +82,12 @@ for (const [ns, body] of Object.entries(catalog.namespaces)) {
     const mine = es[key];
     if (typeof mine !== 'string' || mine.trim() === '') { missing++; continue; }
     if (!same(marks(source), marks(mine))) { broken++; continue; }
+    const perdidos = terminosPerdidos(source, mine);
+    if (perdidos.length) {
+      prot++;
+      totals.protegidos++;
+      if (protegidos.length < MUESTRA) protegidos.push({ ns, key, terms: perdidos.join(','), en: source, es: mine });
+    }
     if (mine !== ref[key]) {
       c++;
       changed.push({ ns, key, en: source, ref: ref[key] === undefined ? '' : ref[key], es: mine });
@@ -61,20 +100,24 @@ for (const [ns, body] of Object.entries(catalog.namespaces)) {
   const keys = Object.keys(en).length;
   totals.keys += keys; totals.changed += c; totals.missing += missing; totals.broken += broken;
   totals.untouched += keys - c - missing - broken;
-  rows.push({ ns, keys, changed: c, untouched: keys - c - missing - broken, missing, broken });
+  rows.push({ ns, keys, changed: c, untouched: keys - c - missing - broken, missing, broken, protegidos: prot });
 }
 
 const pad = (s, n) => String(s).padEnd(n);
-console.log(pad('namespace', 26) + pad('claves', 8) + pad('cambiadas', 11) + pad('sin_tocar', 11) + pad('faltan', 8) + 'marcadores');
+console.log(pad('namespace', 26) + pad('claves', 8) + pad('cambiadas', 11) + pad('sin_tocar', 11) + pad('faltan', 8) + pad('marcadores', 11) + 'protegidos');
 for (const r of rows.sort((a, b) => b.changed - a.changed)) {
-  console.log(pad(r.ns, 26) + pad(r.keys, 8) + pad(r.changed, 11) + pad(r.untouched, 11) + pad(r.missing, 8) + r.broken);
+  console.log(pad(r.ns, 26) + pad(r.keys, 8) + pad(r.changed, 11) + pad(r.untouched, 11) + pad(r.missing, 8) + pad(r.broken, 11) + r.protegidos);
 }
 console.log('\n=== TOTALES ===');
-console.log('claves: ' + totals.keys + ' | cambiadas: ' + totals.changed + ' | sin tocar: ' + totals.untouched + ' | faltan: ' + totals.missing + ' | marcadores rotos: ' + totals.broken + ' | minusculas_indebidas: ' + totals.minusculas);
+console.log('claves: ' + totals.keys + ' | cambiadas: ' + totals.changed + ' | sin tocar: ' + totals.untouched + ' | faltan: ' + totals.missing + ' | marcadores rotos: ' + totals.broken + ' | minusculas_indebidas: ' + totals.minusculas + ' | protegidos: ' + totals.protegidos);
 
 console.log('\n=== MINUSCULAS INDEBIDAS === (referencia en mayuscula, traduccion en minuscula)');
 for (const row of minusculas) console.log(row.ns + '\t' + row.key + '\t' + JSON.stringify(row.ref) + ' -> ' + JSON.stringify(row.es));
 if (totals.minusculas > minusculas.length) console.log('... y ' + (totals.minusculas - minusculas.length) + ' mas (muestra de ' + minusculas.length + ')');
+
+console.log('\n=== TERMINOS PROTEGIDOS === (el origen ingles tiene el termino, la traduccion lo perdio)');
+for (const row of protegidos) console.log(row.ns + '\t' + row.key + '\t[' + row.terms + ']\t' + JSON.stringify(row.en) + ' -> ' + JSON.stringify(row.es));
+if (totals.protegidos > protegidos.length) console.log('... y ' + (totals.protegidos - protegidos.length) + ' mas (muestra de ' + protegidos.length + ')');
 
 if (mdPath) {
   const byNs = new Map();
