@@ -69,6 +69,9 @@ dsh plugin --profile desktop add github:neobones/dsh-locale-es-cl
 
 # o desde un tarball ya empaquetado
 dsh plugin --profile desktop add ./dsh-locale-es-cl-1.0.0.tgz
+
+# o el tarball publicado en la release (lo mismo, sin descargarlo a mano)
+dsh plugin --profile desktop add https://github.com/neobones/dsh-locale-es-cl/releases/download/v1.0.0/dsh-locale-es-cl-1.0.0.tgz
 ```
 
 Usa el perfil que realmente ejecutes: `desktop` para la app de escritorio, `web` para
