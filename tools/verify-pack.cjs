@@ -1,6 +1,6 @@
 /**
  * Verificacion end-to-end del bundle generado: lo ejecuta igual que el
- * cargador de modulos de la app y comprueba que registra el idioma 'es' y
+ * cargador de modulos de la app y comprueba que registra el idioma 'es-CL' y
  * todos sus diccionarios.
  *
  * Uso: node verify-pack.cjs <ruta lib/client.js>
@@ -59,7 +59,7 @@ const ctx = {
 mod.apply(ctx);
 
 const total = calls.reg.reduce((s, r) => s + r.keys, 0);
-const wrong = calls.reg.filter((r) => r.locale !== 'es');
+const wrong = calls.reg.filter((r) => r.locale !== 'es-CL');
 const dupes = calls.reg.map((r) => r.ns).filter((ns, i, all) => all.indexOf(ns) !== i);
 const empty = calls.reg.filter((r) => r.keys === 0);
 
@@ -69,14 +69,15 @@ console.log('require externos   : ' + (requiredNothing ? 'ninguno (correcto)' : 
 console.log('addLanguage        : ' + JSON.stringify(calls.lang));
 console.log('register llamadas  : ' + calls.reg.length);
 console.log('claves totales     : ' + total);
-console.log('locale != es       : ' + wrong.length);
+console.log('locale != es-CL    : ' + wrong.length);
 console.log('namespaces duplic. : ' + dupes.length + (dupes.length ? ' -> ' + dupes.join(',') : ''));
 console.log('namespaces vacios  : ' + empty.length + (empty.length ? ' -> ' + empty.map((e) => e.ns).join(',') : ''));
 
 const problems = [];
 if (calls.lang.length !== 1) problems.push('addLanguage llamado ' + calls.lang.length + ' veces');
+if (loaded.id !== 'dsh-locale-es-cl') problems.push("id del modulo distinto de 'dsh-locale-es-cl': " + JSON.stringify(loaded.id));
 const lang = calls.lang[0] || {};
-if (lang.id !== 'es') problems.push("id de idioma distinto de 'es': " + JSON.stringify(lang));
+if (lang.id !== 'es-CL') problems.push("id de idioma distinto de 'es-CL': " + JSON.stringify(lang));
 if (lang.fallback !== 'en') problems.push("fallback distinto de 'en': " + JSON.stringify(lang));
 if (!lang.label) problems.push('falta la etiqueta del idioma');
 if (wrong.length) problems.push('registros con locale incorrecto: ' + wrong.length);

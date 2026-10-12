@@ -1,6 +1,7 @@
 node_modules/
 _i18n/
 _out/
+_referencia-dsh/
 *.log
 *.tmp
 .DS_Store

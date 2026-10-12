@@ -1,5 +1,5 @@
-# Pack de idioma castellano: inserta la fila que carga este plugin de cliente.
+# Pack de idioma español de Chile: inserta la fila que carga este plugin de cliente.
 # El fallback a ingles es automatico para cualquier clave no traducida.
 - insert:
-    - id: locale-es
-      name: 'dsh-locale-es'
+    - id: locale-es-cl
+      name: 'dsh-locale-es-cl'

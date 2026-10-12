@@ -1,12 +1,12 @@
 /**
- * Genera el pack de idioma castellano (es) para la GUI de DeepSeek Harness.
+ * Genera el pack de idioma espanol de Chile (es-CL) para la GUI de DeepSeek Harness.
  *
  * Entradas:
  *   <catalog.json>  catalogo extraido de la app (namespaces -> locales.en)
- *   <es dir>        ficheros *.json con { "<ns>": { "<clave>": "<castellano>" } }
+ *   <es-cl dir>     ficheros *.json con { "<ns>": { "<clave>": "<espanol de Chile>" } }
  *   <salida>        directorio del paquete a emitir
  *
- * Uso: node build-locale-pack.cjs <catalog.json> <es dir> <salida> [--check]
+ * Uso: node build-locale-pack.cjs <catalog.json> <es-cl dir> <salida> [--check]
  *
  * El bundle emitido respeta el protocolo lazy-CJS del cargador de la app:
  *   window.__ModuleLoader__.load({ id, factory })
@@ -16,9 +16,9 @@
 const fs = require('fs');
 const path = require('path');
 
-const PKG_NAME = 'dsh-locale-es';
-const LANG_ID = 'es';
-const LANG_LABEL = 'Español';
+const PKG_NAME = 'dsh-locale-es-cl';
+const LANG_ID = 'es-CL';
+const LANG_LABEL = 'Español (Chile)';
 
 const catalogPath = process.argv[2];
 const esDir = process.argv[3];
@@ -118,16 +118,16 @@ for (const ns of nsNames) {
 const totalEn = nsNames.reduce((s, ns) => s + Object.keys((catalog.namespaces[ns].locales && catalog.namespaces[ns].locales.en) || {}).length, 0);
 console.log('=== COBERTURA ===');
 console.log('claves en el catalogo: ' + totalEn);
-console.log('claves traducidas al castellano: ' + report.translated + ' (' + ((report.translated / totalEn) * 100).toFixed(1) + '%)');
+console.log('claves traducidas al español de Chile: ' + report.translated + ' (' + ((report.translated / totalEn) * 100).toFixed(1) + '%)');
 console.log('claves sin traducir (caen a ingles): ' + report.missing);
 console.log('claves sobrantes descartadas: ' + report.extra);
-console.log('namespaces con diccionario es: ' + Object.keys(finalDicts).length + '/' + nsNames.length);
+console.log('namespaces con diccionario es-CL: ' + Object.keys(finalDicts).length + '/' + nsNames.length);
 if (conflicts.length) {
   console.log('\n--- CONFLICTOS ---');
   for (const c of conflicts) console.log(JSON.stringify(c));
 }
 if (report.badPlaceholders.length) {
-  console.log('\n--- M ARCADORES O CLAVES AJENAS ---');
+  console.log('\n--- MARCADORES O CLAVES AJENAS ---');
   for (const b of report.badPlaceholders) console.log(JSON.stringify(b));
 }
 console.log('\n--- POR NAMESPACE (en / es / falta) ---');
@@ -155,7 +155,7 @@ fs.mkdirSync(path.join(outDir, 'lib'), { recursive: true });
 const pkg = {
   name: PKG_NAME,
   version: '1.0.0',
-  description: 'Pack de idioma castellano (es) para la interfaz web de DeepSeek Harness',
+  description: 'Pack de idioma español de Chile (es-CL) para la interfaz web de DeepSeek Harness',
   type: 'module',
   main: 'lib/index.js',
   exports: {
@@ -167,7 +167,7 @@ const pkg = {
     // esta linea, la tarjeta del plugin se queda sin titulo ni descripcion.
     './locale/*.json': './locale/*.json',
   },
-  files: ['lib/index.js', 'lib/client.js', 'cordis.patch.yml', 'locale', 'icon.svg'],
+  files: ['lib/index.js', 'lib/client.js', 'cordis.patch.yml', 'locale', 'icon.svg', 'NOTICE.md'],
   dsh: {
     bundle: { patch: './cordis.patch.yml' },
     client: { inject: ['@deepseek-ai/dsh-client-locale'], platform: 'web' },
@@ -177,9 +177,14 @@ const pkg = {
 /*
  * El package.json del paquete es a la vez contrato con el cargador y ficha
  * publica del proyecto. Los campos estructurales los fija SIEMPRE este
- * generador; el resto (licencia, repositorio, autor, palabras clave, scripts,
- * icono) se conserva del fichero que ya exista, para que reconstruir no borre
- * la ficha del repositorio.
+ * generador; el resto (licencia, autor, palabras clave, scripts, icono) se
+ * conserva del fichero que ya exista, para que reconstruir no borre la ficha
+ * del repositorio.
+ *
+ * `repository`, `homepage` y `bugs` se conservan desde que el pack se publica
+ * (GitHub + npm): apuntan al repositorio propio, no al del pack del que deriva,
+ * asi que no desvian reclamaciones a un tercero. La procedencia de la obra
+ * derivada se documenta en NOTICE.md.
  */
 const ESTRUCTURALES = new Set(['name', 'type', 'main', 'exports', 'files', 'dsh']);
 const CONSERVABLES = [
@@ -204,10 +209,10 @@ for (const key of CONSERVABLES) {
 fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n');
 
 const patch = [
-  '# Pack de idioma castellano: inserta la fila que carga este plugin de cliente.',
+  '# Pack de idioma español de Chile: inserta la fila que carga este plugin de cliente.',
   '# El fallback a ingles es automatico para cualquier clave no traducida.',
   '- insert:',
-  '    - id: locale-es',
+  '    - id: locale-es-cl',
   "      name: '" + PKG_NAME + "'",
   '',
 ].join('\n');
@@ -215,7 +220,7 @@ fs.writeFileSync(path.join(outDir, 'cordis.patch.yml'), patch);
 
 const hostHalf = [
   '/**',
-  ' * Mitad host del pack de idioma castellano.',
+  ' * Mitad host del pack de idioma español de Chile.',
   ' *',
   ' * El trabajo real ocurre en el cliente (`lib/client.js`): alli se registran el',
   ' * idioma y sus diccionarios. Esta mitad existe para que el paquete sea una fila',
@@ -229,7 +234,7 @@ fs.writeFileSync(path.join(outDir, 'lib', 'index.js'), hostHalf);
 
 const header = [
   '/**',
-  ' * Pack de idioma castellano (es) para la interfaz web de DeepSeek Harness.',
+  ' * Pack de idioma español de Chile (es-CL) para la interfaz web de DeepSeek Harness.',
   ' *',
   ' * GENERADO AUTOMATICAMENTE por tools/build-locale-pack.cjs: no editar a mano.',
   ' *',
@@ -253,9 +258,9 @@ const header = [
   '\t\t* @param ctx - contexto raiz del cliente.',
   '\t\t*/',
   '\t\tfunction apply(ctx) {',
-  '\t\t\tctx.effect(() => ctx.locale.addLanguage(LANGUAGE), "locale-es: idioma");',
+  '\t\t\tctx.effect(() => ctx.locale.addLanguage(LANGUAGE), "locale-es-cl: idioma");',
   '\t\t\tfor (const [ns, dict] of Object.entries(DICTIONARIES)) {',
-  '\t\t\t\tctx.effect(() => ctx.locale.register(ns, LANGUAGE.id, dict), "locale-es: " + ns);',
+  '\t\t\t\tctx.effect(() => ctx.locale.register(ns, LANGUAGE.id, dict), "locale-es-cl: " + ns);',
   '\t\t\t}',
   '\t\t}',
   '\t\texports.apply = apply;',

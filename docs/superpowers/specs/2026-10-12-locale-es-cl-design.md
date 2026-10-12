@@ -215,8 +215,10 @@ Se ejecutan todas antes de instalar; ninguna se sustituye por inspección visual
 
 - `docs/revision-es-cl.md`: informe legible con cobertura, decisiones de terminología y
   las cadenas cambiadas agrupadas por namespace.
-- `docs/revision-es-cl.csv`: `namespace, clave, inglés, es base, es-CL` con **solo** las
-  cadenas cuyo texto difiere de la base.
+- `docs/revision-es-cl.csv`: `namespace, clave, inglés, es_referencia, es_cl` con **solo** las
+  cadenas cuyo texto difiere de la base. La columna de la base castellana se llama
+  `es_referencia` (y la chilena, `es_cl`), que es lo que emite `tools/delta-report.cjs`; el
+  fichero lleva BOM UTF-8 para que Excel para Windows no destroce las tildes al abrirlo.
 - Revisión acordada: **por muestreo**. El pack se construye e instala, y las correcciones
   que el usuario marque sobre la hoja se aplican como lote de ajuste y se reconstruye.
 

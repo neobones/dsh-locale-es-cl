@@ -1,6 +1,6 @@
-# Integración continua del pack castellano: comprueba la cobertura, audita las
-# claves, reconstruye el bundle y verifica que el fichero versionado coincide con
-# las fuentes de traducción (si alguien traduce y no reconstruye, falla aquí).
+# Integración continua del pack español de Chile: comprueba la cobertura, audita
+# las claves, reconstruye el bundle y verifica que el fichero versionado coincide
+# con las fuentes de traducción (si alguien traduce y no reconstruye, falla aquí).
 name: ci
 
 on:
@@ -18,19 +18,25 @@ jobs:
           node-version: '22'
 
       - name: Cobertura y marcadores
-        run: node tools/build-locale-pack.cjs i18n/catalog.json i18n/es . --check
+        run: node tools/build-locale-pack.cjs i18n/catalog.json i18n/es-cl . --check
 
       - name: Auditoría de claves y ficheros
-        run: node tools/audit-es.cjs i18n/catalog.json i18n/es
+        run: node tools/audit-es.cjs i18n/catalog.json i18n/es-cl
 
       - name: Nada de la máquina local en los datos publicados
         run: node tools/check-portable.cjs i18n
+
+      - name: Términos en inglés conservados (puerta estricta)
+        run: node tools/delta-report.cjs i18n/catalog.json i18n/reference/es.json i18n/es-cl --strict-protegidos
+
+      - name: Coherencia entre lotes (duplicados por origen inglés)
+        run: node tools/check-coherence.cjs i18n/es-cl
 
       - name: Metadatos de la tarjeta del plugin
         run: node tools/check-plugin-meta.cjs .
 
       - name: Reconstruir el bundle
-        run: node tools/build-locale-pack.cjs i18n/catalog.json i18n/es .
+        run: node tools/build-locale-pack.cjs i18n/catalog.json i18n/es-cl .
 
       - name: El bundle versionado coincide con las fuentes
         run: git diff --exit-code

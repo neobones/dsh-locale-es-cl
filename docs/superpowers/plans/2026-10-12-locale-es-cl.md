@@ -17,7 +17,11 @@
 - **Directorio de traducción:** `i18n/es-cl/` (nunca `i18n/es`, que pasa a ser `i18n/reference/es.json`).
 - **Referencia castellana:** `i18n/reference/es.json`, fusionada y de solo lectura.
 - **Registro:** tuteo chileno, imperativos en tú, cero voseo, cero `vosotros`, voz activa, etiquetas cortas.
-- **Se quedan en inglés:** `plugin`, `prompt`, `token`, `commit`, `push`, `pull request`, `diff`, `log`, `shell`, `tool call`, `chat`, `API`, `JSON`, `Markdown`, `deploy`.
+- **Se quedan en inglés:** `plugin`, `prompt`, `token`, `commit`, `push`, `pull request`, `diff`, `log`, `shell`, `tool call`, `chat`, `API`, `JSON`, `Markdown`, `deploy`. La lista es vinculante **para cada lote**: al cerrar un lote hay que comprobar que ninguna de estas palabras se tradujo. Sospechosos ya detectados en el corpus: `diff` renderizado como «diferencias»/«cambios» y `tool call` como «llamada a herramienta» (aparecen en `conversation`, `chat`, `cordis`, `trajectory`, `question`, `permission.access`, `settings`, `deliverables`). Comprobación por lote:
+
+  ```powershell
+  Select-String -Path i18n/es-cl/<namespace>.json -Pattern "llamada a herramienta|llamadas a herramienta|diferencias de código|Contraer las diferencias|Expandir.*diferencias"
+  ```
 - **Se traducen:** `branch` → `rama`, `model` → `modelo`, `settings` → `Ajustes`, `workspace` → `espacio de trabajo` (salvo identificador técnico).
 - **Marcadores `{...}` intactos** en cada clave; `--check` es la puerta.
 - **No se traducen** tokens de comando (`/compact`, `/plan`), nombres de herramientas (`Bash`, `Read`), rutas ni identificadores técnicos.
@@ -168,7 +172,7 @@ En `package.json` (los campos conservables sobreviven al build, pero deben queda
 - `"name": "dsh-locale-es-cl"` (ya lo fija el generador)
 - `"description": "Pack de idioma español de Chile (es-CL) para la interfaz web de DeepSeek Harness"`
 - `"keywords"`: `deepseek-harness`, `dsh`, `dsh-plugin`, `deepseek`, `locale`, `language-pack`, `i18n`, `spanish`, `espanol`, `es-CL`, `chile`
-- `"repository"`, `"homepage"`, `"bugs"`: dejar el repositorio **local** (`"type": "git"` con la URL de `upstream` solo como remoto de sincronización) — sin URLs de publicación inventadas; `author` pasa a reflejar la adaptación.
+- `"repository"`, `"homepage"`, `"bugs"`: **eliminados** (Task 13). El plan preveía dejarlos apuntando al remoto de sincronización, pero este fork no tiene remoto público ni tracker propio (README y NOTICE ya lo dicen), y publicar en la ficha del paquete la URL del repositorio del que deriva desviaría las reclamaciones a un tercero. La procedencia queda en `NOTICE.md`. `author` sigue reflejando la adaptación; el generador ya no conserva estos tres campos (ver `CONSERVABLES` en `tools/build-locale-pack.cjs`).
 - `"scripts"`: `build` → `node tools/build-locale-pack.cjs i18n/catalog.json i18n/es-cl .`; `check` → el mismo con `--check`; `audit` → `node tools/audit-es.cjs i18n/catalog.json i18n/es-cl`; añadir `"terms": "node tools/apply-terminology.cjs i18n/terminology.json i18n/es-cl --check"` y `"delta": "node tools/delta-report.cjs i18n/catalog.json i18n/reference/es.json i18n/es-cl"`.
 
 **Importante:** `package.json` lo reescribe el generador en cada build conservando estos campos; los estructurales (`name`, `type`, `main`, `exports`, `files`, `dsh`) siempre los fija el generador.
@@ -251,6 +255,7 @@ Esperado: `RESULTADO: OK` y `verify-pack` sin problemas.
     { "from": "comprueba", "to": "revisa" },
     { "from": "comprobar", "to": "revisar" },
     { "from": "comprobación", "to": "revisión" },
+    { "from": "e introduce", "to": "y escribe" },
     { "from": "introduce", "to": "escribe" },
     { "from": "introducir", "to": "escribir" },
     { "from": "ordenador", "to": "computador" },
@@ -267,7 +272,6 @@ Esperado: `RESULTADO: OK` y `verify-pack` sin problemas.
     { "from": "se ha creado", "to": "se creó" },
     { "from": "se ha producido", "to": "ocurrió" },
     { "from": "reajustar", "to": "volver a ajustar" },
-    { "from": "fallo", "to": "falla" },
     { "from": "pulsar", "to": "presionar" },
     { "from": "ratón", "to": "mouse" },
     { "from": "móvil", "to": "celular" }
@@ -306,7 +310,7 @@ const checkOnly = process.argv.includes('--check');
 const table = JSON.parse(fs.readFileSync(termPath, 'utf8'));
 const LETTER = 'A-Za-z\\u00C0-\\u024F\\u00D1\\u00F1';
 const boundaries = (pattern) => new RegExp('(?<![' + LETTER + '])(' + pattern + ')(?![' + LETTER + '])', 'gi');
-const upper = (text) => (/^[A-Z\u00C0-\u00DE]/.test(text.charAt(0)) ? text.charAt(0).toUpperCase() + text.slice(1) : text);
+const upper = (match, replacement) => (/^[A-Z\u00C0-\u00DE]/.test(match.charAt(0)) ? replacement.charAt(0).toUpperCase() + replacement.slice(1) : replacement);
 
 const applied = [];
 const pending = [];
@@ -323,7 +327,7 @@ for (const file of files) {
       let next = value;
       for (const rule of table.replacements) {
         const before = next;
-        next = next.replace(boundaries(rule.from), () => upper(rule.to));
+        next = next.replace(boundaries(rule.from), (match) => upper(match, rule.to));
         if (next !== before) {
           const row = { file, ns, key, from: before, to: next };
           (checkOnly ? pending : applied).push(row);
@@ -362,7 +366,7 @@ process.exit(ok ? 0 : 1);
 node tools/apply-terminology.cjs i18n/terminology.json i18n/es-cl --check
 ```
 
-Esperado: `RESULTADO: FALLO`, con **al menos 60 sustituciones pendientes** y varios prohibidos (los recuentos reales medidos sobre la referencia castellana son: 39 `inténtalo`, 34 `introduce`, 19 `comprueba`, 5 `comprobar`, 5 `acceder` —este último no es prohibido—, 1 `ordenador`, 2 `fallo`, 1 `en breve`). Guardar la cifra exacta para la comprobación siguiente.
+Esperado: `RESULTADO: FALLO`, con al menos 150 sustituciones pendientes y `prohibidos restantes : 0` (la comprobación de prohibidos se hace sobre el texto **ya sustituido**, así que los términos que además son reglas de sustitución nunca aparecen como pendientes; es una puerta de no regresión, no un detector de peninsulaísmos). Guardar las cifras exactas para la comprobación siguiente.
 
 - [ ] **Step 4: Aplicar la pasada mecánica**
 
@@ -483,7 +487,7 @@ process.exit(totals.missing || totals.broken ? 1 : 0);
 node tools/delta-report.cjs i18n/catalog.json i18n/reference/es.json i18n/es-cl
 ```
 
-Esperado: `faltan: 0`, `marcadores rotos: 0`, y `cambiadas` igual al número de sustituciones aplicadas en Step 4 (todas las sustituciones son cambios respecto a la referencia). Salida 0.
+Esperado: `faltan: 0`, `marcadores rotos: 0`, y `0 < cambiadas <= sustituciones aplicadas` en Step 4. La igualdad **no** se espera: una clave afectada por dos reglas cuenta una vez en `cambiadas` y dos veces en el recuento de sustituciones. Salida 0.
 
 - [ ] **Step 8: Limpiar el script temporal y commitear**
 
@@ -517,8 +521,9 @@ Esperado: `cambiadas` = solo las sustituciones mecánicas de Task 3 en ese names
 Reglas de reescritura, en orden de prioridad:
 
 1. **Pretérito perfecto compuesto → indefinido**: «Se ha guardado» → «Quedó guardado»; «No se ha podido…» → «No se pudo…».
-2. **Imperativo con enclítico → sin enclítico**: «renómbrala» → «cámbiale el nombre»; «añádelos» → «agrégalos».
-3. **Léxico chileno**: «añadir» → «agregar»; «comprobar» → «revisar/verificar»; «introducir» → «escribir/ingresar»; «gestor de archivos» → «explorador de archivos»; «fallo» → «falla»; «en breve» → «en un momento».
+2. **Verbo peninsular → verbo chileno (el enclítico no es el problema)**: el enclítico es español correcto y se conserva («agrégalos», «hazla más chica», «inténtalo», «renómbrala»). Lo que se cambia es el verbo cuando es de España: «compruébalo» → «revísalo»; «echa un vistazo» → «revisa»; «coger» → «tomar». **Ojo:** `renombrar` **no** es peninsular —es español chileno estándar— y **no** se sustituye por «cambiar el nombre»: alarga la etiqueta («Renombrar» → «Cambiar el nombre») sin ganancia.
+   **Regla 1 no se aplica a estados.** Si el origen inglés es una cópula o una descripción en presente («You are not signed in», «Your draft changed. The transcript is preserved…»), el pretérito cambia el significado: esas cadenas conservan el perfecto compuesto. Solo se convierten los perfectos que reflejan un **pasado simple** inglés o una acción terminada.
+3. **Léxico chileno**: «añadir» → «agregar»; «comprobar» → «revisar/verificar»; «introducir» → «escribir/ingresar»; «gestor de archivos» → «explorador de archivos»; «en breve» → «en un momento». («fallo» → «falla» es sensible al artículo: se resuelve caso a caso como «falla» con su artículo femenino o como «error», nunca en un barrido mecánico.)
 4. **Tuteo chileno**: «puedes detener la ejecución» se mantiene; nunca `vos`, `tenés`, `querés`, `vosotros`.
 5. **Etiquetas cortas** donde el ancho es fijo (botones, chips, filas de sidebar): preferir «Guardar» sobre «Guardar los cambios» solo si el inglés también es corto.
 6. **Términos técnicos en inglés** según Global Constraints.
@@ -601,8 +606,25 @@ git commit -m "feat(es-CL): adaptar trajectory y pluginManager al espanol de Chi
 
 **Files:**
 - Modify: `i18n/es-cl/schedule.manager.json`, `i18n/es-cl/chat.json`
+- Modify: `tools/delta-report.cjs` (nuevo contador de términos protegidos)
 
 **Interfaces:** igual que Task 5.
+
+**Paso 0 — cerrar el gate de términos protegidos (antes de traducir).** La comprobación por `Select-String` de las Global Constraints solo cubre frases compuestas y no cazó `trajectory.tab.diff` = «Diferencias» en la Task 5, ni las 6 claves de `trajectory` que traducen `prompt` como «Indicaciones del sistema». El gate correcto compara por clave: para cada clave cuyo **origen inglés** contiene un término protegido (los **quince** de las Global Constraints, sin recortes: `diff`, `tool call`, `commit`, `push`, `pull request`, `prompt`, `plugin`, `token`, `log`, `shell`, `chat`, `API`, `JSON`, `Markdown`, `deploy`), el valor `es-CL` debe seguir conteniendo ese término.
+
+**Precisión del matcher** (para no dar falsos positivos): emparejar con límites de palabra y plural opcional, es decir `(?<![A-Za-z])<término>s?(?![A-Za-z])` sobre el texto en minúsculas. Con eso «Tool calls» cuenta como acierto, y «Subtool calls» (`trajectory.details.subtoolCalls` = «Llamadas a subherramientas») **no** se marca, porque `subtoll` no es `tool call` precedido de límite. No marcar por subcadena simple.
+
+**Ruling sobre `log`:** el término cuenta cuando es el sustantivo. Si el origen inglés empareja `\blog(ged|ging|s)?\s+(in|out)\b` (verbo «log in/out», `settings.account.json:4`), la clave se excluye de la comprobación de `log`. Todo lo demás —incluidos los compuestos «session log» (`command.json:16`, `feedback.json:10`, `session-log-download.json:4`, `settings.sessionLog.json:3`, `workspace.json:51`)— debe conservar `log`, así que su lote lo renderiza como «log de sesión» y no como «registro de sesión».
+
+**Regla 1 al barrer:** el matcher del perfecto compuesto debe cubrir `he|has|ha|hemos|habéis|han|había|habían` + participio, incluidos los irregulares cortos («ha ido mal» → «salió mal», que un matcher de participios regulares no ve) y con flag `i`, porque una auxiliar al inicio de frase se escapaba.
+
+**Regla 1 no se aplica a estados**, y el criterio correcto es: se conserva el perfecto cuando la frase describe un **estado resultante con consecuencia en presente** («Your draft changed. The transcript is preserved…»; «they were left for you to correct»; «you can still answer»). Si el inglés es un pasado simple de una acción terminada **sin** consecuencia en presente, se convierte al pretérito.
+
+**Punto ciego conocido del gate de términos protegidos (endurecer en la Task 9):** la comprobación es de presencia a nivel de valor, así que un valor que conserva el término **de forma incidental** —una ruta (`logs/`), una URL, un identificador— enmascara una ocurrencia que sí se tradujo en el resto de la misma cadena (`settings.agentPreset.guidePtcUsage`: «Analiza los archivos de registro de logs/»). Hay que **descartar los tokens que contienen `/` o `\` en ambos lados** antes de decidir si el término está presente: así una ruta deja de satisfacer la comprobación y también deja de dispararla. Con ese endurecimiento el conjunto enmascarado del pack es exactamente una clave (`guidePtcUsage`) más dos literales benignos (una URL en `settings.models` y una ruta en `shortcuts.desktop-document`), así que el cambio no genera ruido.
+
+Añadir a `tools/delta-report.cjs` una **columna por namespace** `protegidos` (cuántas claves de ese namespace perdieron un término protegido) más el total en `=== TOTALES ===`, con muestra acotada, al estilo del contador `minusculas_indebidas` que ya existe. El **código de salida no cambia** (lo siguen decidiendo `faltan` y `marcadores rotos`): un contador global fallaría en los lotes intermedios, porque los namespaces aún no adaptados —`cordis`, `question`, `settings.agentLoop`, `settings.agentPreset`, `settings`, `permission.access`— lo mantendrían por encima de cero. Cada lote exige **cero en sus propios namespaces**, y la Task 13 exige **cero en el total** como puerta final.
+
+Verificarlo en los dos sentidos: no vacuo (los namespaces pendientes que traducen `diff`/`tool call` deben aparecer con `protegidos > 0`) y limpio para los namespaces ya adaptados (`conversation`, `trajectory`, `pluginManager`).
 
 - [ ] **Step 1: Línea base**
 
@@ -628,13 +650,13 @@ node tools/build-locale-pack.cjs i18n/catalog.json i18n/es-cl . --check
 node tools/delta-report.cjs i18n/catalog.json i18n/reference/es.json i18n/es-cl | Select-String -Pattern "^schedule.manager|^chat|claves:"
 ```
 
-Esperado: `RESULTADO: OK` en las dos puertas; ambos namespaces con `faltan 0`, `marcadores 0` y `cambiadas` por encima de su línea base.
+Esperado: `RESULTADO: OK` en las dos puertas; ambos namespaces con `faltan 0`, `marcadores 0`, `protegidos 0` y `cambiadas` por encima de su línea base.
 
 - [ ] **Step 4: Commit**
 
 ```powershell
-git add i18n/es-cl/schedule.manager.json i18n/es-cl/chat.json
-git commit -m "feat(es-CL): adaptar schedule.manager y chat al espanol de Chile"
+git add i18n/es-cl/schedule.manager.json i18n/es-cl/chat.json tools/delta-report.cjs
+git commit -m "feat(es-CL): adaptar schedule.manager y chat, con gate de terminos protegidos por clave"
 ```
 
 ---
@@ -859,7 +881,7 @@ git commit -m "feat(es-CL): adaptar el lote H (ranks 41-57 del catalogo)"
 
 **Files:**
 - Create: `docs/revision-es-cl.md`, `docs/revision-es-cl.csv`, `tools/check-coherence.cjs`
-- Modify: `README.md`, `CHANGELOG.md`
+- Modify: `README.md`, `CHANGELOG.md`, `NOTICE.md`, `icon.svg`
 
 **Interfaces:**
 - Consumes: `tools/delta-report.cjs` (Task 3) y los 57 diccionarios ya adaptados (Tasks 4–11).
@@ -920,27 +942,33 @@ node tools/check-coherence.cjs i18n/es-cl
 
 Esperado: inspección manual. Un mismo término inglés no debe aparecer traducido de dos formas distintas (por ejemplo `subagent` siempre «subagente», `plugin` siempre `plugin`). Corregir directamente en `i18n/es-cl/` las inconsistencias que aparezcan, volver a pasar las puertas `--check` de la Task 13 Step 1 y commitear las correcciones junto con la hoja de revisión.
 
-- [ ] **Step 3: Reescribir el README para este pack**
+- [ ] **Step 3: Cerrar README, NOTICE e icono (revisión de delta)**
 
-Sustituir en `README.md` el título, la introducción y las instrucciones por las del pack `es-CL`:
-- Qué es: pack de español de Chile para la interfaz web de DSH.
-- Cómo se instala: `dsh plugin --profile desktop add <ruta del repo>` y luego *Ajustes → General → Idioma → Español (Chile)*.
+El README **ya fue reescrito en la Task 2** (título, introducción, comandos de instalación, tabla de estado, árbol del repositorio y sección en inglés). Aquí no se reescribe: se revisa y se completa con los datos que solo existen ahora:
+
 - Cobertura: la cifra real del `delta-report` (claves adaptadas sobre el total).
 - Cómo se mantiene: extraer catálogo nuevo, `--check`, traducir lo que falte, reconstruir.
 - Créditos: Oskarosan (traducción castellana de base) y DeepSeek (diccionarios `en`/`zh`).
-- Conservar la sección de desarrollo y el protocolo del bundle, adaptados a `es-CL`.
+- Que no quede ninguna referencia a `i18n/es` ni a la identidad `es` antigua.
+
+La Task 2 dejó además tres cabos sueltos que solo se pueden cerrar cuando la adaptación existe de verdad; se resuelven en este mismo paso:
+
+1. `NOTICE.md`: el texto afirma «trabajo original» sobre `i18n/es-cl/*.json`, pero hasta la Task 11 ese contenido era idéntico a la referencia derivada. Reescribir para decir que la adaptación chilena es una **obra derivada** de `Oskarosan/dsh-locale-es` (MIT), y quitar la URL de incidencias de terceros: este fork no tiene tracker público, así que no debe redirigir reclamaciones al repositorio ajeno.
+2. `icon.svg`: la etiqueta accesible ya dice «español de Chile» mientras el glifo sigue siendo `ES` sobre la bandera de España. Dejar etiqueta y glifo coherentes: texto neutro («Pack de idioma (es-CL)») o glifo `CL`.
+3. `NOTICE.md` y `README.md` citan `i18n/terminology.json`, que ya existe desde la Task 3: comprobar que la descripción corresponde a lo que hay.
 
 - [ ] **Step 4: Entrada de bitácora**
 
-En `CHANGELOG.md`, añadir al inicio:
+Ampliar la entrada `## [Sin publicar]` que la Task 2 ya creó en `CHANGELOG.md` (no crear una sección nueva ni subir la versión: el pack no se publica en npm), dejándola así:
 
 ```markdown
-## 1.0.0 — es-CL
+## [Sin publicar] — es-CL
 
 - Adaptación al español de Chile del pack castellano de referencia.
-- Id de idioma propio `es-CL` («Español (Chile)») con respaldo a inglés.
+- Id de idioma propio `es-CL` («Español (Chile)») con `fallback: 'en'`.
 - Pasada mecánica de terminología (`i18n/terminology.json`) y reescritura de estilo por lotes.
 - Hoja de revisión del delta en `docs/revision-es-cl.md` y `docs/revision-es-cl.csv`.
+- Metadatos de tarjeta, aviso de obra derivada e icono coherentes con la identidad `es-CL`.
 ```
 
 - [ ] **Step 5: Commit**
@@ -963,7 +991,7 @@ git commit -m "docs(es-CL): hoja de revision del delta, README y bitacora del pa
 - Consumes: todo lo anterior.
 - Produces: pack instalado y verificado en la GUI; perfil `desktop` con la dependencia y el bundle declarados.
 
-- [ ] **Step 1: Las seis puertas, en orden**
+- [ ] **Step 1: Las seis puertas, en orden, y cierre de la política de términos en inglés**
 
 ```powershell
 node tools/build-locale-pack.cjs i18n/catalog.json i18n/es-cl . --check
@@ -974,15 +1002,34 @@ node tools/verify-pack.cjs lib/client.js
 node tools/delta-report.cjs i18n/catalog.json i18n/reference/es.json i18n/es-cl
 ```
 
-Esperado: la 1 termina `RESULTADO: OK`; la 2 no informa de claves ausentes ni repetidas; la 3 no encuentra rutas locales ni secretos; la 4 no encuentra problemas de metadatos; la 5 carga el bundle y expone idioma y diccionarios; la 6 informa `faltan: 0` y `marcadores rotos: 0`.
+Con todos los namespaces ya adaptados, convertir la lista «se quedan en inglés» en una puerta permanente: añadir a `i18n/terminology.json` las traducciones prohibidas de esos términos, en su array `banned` (la comprobación de prohibidos no es tautológica para entradas que no son reglas de sustitución):
+
+```json
+"banned": [
+  "inténtalo", "compruébalo", "comprueba", "comprobar", "comprobación",
+  "introduce", "introducir", "ordenador", "ficheros", "pulsar", "ratón",
+  "móvil", "reajustar", "vosotros", "vuestro", "coger", "vale",
+  "llamada a herramienta", "llamadas a herramienta", "diferencias de código"
+]
+```
+
+```powershell
+node tools/apply-terminology.cjs i18n/terminology.json i18n/es-cl --check
+```
+
+Esperado: `prohibidos restantes : 0` y `RESULTADO: OK`. Si aparece alguno, el namespace citado aún traduce un término que debe quedar en inglés: corregirlo antes de seguir (la re-revisión de la Task 4 dejó localizados los que quedaban: `chat.json:29,99,140,141`, `cordis.json:4`, `permission.access.json:15,17`, `question.json:25`, `settings.agentLoop.json:4,5`, `settings.agentPreset.json:11,14,18`, `settings.json:31`, `trajectory.json:93,98,123,124,143,144,155,167,177`).
+
+Esperado: la 1 termina `RESULTADO: OK`; la 2 no informa de claves ausentes ni repetidas; la 3 no encuentra rutas locales ni secretos; la 4 no encuentra problemas de metadatos; la 5 carga el bundle y expone idioma y diccionarios; la 6 informa `faltan: 0`, `marcadores rotos: 0`, `minusculas_indebidas: 0` y `protegidos: 0` en el total (con todos los namespaces adaptados, ninguna clave puede haber perdido un término que debe quedar en inglés).
 
 - [ ] **Step 2: Paridad contra el `app.asar` real**
 
 ```powershell
-node -e "const c=require('./i18n/catalog.json');const fs=require('fs');let ns=0,keys=0,mal=[];for(const [n,b] of Object.entries(c.namespaces)){ns++;const en=b.locales.en;keys+=Object.keys(en).length;const f='i18n/es-cl/'+n+'.json';if(!fs.existsSync(f)){mal.push(n);continue}const d=JSON.parse(fs.readFileSync(f,'utf8'))[n]||{};for(const k of Object.keys(en))if(typeof d[k]!=='string'||!d[k].trim())mal.push(n+'.'+k)}console.log('namespaces: '+ns+' | claves: '+keys+' | problemas: '+mal.length);if(mal.length)console.log(mal.slice(0,20).join('\n'))"
+node -e "const c=require('./i18n/catalog.json');const fs=require('fs');let ns=0,keys=0,mal=[];for(const [n,b] of Object.entries(c.namespaces)){ns++;const en=b.locales.en;keys+=Object.keys(en).length;const f='i18n/es-cl/'+n+'.json';if(!fs.existsSync(f)){mal.push(n);continue}const d=JSON.parse(fs.readFileSync(f,'utf8'))[n]||{};for(const k of Object.keys(en)){if(typeof en[k]!=='string'||en[k].trim()==='')continue;if(typeof d[k]!=='string'||!d[k].trim())mal.push(n+'.'+k)}}console.log('namespaces: '+ns+' | claves: '+keys+' | problemas: '+mal.length);if(mal.length)console.log(mal.slice(0,20).join('\n'))"
 ```
 
 Esperado: `namespaces: 57 | claves: 2603 | problemas: 0`.
+
+**Ojo con el guard `en[k].trim()===''`:** el catálogo tiene cuatro entradas en inglés vacías o de un solo espacio (`chat.message.stepProcess.sharedPrefix` = `""` y tres separadores `" "`). El pack debe replicarlas tal cual —la primera puerta de `build-locale-pack` las exige—, así que **sin el guard la comprobación daría `problemas: 4` y no sería un defecto del pack**. Las claves con prefijo de namespace (`chat.loadingHistory`) también son correctas: el runtime indexa los diccionarios por la clave completa y literal.
 
 - [ ] **Step 3: Reconstruir el artefacto final y commitear**
 

@@ -7,8 +7,8 @@
 
 - [ ] Los marcadores `{count}`, `{label}`, `{toolName}`… siguen intactos (los mismos que en
       inglés, ni uno más ni uno menos; se pueden mover de sitio dentro de la frase).
-- [ ] He reconstruido el bundle: `node tools/build-locale-pack.cjs i18n/catalog.json i18n/es .`
-- [ ] `node tools/build-locale-pack.cjs i18n/catalog.json i18n/es . --check` sale con código 0.
+- [ ] He reconstruido el bundle: `node tools/build-locale-pack.cjs i18n/catalog.json i18n/es-cl .`
+- [ ] `node tools/build-locale-pack.cjs i18n/catalog.json i18n/es-cl . --check` sale con código 0.
 - [ ] `node tools/verify-pack.cjs lib/client.js` dice `RESULTADO: OK`.
 - [ ] El commit incluye `lib/client.js` regenerado (la integración continua lo exige).
 

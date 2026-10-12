@@ -1,0 +1,42 @@
+{
+  "replacements": [
+    { "from": "inténtalo de nuevo", "to": "intenta de nuevo" },
+    { "from": "inténtalo", "to": "intenta" },
+    { "from": "compruébalo", "to": "revísalo" },
+    { "from": "comprueba", "to": "revisa" },
+    { "from": "comprobar", "to": "revisar" },
+    { "from": "comprobación", "to": "revisión" },
+    { "from": "e introduce", "to": "y escribe" },
+    { "from": "introduce", "to": "escribe" },
+    { "from": "introducir", "to": "escribir" },
+    { "from": "ordenador", "to": "computador" },
+    { "from": "añade", "to": "agrega" },
+    { "from": "añadir", "to": "agregar" },
+    { "from": "añádelos", "to": "agrégalos" },
+    { "from": "añadida", "to": "agregada" },
+    { "from": "añadidas", "to": "agregadas" },
+    { "from": "añadido", "to": "agregado" },
+    { "from": "añadidos", "to": "agregados" },
+    { "from": "gestor de archivos", "to": "explorador de archivos" },
+    { "from": "en breve", "to": "en un momento" },
+    { "from": "no se ha podido", "to": "no se pudo" },
+    { "from": "se ha guardado", "to": "quedó guardado" },
+    { "from": "se han guardado", "to": "quedaron guardados" },
+    { "from": "se ha actualizado", "to": "se actualizó" },
+    { "from": "se ha eliminado", "to": "se eliminó" },
+    { "from": "se ha creado", "to": "se creó" },
+    { "from": "se ha producido", "to": "ocurrió" },
+    { "from": "reajustar", "to": "volver a ajustar" },
+    { "from": "pulsar", "to": "presionar" },
+    { "from": "ratón", "to": "mouse" },
+    { "from": "móvil", "to": "celular" }
+  ],
+  "banned": [
+    "inténtalo", "compruébalo", "comprueba", "comprobar", "comprobación",
+    "introduce", "introducir", "ordenador", "ficheros", "pulsar", "ratón",
+    "móvil", "reajustar", "vosotros", "vuestro", "coger", "vale",
+    "llamada a herramienta", "llamadas a herramienta",
+    "llamada a herramientas", "llamadas a herramientas",
+    "diferencia de código", "diferencias de código"
+  ]
+}
