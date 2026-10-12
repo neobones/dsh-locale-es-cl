@@ -1024,10 +1024,12 @@ Esperado: la 1 termina `RESULTADO: OK`; la 2 no informa de claves ausentes ni re
 - [ ] **Step 2: Paridad contra el `app.asar` real**
 
 ```powershell
-node -e "const c=require('./i18n/catalog.json');const fs=require('fs');let ns=0,keys=0,mal=[];for(const [n,b] of Object.entries(c.namespaces)){ns++;const en=b.locales.en;keys+=Object.keys(en).length;const f='i18n/es-cl/'+n+'.json';if(!fs.existsSync(f)){mal.push(n);continue}const d=JSON.parse(fs.readFileSync(f,'utf8'))[n]||{};for(const k of Object.keys(en))if(typeof d[k]!=='string'||!d[k].trim())mal.push(n+'.'+k)}console.log('namespaces: '+ns+' | claves: '+keys+' | problemas: '+mal.length);if(mal.length)console.log(mal.slice(0,20).join('\n'))"
+node -e "const c=require('./i18n/catalog.json');const fs=require('fs');let ns=0,keys=0,mal=[];for(const [n,b] of Object.entries(c.namespaces)){ns++;const en=b.locales.en;keys+=Object.keys(en).length;const f='i18n/es-cl/'+n+'.json';if(!fs.existsSync(f)){mal.push(n);continue}const d=JSON.parse(fs.readFileSync(f,'utf8'))[n]||{};for(const k of Object.keys(en)){if(typeof en[k]!=='string'||en[k].trim()==='')continue;if(typeof d[k]!=='string'||!d[k].trim())mal.push(n+'.'+k)}}console.log('namespaces: '+ns+' | claves: '+keys+' | problemas: '+mal.length);if(mal.length)console.log(mal.slice(0,20).join('\n'))"
 ```
 
 Esperado: `namespaces: 57 | claves: 2603 | problemas: 0`.
+
+**Ojo con el guard `en[k].trim()===''`:** el catálogo tiene cuatro entradas en inglés vacías o de un solo espacio (`chat.message.stepProcess.sharedPrefix` = `""` y tres separadores `" "`). El pack debe replicarlas tal cual —la primera puerta de `build-locale-pack` las exige—, así que **sin el guard la comprobación daría `problemas: 4` y no sería un defecto del pack**. Las claves con prefijo de namespace (`chat.loadingHistory`) también son correctas: el runtime indexa los diccionarios por la clave completa y literal.
 
 - [ ] **Step 3: Reconstruir el artefacto final y commitear**
 
