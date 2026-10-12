@@ -17,7 +17,11 @@
 - **Directorio de traducción:** `i18n/es-cl/` (nunca `i18n/es`, que pasa a ser `i18n/reference/es.json`).
 - **Referencia castellana:** `i18n/reference/es.json`, fusionada y de solo lectura.
 - **Registro:** tuteo chileno, imperativos en tú, cero voseo, cero `vosotros`, voz activa, etiquetas cortas.
-- **Se quedan en inglés:** `plugin`, `prompt`, `token`, `commit`, `push`, `pull request`, `diff`, `log`, `shell`, `tool call`, `chat`, `API`, `JSON`, `Markdown`, `deploy`.
+- **Se quedan en inglés:** `plugin`, `prompt`, `token`, `commit`, `push`, `pull request`, `diff`, `log`, `shell`, `tool call`, `chat`, `API`, `JSON`, `Markdown`, `deploy`. La lista es vinculante **para cada lote**: al cerrar un lote hay que comprobar que ninguna de estas palabras se tradujo. Sospechosos ya detectados en el corpus: `diff` renderizado como «diferencias»/«cambios» y `tool call` como «llamada a herramienta» (aparecen en `conversation`, `chat`, `cordis`, `trajectory`, `question`, `permission.access`, `settings`, `deliverables`). Comprobación por lote:
+
+  ```powershell
+  Select-String -Path i18n/es-cl/<namespace>.json -Pattern "llamada a herramienta|llamadas a herramienta|diferencias de código|Contraer las diferencias|Expandir.*diferencias"
+  ```
 - **Se traducen:** `branch` → `rama`, `model` → `modelo`, `settings` → `Ajustes`, `workspace` → `espacio de trabajo` (salvo identificador técnico).
 - **Marcadores `{...}` intactos** en cada clave; `--check` es la puerta.
 - **No se traducen** tokens de comando (`/compact`, `/plan`), nombres de herramientas (`Bash`, `Read`), rutas ni identificadores técnicos.
@@ -517,8 +521,8 @@ Esperado: `cambiadas` = solo las sustituciones mecánicas de Task 3 en ese names
 Reglas de reescritura, en orden de prioridad:
 
 1. **Pretérito perfecto compuesto → indefinido**: «Se ha guardado» → «Quedó guardado»; «No se ha podido…» → «No se pudo…».
-2. **Imperativo con enclítico → sin enclítico**: «renómbrala» → «cámbiale el nombre»; «añádelos» → «agrégalos».
-3. **Léxico chileno**: «añadir» → «agregar»; «comprobar» → «revisar/verificar»; «introducir» → «escribir/ingresar»; «gestor de archivos» → «explorador de archivos»; «fallo» → «falla»; «en breve» → «en un momento».
+2. **Verbo peninsular → verbo chileno (el enclítico no es el problema)**: el enclítico es español correcto y se conserva («agrégalos», «hazla más chica», «inténtalo»). Lo que se cambia es el verbo cuando es de España: «renómbrala» → «cámbiale el nombre»; «compruébalo» → «revísalo»; «echa un vistazo» → «revisa».
+3. **Léxico chileno**: «añadir» → «agregar»; «comprobar» → «revisar/verificar»; «introducir» → «escribir/ingresar»; «gestor de archivos» → «explorador de archivos»; «en breve» → «en un momento». («fallo» → «falla» es sensible al artículo: se resuelve caso a caso como «falla» con su artículo femenino o como «error», nunca en un barrido mecánico.)
 4. **Tuteo chileno**: «puedes detener la ejecución» se mantiene; nunca `vos`, `tenés`, `querés`, `vosotros`.
 5. **Etiquetas cortas** donde el ancho es fijo (botones, chips, filas de sidebar): preferir «Guardar» sobre «Guardar los cambios» solo si el inglés también es corto.
 6. **Términos técnicos en inglés** según Global Constraints.
