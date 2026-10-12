@@ -17,6 +17,18 @@ Pack de idioma **español de Chile (es-CL)** para la interfaz de **DeepSeek Harn
   ocurre en este pack —los 57 namespaces tienen diccionario—, pero es la frontera real
   de la garantía.
 
+## Instalar en una línea
+
+```sh
+dsh plugin --profile desktop add github:neobones/dsh-locale-es-cl
+```
+
+Recarga la interfaz (Ctrl+R) y elige **Ajustes → General → Idioma → Español (Chile)**. La
+elección se guarda y sobrevive reinicios; un navegador en `es-CL` (o en `es`) lo activa solo.
+
+Las demás vías —npm, tarball, instalación manual del perfil y qué hacer si el selector no
+aparece— están en [Instalación](#instalación).
+
 ## Estado
 
 | | |
