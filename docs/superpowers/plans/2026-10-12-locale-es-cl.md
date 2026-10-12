@@ -859,7 +859,7 @@ git commit -m "feat(es-CL): adaptar el lote H (ranks 41-57 del catalogo)"
 
 **Files:**
 - Create: `docs/revision-es-cl.md`, `docs/revision-es-cl.csv`, `tools/check-coherence.cjs`
-- Modify: `README.md`, `CHANGELOG.md`
+- Modify: `README.md`, `CHANGELOG.md`, `NOTICE.md`, `icon.svg`
 
 **Interfaces:**
 - Consumes: `tools/delta-report.cjs` (Task 3) y los 57 diccionarios ya adaptados (Tasks 4–11).
@@ -920,27 +920,33 @@ node tools/check-coherence.cjs i18n/es-cl
 
 Esperado: inspección manual. Un mismo término inglés no debe aparecer traducido de dos formas distintas (por ejemplo `subagent` siempre «subagente», `plugin` siempre `plugin`). Corregir directamente en `i18n/es-cl/` las inconsistencias que aparezcan, volver a pasar las puertas `--check` de la Task 13 Step 1 y commitear las correcciones junto con la hoja de revisión.
 
-- [ ] **Step 3: Reescribir el README para este pack**
+- [ ] **Step 3: Cerrar README, NOTICE e icono (revisión de delta)**
 
-Sustituir en `README.md` el título, la introducción y las instrucciones por las del pack `es-CL`:
-- Qué es: pack de español de Chile para la interfaz web de DSH.
-- Cómo se instala: `dsh plugin --profile desktop add <ruta del repo>` y luego *Ajustes → General → Idioma → Español (Chile)*.
+El README **ya fue reescrito en la Task 2** (título, introducción, comandos de instalación, tabla de estado, árbol del repositorio y sección en inglés). Aquí no se reescribe: se revisa y se completa con los datos que solo existen ahora:
+
 - Cobertura: la cifra real del `delta-report` (claves adaptadas sobre el total).
 - Cómo se mantiene: extraer catálogo nuevo, `--check`, traducir lo que falte, reconstruir.
 - Créditos: Oskarosan (traducción castellana de base) y DeepSeek (diccionarios `en`/`zh`).
-- Conservar la sección de desarrollo y el protocolo del bundle, adaptados a `es-CL`.
+- Que no quede ninguna referencia a `i18n/es` ni a la identidad `es` antigua.
+
+La Task 2 dejó además tres cabos sueltos que solo se pueden cerrar cuando la adaptación existe de verdad; se resuelven en este mismo paso:
+
+1. `NOTICE.md`: el texto afirma «trabajo original» sobre `i18n/es-cl/*.json`, pero hasta la Task 11 ese contenido era idéntico a la referencia derivada. Reescribir para decir que la adaptación chilena es una **obra derivada** de `Oskarosan/dsh-locale-es` (MIT), y quitar la URL de incidencias de terceros: este fork no tiene tracker público, así que no debe redirigir reclamaciones al repositorio ajeno.
+2. `icon.svg`: la etiqueta accesible ya dice «español de Chile» mientras el glifo sigue siendo `ES` sobre la bandera de España. Dejar etiqueta y glifo coherentes: texto neutro («Pack de idioma (es-CL)») o glifo `CL`.
+3. `NOTICE.md` y `README.md` citan `i18n/terminology.json`, que ya existe desde la Task 3: comprobar que la descripción corresponde a lo que hay.
 
 - [ ] **Step 4: Entrada de bitácora**
 
-En `CHANGELOG.md`, añadir al inicio:
+Ampliar la entrada `## [Sin publicar]` que la Task 2 ya creó en `CHANGELOG.md` (no crear una sección nueva ni subir la versión: el pack no se publica en npm), dejándola así:
 
 ```markdown
-## 1.0.0 — es-CL
+## [Sin publicar] — es-CL
 
 - Adaptación al español de Chile del pack castellano de referencia.
-- Id de idioma propio `es-CL` («Español (Chile)») con respaldo a inglés.
+- Id de idioma propio `es-CL` («Español (Chile)») con `fallback: 'en'`.
 - Pasada mecánica de terminología (`i18n/terminology.json`) y reescritura de estilo por lotes.
 - Hoja de revisión del delta en `docs/revision-es-cl.md` y `docs/revision-es-cl.csv`.
+- Metadatos de tarjeta, aviso de obra derivada e icono coherentes con la identidad `es-CL`.
 ```
 
 - [ ] **Step 5: Commit**
