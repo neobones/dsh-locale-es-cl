@@ -45,7 +45,12 @@ const MUESTRA = 10;
 // claves de `trajectory` que traducen `prompt` como «Indicaciones del sistema».
 // Emparejamiento con limites de palabra y plural opcional, nunca subcadena:
 // «Tool calls» cuenta, «Subtool calls» no (le precede una letra).
-const TERMINOS_PROTEGIDOS = ['diff', 'tool call', 'commit', 'push', 'prompt', 'plugin', 'token', 'log', 'shell', 'chat', 'deploy'];
+// La lista es completa: los QUINCE terminos vinculantes de las Global Constraints,
+// sin recortes. Se escriben en minusculas porque el matcher compara `source` y
+// `mine` ya pasados por `toLowerCase()`: `API`, `JSON` y `Markdown` en su forma
+// capitalizada jamas emparejarian (su `source` construido seria /APIs?/, que no
+// casa con «api»).
+const TERMINOS_PROTEGIDOS = ['diff', 'tool call', 'commit', 'push', 'pull request', 'prompt', 'plugin', 'token', 'log', 'shell', 'chat', 'api', 'json', 'markdown', 'deploy'];
 const TERM_RE = new Map(TERMINOS_PROTEGIDOS.map((term) => [
   term,
   new RegExp('(?<![A-Za-z])' + term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + 's?(?![A-Za-z])'),

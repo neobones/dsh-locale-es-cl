@@ -96,7 +96,7 @@
     "settings.links.sidebar": "Barra lateral de la aplicación",
     "settings.links.newTab": "Navegador predeterminado",
     "settings.transcript.title": "Detalles del trabajo",
-    "settings.transcript.description": "Elige cuánto detalle mostrar para las tool calls",
+    "settings.transcript.description": "Elige cuánto detalle mostrar en las tool calls",
     "settings.transcript.compact": "Compacto",
     "settings.transcript.standard": "Estándar",
     "settings.transcript.detailed": "Detallado",
