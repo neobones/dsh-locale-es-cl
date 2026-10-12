@@ -605,8 +605,15 @@ git commit -m "feat(es-CL): adaptar trajectory y pluginManager al espanol de Chi
 
 **Files:**
 - Modify: `i18n/es-cl/schedule.manager.json`, `i18n/es-cl/chat.json`
+- Modify: `tools/delta-report.cjs` (nuevo contador de términos protegidos)
 
 **Interfaces:** igual que Task 5.
+
+**Paso 0 — cerrar el gate de términos protegidos (antes de traducir).** La comprobación por `Select-String` de las Global Constraints solo cubre frases compuestas y no cazó `trajectory.tab.diff` = «Diferencias» en la Task 5. El gate correcto compara por clave: para cada clave cuyo **origen inglés** contiene un término protegido (`diff`, `tool call`, `commit`, `push`, `prompt`, `plugin`, `token`, `log`, `shell`, `chat`, `deploy`), el valor `es-CL` debe seguir conteniendo ese término.
+
+Añadir a `tools/delta-report.cjs` una **columna por namespace** `protegidos` (cuántas claves de ese namespace perdieron un término protegido) más el total en `=== TOTALES ===`, con muestra acotada, al estilo del contador `minusculas_indebidas` que ya existe. El **código de salida no cambia** (lo siguen decidiendo `faltan` y `marcadores rotos`): un contador global fallaría en los lotes intermedios, porque los namespaces aún no adaptados —`cordis`, `question`, `settings.agentLoop`, `settings.agentPreset`, `settings`, `permission.access`— lo mantendrían por encima de cero. Cada lote exige **cero en sus propios namespaces**, y la Task 13 exige **cero en el total** como puerta final.
+
+Verificarlo en los dos sentidos: no vacuo (los namespaces pendientes que traducen `diff`/`tool call` deben aparecer con `protegidos > 0`) y limpio para los namespaces ya adaptados (`conversation`, `trajectory`, `pluginManager`).
 
 - [ ] **Step 1: Línea base**
 
@@ -632,13 +639,13 @@ node tools/build-locale-pack.cjs i18n/catalog.json i18n/es-cl . --check
 node tools/delta-report.cjs i18n/catalog.json i18n/reference/es.json i18n/es-cl | Select-String -Pattern "^schedule.manager|^chat|claves:"
 ```
 
-Esperado: `RESULTADO: OK` en las dos puertas; ambos namespaces con `faltan 0`, `marcadores 0` y `cambiadas` por encima de su línea base.
+Esperado: `RESULTADO: OK` en las dos puertas; ambos namespaces con `faltan 0`, `marcadores 0`, `protegidos 0` y `cambiadas` por encima de su línea base.
 
 - [ ] **Step 4: Commit**
 
 ```powershell
-git add i18n/es-cl/schedule.manager.json i18n/es-cl/chat.json
-git commit -m "feat(es-CL): adaptar schedule.manager y chat al espanol de Chile"
+git add i18n/es-cl/schedule.manager.json i18n/es-cl/chat.json tools/delta-report.cjs
+git commit -m "feat(es-CL): adaptar schedule.manager y chat, con gate de terminos protegidos por clave"
 ```
 
 ---
@@ -1001,7 +1008,7 @@ node tools/apply-terminology.cjs i18n/terminology.json i18n/es-cl --check
 
 Esperado: `prohibidos restantes : 0` y `RESULTADO: OK`. Si aparece alguno, el namespace citado aún traduce un término que debe quedar en inglés: corregirlo antes de seguir (la re-revisión de la Task 4 dejó localizados los que quedaban: `chat.json:29,99,140,141`, `cordis.json:4`, `permission.access.json:15,17`, `question.json:25`, `settings.agentLoop.json:4,5`, `settings.agentPreset.json:11,14,18`, `settings.json:31`, `trajectory.json:93,98,123,124,143,144,155,167,177`).
 
-Esperado: la 1 termina `RESULTADO: OK`; la 2 no informa de claves ausentes ni repetidas; la 3 no encuentra rutas locales ni secretos; la 4 no encuentra problemas de metadatos; la 5 carga el bundle y expone idioma y diccionarios; la 6 informa `faltan: 0` y `marcadores rotos: 0`.
+Esperado: la 1 termina `RESULTADO: OK`; la 2 no informa de claves ausentes ni repetidas; la 3 no encuentra rutas locales ni secretos; la 4 no encuentra problemas de metadatos; la 5 carga el bundle y expone idioma y diccionarios; la 6 informa `faltan: 0`, `marcadores rotos: 0`, `minusculas_indebidas: 0` y `protegidos: 0` en el total (con todos los namespaces adaptados, ninguna clave puede haber perdido un término que debe quedar en inglés).
 
 - [ ] **Step 2: Paridad contra el `app.asar` real**
 
