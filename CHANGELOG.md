@@ -20,7 +20,7 @@ parche al corregir traducciones.
   La tabla se cierra con los participios de «agregar» y con las traducciones prohibidas de los
   términos que deben quedar en inglés (`llamada a herramienta`, `llamadas a herramienta`,
   `diferencias de código`).
-- **Ocho lotes editoriales** por namespace reescriben la interfaz a español de Chile: 284 de
+- **Ocho lotes editoriales** por namespace reescriben la interfaz a español de Chile: 285 de
   las 2.603 cadenas (10,9 %) difieren ya de la referencia castellana, y los quince términos que
   la política mantiene en inglés siguen ahí en todo el pack (`protegidos: 0`).
 - **Cierre de coherencia entre lotes**: la revisión de que un mismo término tuviera una sola forma
@@ -31,8 +31,10 @@ parche al corregir traducciones.
   `reference` (`{n} min`, `{n} h`, `{n} d`; los formatos compactos de `job`, `chat.duration` y
   `subagent.duration` se dejan como están), `log de sesión`, «Restablecer al valor
   predeterminado», «los tool calls», «Procesando el documento…», «Intenta de nuevo»,
-  «falla» con su artículo correcto, «Cada día»/«Cada semana», «Todas las semanas» y el participio
-  «agregada».
+  «falla» con su artículo correcto, «Cada día»/«Cada semana», «Todas las semanas» —esta última en
+  `conversation`, donde el inglés de origen es otro (`Weekly on {days}…`, no el `Weekly on
+  {weekdays}…` de los namespaces del programador), así que no es una segunda forma del mismo
+  término— y el participio «agregada».
 - `locale/es.json` y el nuevo `locale/es-CL.json` llevan los metadatos de la tarjeta en
   español de Chile; `locale/en.json` los lleva en inglés.
 - Los comandos de la documentación, la integración continua y las plantillas de incidencias
@@ -46,7 +48,7 @@ parche al corregir traducciones.
 ### Añadido
 
 - **Hoja de revisión del delta** en `docs/revision-es-cl.md` (agrupada por namespace, con
-  inglés, referencia y `es-CL`) y `docs/revision-es-cl.csv` (284 filas, una por cadena
+  inglés, referencia y `es-CL`) y `docs/revision-es-cl.csv` (285 filas, una por cadena
   adaptada), generadas por `tools/delta-report.cjs`.
 - **Atribución de la obra derivada** en `NOTICE.md`: la adaptación chilena es una **obra
   derivada** de [Oskarosan/dsh-locale-es](https://github.com/Oskarosan/dsh-locale-es) (MIT),

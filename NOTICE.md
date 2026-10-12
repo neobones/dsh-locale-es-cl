@@ -3,8 +3,8 @@
 ## Obra derivada
 
 - **Adaptación al español de Chile** (`i18n/es-cl/*.json`): **obra derivada** de la traducción
-  castellana [Oskarosan/dsh-locale-es](https://github.com/Oskarosan/dsh-locale-es) (MIT). 2.319
-  de sus 2.603 cadenas siguen siendo idénticas a esa base y las 284 restantes son reescrituras
+  castellana [Oskarosan/dsh-locale-es](https://github.com/Oskarosan/dsh-locale-es) (MIT). 2.318
+  de sus 2.603 cadenas siguen siendo idénticas a esa base y las 285 restantes son reescrituras
   chilenas; el delta completo, cadena por cadena y con su inglés de origen, está en
   `docs/revision-es-cl.md` y `docs/revision-es-cl.csv`, generados contra
   `i18n/reference/es.json`.

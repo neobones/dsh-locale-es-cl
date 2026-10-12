@@ -3,7 +3,7 @@
 Pack de idioma **español de Chile (es-CL)** para la interfaz de **DeepSeek Harness** (DSH).
 
 - **2.603 de 2.603 claves traducidas (100 %)**, repartidas en **57 namespaces**.
-- **284 de esas 2.603 cadenas (10,9 %) se separan de la traducción castellana de partida**: es
+- **285 de esas 2.603 cadenas (10,9 %) se separan de la traducción castellana de partida**: es
   la adaptación chilena propiamente tal y está listada cadena por cadena, con su inglés y su
   referencia, en [docs/revision-es-cl.md](docs/revision-es-cl.md) y
   [docs/revision-es-cl.csv](docs/revision-es-cl.csv).
@@ -17,7 +17,7 @@ Pack de idioma **español de Chile (es-CL)** para la interfaz de **DeepSeek Harn
 | | |
 |---|---|
 | Cobertura | 2.603/2.603 claves (100 %), 57/57 namespaces |
-| Adaptación chilena | 284/2.603 cadenas (10,9 %) distintas de la referencia castellana |
+| Adaptación chilena | 285/2.603 cadenas (10,9 %) distintas de la referencia castellana |
 | Términos en inglés | 15 conservados por política; el informe de delta cierra con `protegidos 0` |
 | Idioma | `es-CL` — etiqueta «Español (Chile)», respaldo `en` |
 | Paquete | `dsh-locale-es-cl` 1.0.1 |
@@ -278,7 +278,7 @@ repositorio: la adaptación, las herramientas y la documentación.
 Chilean Spanish (`es-CL`) language pack for the **DeepSeek Harness** (DSH) web interface:
 **2,603 of 2,603 keys (100 %) across 57 namespaces**, shipped as a client plugin — the
 application's `app.asar` is never patched, and untranslated keys fall back to English
-automatically. **284 of the 2,603 strings (10.9 %) differ from the Castilian base
+automatically. **285 of the 2,603 strings (10.9 %) differ from the Castilian base
 translation**; every one of them is listed, with its English source and its reference, in
 `docs/revision-es-cl.md` (and the matching `.csv`).
 
