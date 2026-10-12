@@ -1,6 +1,6 @@
 {
   "name": "dsh-locale-es-cl",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "Pack de idioma español de Chile (es-CL) para la interfaz web de DeepSeek Harness",
   "type": "module",
   "main": "lib/index.js",
@@ -16,7 +16,8 @@
     "lib/client.js",
     "cordis.patch.yml",
     "locale",
-    "icon.svg"
+    "icon.svg",
+    "NOTICE.md"
   ],
   "dsh": {
     "bundle": {
@@ -30,7 +31,15 @@
     }
   },
   "license": "MIT",
-  "author": "Adaptación al español de Chile (ver NOTICE.md)",
+  "author": "NeoBones",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neobones/dsh-locale-es-cl.git"
+  },
+  "homepage": "https://github.com/neobones/dsh-locale-es-cl#readme",
+  "bugs": {
+    "url": "https://github.com/neobones/dsh-locale-es-cl/issues"
+  },
   "keywords": [
     "deepseek-harness",
     "dsh",

@@ -167,7 +167,7 @@ const pkg = {
     // esta linea, la tarjeta del plugin se queda sin titulo ni descripcion.
     './locale/*.json': './locale/*.json',
   },
-  files: ['lib/index.js', 'lib/client.js', 'cordis.patch.yml', 'locale', 'icon.svg'],
+  files: ['lib/index.js', 'lib/client.js', 'cordis.patch.yml', 'locale', 'icon.svg', 'NOTICE.md'],
   dsh: {
     bundle: { patch: './cordis.patch.yml' },
     client: { inject: ['@deepseek-ai/dsh-client-locale'], platform: 'web' },
@@ -181,16 +181,15 @@ const pkg = {
  * conserva del fichero que ya exista, para que reconstruir no borre la ficha
  * del repositorio.
  *
- * `repository`, `homepage` y `bugs` NO se conservan: este fork no tiene remoto
- * publico ni tracker propio, y apuntarlos al repositorio del que deriva
- * desviaria las reclamaciones a un tercero. La procedencia se documenta en
- * NOTICE.md, no en la ficha del paquete. Si alguna vez se publica, anadirlos
- * aqui a mano y volver a incluirlos en esta lista.
+ * `repository`, `homepage` y `bugs` se conservan desde que el pack se publica
+ * (GitHub + npm): apuntan al repositorio propio, no al del pack del que deriva,
+ * asi que no desvian reclamaciones a un tercero. La procedencia de la obra
+ * derivada se documenta en NOTICE.md.
  */
 const ESTRUCTURALES = new Set(['name', 'type', 'main', 'exports', 'files', 'dsh']);
 const CONSERVABLES = [
   'version', 'private', 'description', 'license', 'author', 'contributors',
-  'keywords', 'engines', 'scripts',
+  'repository', 'homepage', 'bugs', 'keywords', 'engines', 'scripts',
   'publishConfig', 'dependencies', 'devDependencies', 'icon', 'peerDependencies',
 ];
 const pkgPath = path.join(outDir, 'package.json');

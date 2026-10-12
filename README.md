@@ -57,25 +57,33 @@ misma frase hecha.
 
 ## Instalación
 
-Hay dos caminos. El corto usa el gestor de plugins que trae DSH; el manual edita el perfil.
-
-### Vía corta: el gestor de plugins
-
-En la interfaz: barra lateral → **Plugins** → **Add plugin**, y pega la especificación. O desde
-la terminal, con el mismo resultado:
+Basta una línea. El gestor de plugins que trae DSH añade la dependencia **y** selecciona el
+bundle:
 
 ```powershell
-# desde una copia local (este fork no tiene remoto público propio)
-dsh plugin --profile desktop add C:\ruta\a\dsh-locale-es-cl
-
-# si algún día se publica en npm
+# desde npm (lo más simple)
 dsh plugin --profile desktop add dsh-locale-es-cl
+
+# o directo desde GitHub, sin registro de por medio
+dsh plugin --profile desktop add github:neobones/dsh-locale-es-cl
+
+# o desde un tarball ya empaquetado
+dsh plugin --profile desktop add ./dsh-locale-es-cl-1.0.0.tgz
 ```
 
-El gestor acepta nombre de paquete npm (con versión opcional), `github:autor/repo` o una URL de
-repositorio git, un `.tgz` y una ruta local. Antes de instalar comprueba que el paquete declare
-`dsh.bundle`; al terminar lo añade a `dsh.profile.bundles` del perfil. Después, recarga la
-interfaz y elige el idioma en **Ajustes → General → Idioma → Español (Chile)**.
+Usa el perfil que realmente ejecutes: `desktop` para la app de escritorio, `web` para
+`dsh web`. La instalación desde GitHub funciona **sin autorizar scripts de build**, porque el
+bundle del navegador (`lib/client.js`) va versionado en el repositorio: no hay paso de
+compilación que pnpm tenga que permitir.
+
+El mismo resultado desde la interfaz: barra lateral → **Plugins** → **Add plugin**, y pegas
+la especificación. El gestor acepta nombre de paquete npm (con versión opcional),
+`github:autor/repo` o una URL de repositorio git, un `.tgz` y una ruta local; comprueba que el
+paquete declare `dsh.bundle` y al terminar lo añade a `dsh.profile.bundles`.
+
+Después, **recarga la interfaz** (Ctrl+R) y elige el idioma en
+**Ajustes → General → Idioma → Español (Chile)**. La elección se guarda y sobrevive
+reinicios; un navegador en `es-CL` (o en `es`) lo activa solo.
 
 ### Vía manual: editar el perfil
 

@@ -5,7 +5,10 @@ acoge a [Versionado semántico](https://semver.org/lang/es/): la versión mayor 
 cambia el contrato con el Loader de DSH, la menor al añadir idioma o cobertura, y la de
 parche al corregir traducciones.
 
-## [Sin publicar]
+## [1.0.0] — 2026-10-12
+
+Primera versión pública (GitHub + npm). Verificada contra DeepSeek Harness `0.2.0-rc.2`
+(app de escritorio, `app.asar` de 121 MB): 57 namespaces, 2.603 claves, cobertura completa.
 
 ### Cambiado
 
