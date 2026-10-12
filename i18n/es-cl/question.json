@@ -1,7 +1,7 @@
 {
   "question": {
     "error.incomplete": "Completa primero esta pregunta.",
-    "error.unanswered": "Selecciona una opción o escribe una respuesta personalizada.",
+    "error.unanswered": "Elige una opción o escribe tu propia respuesta.",
     "error.unavailable": "No se puede enviar ahora mismo; intenta de nuevo en un momento.",
     "error.resubmit": "La respuesta no llegó antes de que continuara el trabajo; envíala de nuevo.",
     "status.sent": "Respuesta enviada; no se pudo cerrar el panel.",
@@ -22,7 +22,7 @@
     "nav.minimize": "Contraer la tarjeta de la pregunta",
     "nav.maximize": "Expandir la tarjeta de la pregunta",
     "nav.cancel": "Descartar todas las preguntas",
-    "nav.close": "Cerrar el panel; vuelve a abrirlo desde la llamada a herramienta",
+    "nav.close": "Cerrar el panel; vuelve a abrirlo desde el tool call",
     "option.recommended": "Recomendada",
     "custom.placeholder": "Escribe la respuesta",
     "action.skip": "Omitir",
