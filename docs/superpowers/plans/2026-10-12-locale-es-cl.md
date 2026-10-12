@@ -251,6 +251,7 @@ Esperado: `RESULTADO: OK` y `verify-pack` sin problemas.
     { "from": "comprueba", "to": "revisa" },
     { "from": "comprobar", "to": "revisar" },
     { "from": "comprobación", "to": "revisión" },
+    { "from": "e introduce", "to": "y escribe" },
     { "from": "introduce", "to": "escribe" },
     { "from": "introducir", "to": "escribir" },
     { "from": "ordenador", "to": "computador" },
@@ -267,7 +268,6 @@ Esperado: `RESULTADO: OK` y `verify-pack` sin problemas.
     { "from": "se ha creado", "to": "se creó" },
     { "from": "se ha producido", "to": "ocurrió" },
     { "from": "reajustar", "to": "volver a ajustar" },
-    { "from": "fallo", "to": "falla" },
     { "from": "pulsar", "to": "presionar" },
     { "from": "ratón", "to": "mouse" },
     { "from": "móvil", "to": "celular" }
@@ -306,7 +306,7 @@ const checkOnly = process.argv.includes('--check');
 const table = JSON.parse(fs.readFileSync(termPath, 'utf8'));
 const LETTER = 'A-Za-z\\u00C0-\\u024F\\u00D1\\u00F1';
 const boundaries = (pattern) => new RegExp('(?<![' + LETTER + '])(' + pattern + ')(?![' + LETTER + '])', 'gi');
-const upper = (text) => (/^[A-Z\u00C0-\u00DE]/.test(text.charAt(0)) ? text.charAt(0).toUpperCase() + text.slice(1) : text);
+const upper = (match, replacement) => (/^[A-Z\u00C0-\u00DE]/.test(match.charAt(0)) ? replacement.charAt(0).toUpperCase() + replacement.slice(1) : replacement);
 
 const applied = [];
 const pending = [];
@@ -323,7 +323,7 @@ for (const file of files) {
       let next = value;
       for (const rule of table.replacements) {
         const before = next;
-        next = next.replace(boundaries(rule.from), () => upper(rule.to));
+        next = next.replace(boundaries(rule.from), (match) => upper(match, rule.to));
         if (next !== before) {
           const row = { file, ns, key, from: before, to: next };
           (checkOnly ? pending : applied).push(row);
@@ -362,7 +362,7 @@ process.exit(ok ? 0 : 1);
 node tools/apply-terminology.cjs i18n/terminology.json i18n/es-cl --check
 ```
 
-Esperado: `RESULTADO: FALLO`, con **al menos 60 sustituciones pendientes** y varios prohibidos (los recuentos reales medidos sobre la referencia castellana son: 39 `inténtalo`, 34 `introduce`, 19 `comprueba`, 5 `comprobar`, 5 `acceder` —este último no es prohibido—, 1 `ordenador`, 2 `fallo`, 1 `en breve`). Guardar la cifra exacta para la comprobación siguiente.
+Esperado: `RESULTADO: FALLO`, con al menos 150 sustituciones pendientes y `prohibidos restantes : 0` (la comprobación de prohibidos se hace sobre el texto **ya sustituido**, así que los términos que además son reglas de sustitución nunca aparecen como pendientes; es una puerta de no regresión, no un detector de peninsulaísmos). Guardar las cifras exactas para la comprobación siguiente.
 
 - [ ] **Step 4: Aplicar la pasada mecánica**
 
@@ -483,7 +483,7 @@ process.exit(totals.missing || totals.broken ? 1 : 0);
 node tools/delta-report.cjs i18n/catalog.json i18n/reference/es.json i18n/es-cl
 ```
 
-Esperado: `faltan: 0`, `marcadores rotos: 0`, y `cambiadas` igual al número de sustituciones aplicadas en Step 4 (todas las sustituciones son cambios respecto a la referencia). Salida 0.
+Esperado: `faltan: 0`, `marcadores rotos: 0`, y `0 < cambiadas <= sustituciones aplicadas` en Step 4. La igualdad **no** se espera: una clave afectada por dos reglas cuenta una vez en `cambiadas` y dos veces en el recuento de sustituciones. Salida 0.
 
 - [ ] **Step 8: Limpiar el script temporal y commitear**
 
