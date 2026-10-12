@@ -106,11 +106,11 @@
     "hover.copied": "Copiado",
     "date.ymd": "{y}-{m}-{d}",
     "time.now": "ahora",
-    "time.minutes": "{n}min",
-    "time.hours": "{n}h",
-    "time.days": "{n}d",
-    "time.months": "{n}mes",
-    "time.years": "{n}a",
+    "time.minutes": "{n} min",
+    "time.hours": "{n} h",
+    "time.days": "{n} d",
+    "time.months": "{n} mes",
+    "time.years": "{n} a",
     "time.ago": "hace {t}"
   }
 }

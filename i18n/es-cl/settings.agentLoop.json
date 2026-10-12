@@ -5,7 +5,7 @@
     "maxParallel": "Tool calls en paralelo",
     "maxParallelHint": "Límite superior de llamadas seguras en paralelo que se ejecutan a la vez dentro de un mismo paso.",
     "overridden": "Sobrescrito",
-    "reset": "Restablecer los valores predeterminados",
+    "reset": "Restablecer al valor predeterminado",
     "readOnly": "Esta implementación almacena los ajustes en modo de solo lectura.",
     "unavailable": "Este plugin no está cargado, por lo que no se puede configurar ahora mismo.",
     "save": "Guardar",

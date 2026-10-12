@@ -3,6 +3,10 @@
 Pack de idioma **español de Chile (es-CL)** para la interfaz de **DeepSeek Harness** (DSH).
 
 - **2.603 de 2.603 claves traducidas (100 %)**, repartidas en **57 namespaces**.
+- **284 de esas 2.603 cadenas (10,9 %) se separan de la traducción castellana de partida**: es
+  la adaptación chilena propiamente tal y está listada cadena por cadena, con su inglés y su
+  referencia, en [docs/revision-es-cl.md](docs/revision-es-cl.md) y
+  [docs/revision-es-cl.csv](docs/revision-es-cl.csv).
 - Entra como **plugin de cliente** del Loader de DSH: **no parchea `app.asar`** ni ningún
   fichero de la aplicación.
 - Cualquier clave que falte o que añada una versión nueva de DSH **cae automáticamente al
@@ -13,18 +17,23 @@ Pack de idioma **español de Chile (es-CL)** para la interfaz de **DeepSeek Harn
 | | |
 |---|---|
 | Cobertura | 2.603/2.603 claves (100 %), 57/57 namespaces |
+| Adaptación chilena | 284/2.603 cadenas (10,9 %) distintas de la referencia castellana |
+| Términos en inglés | 15 conservados por política; el informe de delta cierra con `protegidos 0` |
 | Idioma | `es-CL` — etiqueta «Español (Chile)», respaldo `en` |
 | Paquete | `dsh-locale-es-cl` 1.0.1 |
 | Licencia | MIT (ver [LICENSE](LICENSE) y [NOTICE.md](NOTICE.md)) |
 | Núcleo de DSH probado | app de escritorio con `app.asar` de 121 MB, 70 plugins de UI |
 
-Las cuatro comprobaciones se pueden repetir en cualquier momento y no necesitan la aplicación:
+Estas comprobaciones se pueden repetir en cualquier momento y, salvo la última, no necesitan la
+aplicación:
 
 ```powershell
-node tools/build-locale-pack.cjs i18n/catalog.json i18n/es-cl . --check   # cobertura y marcadores
-node tools/audit-es.cjs i18n/catalog.json i18n/es-cl                      # claves ausentes y repetidas
-node tools/check-portable.cjs i18n                                        # ni rutas ni secretos locales
-node tools/verify-pack.cjs lib/client.js                                  # ejecuta el bundle como lo hace DSH
+node tools/build-locale-pack.cjs i18n/catalog.json i18n/es-cl . --check    # cobertura y marcadores
+node tools/audit-es.cjs i18n/catalog.json i18n/es-cl                       # claves ausentes y repetidas
+node tools/apply-terminology.cjs i18n/terminology.json i18n/es-cl --check  # términos y fraseología prohibidas
+node tools/check-coherence.cjs i18n/es-cl                                  # un término, una sola traducción
+node tools/check-portable.cjs i18n                                         # ni rutas ni secretos locales
+node tools/verify-pack.cjs lib/client.js                                   # ejecuta el bundle como lo hace DSH
 ```
 
 ## Instalación
@@ -146,18 +155,26 @@ dsh-locale-es-cl/
 │   └── index.js            mitad host (generado)
 ├── i18n/
 │   ├── catalog.json        catálogo inglés extraído de la app (claves + textos de origen)
+│   ├── terminology.json    tabla de reemplazos y términos prohibidos (política de estilo)
 │   ├── reference/es.json   traducción castellana de referencia, de solo lectura (obra derivada)
 │   └── es-cl/<namespace>.json  un fichero por namespace con la traducción chilena
 ├── locale/
 │   ├── en.json             metadatos de la tarjeta del plugin (meta.title / meta.description)
 │   ├── es-CL.json          los mismos metadatos en español de Chile
 │   └── es.json             copia de es-CL.json, por si el resolutor indexa por subetiqueta
+├── docs/
+│   ├── revision-es-cl.md   hoja de revisión del delta, agrupada por namespace
+│   └── revision-es-cl.csv  la misma hoja en CSV (namespace, clave, inglés, referencia, es-CL)
 ├── icon.svg                icono de la tarjeta (relativo, ≤256 KiB, SVG/PNG/JPEG/WebP)
 ├── tools/                  cadena de herramientas, sin dependencias externas
 │   ├── extract-app.cjs          extrae el código de app.asar verificando SHA-256
 │   ├── extract-locale.cjs       extrae los diccionarios en/zh de los plugins de UI
 │   ├── split-batches.cjs        reparte el catálogo en lotes para traducir en paralelo
 │   ├── split-by-namespace.cjs   convierte los lotes en un fichero por namespace
+│   ├── show-ns.cjs              imprime los diccionarios ingleses de los namespaces indicados
+│   ├── apply-terminology.cjs    aplica (o comprueba con --check) la tabla de terminología
+│   ├── delta-report.cjs         compara con la referencia y emite la hoja de revisión
+│   ├── check-coherence.cjs      informa de cómo se tradujo cada término, para detectar dobles formas
 │   ├── build-locale-pack.cjs    emite lib/ y cordis.patch.yml, e informa de la cobertura
 │   ├── audit-es.cjs             busca claves ausentes, ficheros mal alineados y repetidas
 │   ├── check-portable.cjs       evita publicar rutas de la máquina que extrajo el catálogo
@@ -189,14 +206,28 @@ puerta en integración continua, igual que `audit-es.cjs`.
 ### Actualizar el catálogo tras una actualización de DSH
 
 ```powershell
+# 1. Extraer el catálogo de la instalación nueva
 node tools/extract-app.cjs "C:\ruta\a\resources\app.asar" _referencia-dsh
 node tools/extract-locale.cjs _referencia-dsh/dsh/node_modules/@deepseek-ai i18n/catalog.json
-node tools/check-portable.cjs i18n                                     # el catálogo no lleva rutas locales
+node tools/check-portable.cjs i18n                                      # el catálogo no lleva rutas locales
+
+# 2. Ver qué falta y traducirlo en i18n/es-cl/<namespace>.json
 node tools/build-locale-pack.cjs i18n/catalog.json i18n/es-cl . --check # lista lo nuevo por traducir
+
+# 3. Volver a pasar las puertas de estilo y reconstruir el bundle
+node tools/apply-terminology.cjs i18n/terminology.json i18n/es-cl --check
+node tools/apply-terminology.cjs i18n/terminology.json i18n/es-cl        # aplica lo que quede pendiente
+node tools/check-coherence.cjs i18n/es-cl                               # un término, una sola traducción
+node tools/build-locale-pack.cjs i18n/catalog.json i18n/es-cl .          # regenera lib/ y cordis.patch.yml
+node tools/verify-pack.cjs lib/client.js
+
+# 4. Refrescar la hoja de revisión que revisa el usuario
+node tools/delta-report.cjs i18n/catalog.json i18n/reference/es.json i18n/es-cl --md docs/revision-es-cl.md --csv docs/revision-es-cl.csv
 ```
 
 Las claves nuevas aparecen como «sin traducir» y en la interfaz se ven en inglés hasta que
-alguien las traduzca.
+alguien las traduzca. [docs/revision-es-cl.md](docs/revision-es-cl.md) y su `.csv` son
+informes generados: se rehacen con el último comando y no se editan a mano.
 
 ### Empezar otro idioma con este repositorio como plantilla
 
@@ -219,15 +250,27 @@ Las correcciones de traducción son bienvenidas, y también los avisos de textos
 máquina. Lee [CONTRIBUTING.md](CONTRIBUTING.md): es corto y evita que un envío se quede sin
 poder fusionar por un marcador perdido.
 
+## Créditos
+
+- **Traducción castellana de base** ([i18n/reference/es.json](i18n/reference/es.json)):
+  [Oskarosan/dsh-locale-es](https://github.com/Oskarosan/dsh-locale-es), MIT. La adaptación
+  chilena es una **obra derivada** suya: ver [NOTICE.md](NOTICE.md).
+- **Diccionarios `en` y `zh`** ([i18n/catalog.json](i18n/catalog.json)): los que registran los
+  plugins de interfaz de **DeepSeek Harness**; se extraen de una instalación local solo para
+  verificar la cobertura, la paridad de claves y los marcadores.
+- **Adaptación al español de Chile y herramientas** (`i18n/es-cl/`, `tools/`): este
+  repositorio, MIT.
+
 ## Aviso legal
 
 DeepSeek Harness es una aplicación de DeepSeek; este repositorio **no contiene código de la
 aplicación**. El catálogo inglés (`i18n/catalog.json`) se extrae de una instalación local
 únicamente para poder verificar la cobertura, la paridad de claves y los marcadores. La
-traducción chilena es obra original de este repositorio; `i18n/reference/es.json` es una obra
-derivada de [Oskarosan/dsh-locale-es](https://github.com/Oskarosan/dsh-locale-es). Los
-detalles y las marcas están en [NOTICE.md](NOTICE.md). La licencia MIT cubre el contenido
-original de este repositorio: las traducciones y las herramientas.
+adaptación al español de Chile es una **obra derivada** de la traducción castellana de
+[Oskarosan/dsh-locale-es](https://github.com/Oskarosan/dsh-locale-es) (MIT), que se conserva
+como `i18n/reference/es.json` justamente para poder auditar ese delta. Los detalles y las
+marcas están en [NOTICE.md](NOTICE.md). La licencia MIT cubre el contenido propio de este
+repositorio: la adaptación, las herramientas y la documentación.
 
 ---
 
@@ -236,12 +279,15 @@ original de este repositorio: las traducciones y las herramientas.
 Chilean Spanish (`es-CL`) language pack for the **DeepSeek Harness** (DSH) web interface:
 **2,603 of 2,603 keys (100 %) across 57 namespaces**, shipped as a client plugin — the
 application's `app.asar` is never patched, and untranslated keys fall back to English
-automatically.
+automatically. **284 of the 2,603 strings (10.9 %) differ from the Castilian base
+translation**; every one of them is listed, with its English source and its reference, in
+`docs/revision-es-cl.md` (and the matching `.csv`).
 
 This fork has no public remote of its own; install it from a local checkout by adding
 `dsh-locale-es-cl` to `dependencies` and to `dsh.profile.bundles` in your DSH profile's
 `package.json`, then run `pnpm install` in the profile folder and pick **Español (Chile)** in
 *Settings → General → Language*. See [Cómo funciona](#cómo-funciona) for the plugin protocol,
 and [CONTRIBUTING.md](CONTRIBUTING.md) to send translation fixes (keep placeholders such as
-`{count}` intact). Licensed under MIT; the derived work is attributed in
-[NOTICE.md](NOTICE.md).
+`{count}` intact). Licensed under MIT; the Chilean adaptation is a derived work of
+[Oskarosan/dsh-locale-es](https://github.com/Oskarosan/dsh-locale-es) and the `en`/`zh`
+dictionaries come from DSH itself — see [NOTICE.md](NOTICE.md).

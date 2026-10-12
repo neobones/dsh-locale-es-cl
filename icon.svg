@@ -1,15 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Español (Chile)">
-  <title>Pack de idioma español de Chile (es-CL)</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Pack de idioma (es-CL)">
+  <title>Pack de idioma (es-CL)</title>
   <defs>
     <clipPath id="marco">
       <rect x="4" y="10" width="56" height="44" rx="10" />
     </clipPath>
   </defs>
+  <!-- Bandera de Chile: la identidad del pack es es-CL, no la castellana. -->
   <g clip-path="url(#marco)">
-    <rect x="4" y="10" width="56" height="44" fill="#c60b1e" />
-    <rect x="4" y="21" width="56" height="22" fill="#ffc400" />
+    <rect x="4" y="10" width="56" height="22" fill="#ffffff" />
+    <rect x="4" y="32" width="56" height="22" fill="#d52b1e" />
+    <rect x="4" y="10" width="18.67" height="22" fill="#0039a6" />
+    <polygon points="13.33,15.50 14.63,19.22 18.56,19.30 15.43,21.68 16.57,25.45 13.33,23.20 10.10,25.45 11.24,21.68 8.10,19.30 12.04,19.22" fill="#ffffff" />
   </g>
   <rect x="4" y="10" width="56" height="44" rx="10" fill="none" stroke="#0b1a2b" stroke-opacity=".25" stroke-width="2" />
-  <path d="M18 54h8l-4 7z" fill="#c60b1e" />
-  <text x="32" y="42" text-anchor="middle" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="24" font-weight="700" fill="#0b1a2b">ES</text>
+  <path d="M18 54h8l-4 7z" fill="#d52b1e" />
 </svg>

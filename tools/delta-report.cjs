@@ -158,7 +158,12 @@ if (mdPath) {
   console.log('hoja markdown: ' + mdPath);
 }
 if (csvPath) {
-  const csv = (s) => '"' + String(s).replace(/"/g, '""') + '"';
+  // Los valores multilinea (los textos de guia de `settings.agentPreset`) se
+  // aplanan a la secuencia visible `\n`: una cadena cambiada, una fila fisica.
+  // Sin esto el CSV seguia siendo valido (un salto dentro de comillas lo es),
+  // pero una lectura por lineas contaba 452 filas donde hay 254 registros y la
+  // revision por muestreo se volvia enganosa.
+  const csv = (s) => '"' + String(s).replace(/\r?\n/g, '\\n').replace(/"/g, '""') + '"';
   const lines = ['namespace,clave,ingles,es_referencia,es_cl'];
   for (const row of changed) lines.push([row.ns, row.key, row.en, row.ref, row.es].map(csv).join(','));
   fs.writeFileSync(csvPath, lines.join('\n') + '\n');

@@ -184,8 +184,8 @@
     "reasonStopProfile": "Este perfil se ejecuta sin HMR; deténlo y desinstala el paquete con dsh plugin.",
     "reasonBundleInUse": "Otra configuración sigue usando los componentes de este bundle; desactívalos primero.",
     "reasonStaleApproval": "Las aprobaciones de scripts pendientes cambiaron; vuelve a instalar para actualizarlas.",
-    "reasonIncompatibleVersion": "{plugin} es incompatible con DSH {runtime} (requiere {peers}); ejecutarlo puede provocar fallos o pérdida de datos.",
-    "reasonIncompatibleVersionUnnamed": "Este plugin es incompatible con la versión de DSH en ejecución; ejecutarlo puede provocar fallos o pérdida de datos.",
+    "reasonIncompatibleVersion": "{plugin} es incompatible con DSH {runtime} (requiere {peers}); ejecutarlo puede provocar fallas o pérdida de datos.",
+    "reasonIncompatibleVersionUnnamed": "Este plugin es incompatible con la versión de DSH en ejecución; ejecutarlo puede provocar fallas o pérdida de datos.",
     "reasonIncompatibleInstall": "Instala una versión del plugin compatible con este DSH.",
     "reasonIncompatibleInstalled": "Desinstálalo e instala una versión compatible con este DSH.",
     "reasonOperationError": "El Host informó de un error."

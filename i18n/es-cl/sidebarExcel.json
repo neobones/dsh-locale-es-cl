@@ -2,7 +2,7 @@
   "sidebarExcel": {
     "title": "Hoja de cálculo",
     "language": "es",
-    "loading": "Representando el documento...",
+    "loading": "Procesando el documento...",
     "invalid": "No se pudo abrir esta hoja de cálculo. Revisa su formato, su contenido o su protección con contraseña.",
     "tooLarge": "Este libro supera el límite de tamaño de la vista previa.",
     "timeout": "Se agotó el tiempo al abrir este libro. Prueba con un archivo más pequeño.",

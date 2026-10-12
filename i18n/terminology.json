@@ -13,6 +13,10 @@
     { "from": "añade", "to": "agrega" },
     { "from": "añadir", "to": "agregar" },
     { "from": "añádelos", "to": "agrégalos" },
+    { "from": "añadida", "to": "agregada" },
+    { "from": "añadidas", "to": "agregadas" },
+    { "from": "añadido", "to": "agregado" },
+    { "from": "añadidos", "to": "agregados" },
     { "from": "gestor de archivos", "to": "explorador de archivos" },
     { "from": "en breve", "to": "en un momento" },
     { "from": "no se ha podido", "to": "no se pudo" },
@@ -30,6 +34,9 @@
   "banned": [
     "inténtalo", "compruébalo", "comprueba", "comprobar", "comprobación",
     "introduce", "introducir", "ordenador", "ficheros", "pulsar", "ratón",
-    "móvil", "reajustar", "vosotros", "vuestro", "coger", "vale"
+    "móvil", "reajustar", "vosotros", "vuestro", "coger", "vale",
+    "llamada a herramienta", "llamadas a herramienta",
+    "llamada a herramientas", "llamadas a herramientas",
+    "diferencia de código", "diferencias de código"
   ]
 }

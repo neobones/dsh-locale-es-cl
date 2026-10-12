@@ -13,7 +13,7 @@
     "description.feedback": "Registrar comentarios sobre esta sesión",
     "description.compact": "Compactar el historial de conversación más antiguo",
     "description.permission": "Cambiar el preset de permisos (modo sandbox + política de aprobación)",
-    "description.export": "Descargar el log de esta sesión como archivo ZIP",
+    "description.export": "Descargar el log de sesión como archivo ZIP",
     "token.goal": "goal",
     "token.plan": "plan",
     "token.feedback": "feedback",

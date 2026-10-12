@@ -1,7 +1,7 @@
 {
   "sidebarOffice": {
     "title": "Documento de Office",
-    "loading": "Representando el documento...",
+    "loading": "Procesando el documento...",
     "retry": "Reintentar",
     "viewMissingFonts": "Fuentes ausentes: {count}. Haz clic para verlas.",
     "missingFontsTitle": "Fuentes ausentes",

@@ -1,6 +1,6 @@
 {
   "settings.account": {
-    "modelSignInRequired": "Modelo no disponible. Inicia sesión y vuelve a intentarlo.",
+    "modelSignInRequired": "Modelo no disponible. Inicia sesión e intenta de nuevo.",
     "sessionExpired": "Has cerrado la sesión de tu cuenta; inicia sesión de nuevo.",
     "onboardingArtworkLocale": "en",
     "onboardingWelcome": "Te damos la bienvenida a",
